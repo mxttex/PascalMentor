@@ -4,7 +4,6 @@ import './index.css'
 import App from './App.jsx'
 import Navbar from "./components/Navbar";
 
-
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Navbar></Navbar>
