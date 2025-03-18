@@ -46,6 +46,5 @@ CREATE TABLE Feedbacks(
 	Id int identity(1,1) PRIMARY KEY,
 	Rating FLOAT,
 	Descrizione VARCHAR(150),
-	Insegnante INT REFERENCES Insegnanti(Id) NOT NULL,
 	Studente INT REFERENCES Studenti(Id),
 	Ripetizione INT REFERENCES Ripetizioni(Id))

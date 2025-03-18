@@ -14,19 +14,20 @@ function RegistrationModal() {
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <input type="text" placeholder="Nome" id="studentNamePicker"/>
-                            <input type="text" placeholder="Cognome" id="studentSurnamePicker" />
-                            <input type="email" placeholder="Email" id="studentEmailPicker" />
-                            <input type="password" placeholder="Password" id="studentPasswordPicker" />
-                            <input type="password" placeholder="Conferma Password" id="studentConfirmPassword" />
+                            <label htmlFor="studentNamePicker">Nome dello studente:</label>
+                            <input type="text" className='rounded-3' placeholder="Nome" id="studentNamePicker"/>
+                            <input type="text" className='rounded-3' placeholder="Cognome" id="studentSurnamePicker" />
+                            <input type="email" className='rounded-3' placeholder="Email" id="studentEmailPicker" />
+                            <input type="password" className='rounded-3' placeholder="Password" id="studentPasswordPicker" />
+                            <input type="password"  className='rounded-3' placeholder="Conferma Password" id="studentConfirmPassword" />
                             <br />
-                            <select name="indirizzo" id="indirizzo">
+                            <select name="indirizzo" id="indirizzo" className='rounded-3'>
                                 <option value="info">Informatica</option>
                                 <option value="auto">Automazione</option>
                                 <option value="bio">Biotecnologie</option>
                             </select>
                             <br />
-                            <input type="date" placeholder="Data Di Nascita" id="studentBirthPicker" />
+                            <input type="date" className='rounded-3' placeholder="Data Di Nascita" id="studentBirthPicker" />
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

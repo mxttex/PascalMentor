@@ -4,7 +4,7 @@ import viteLogo from "/vite.svg";
 
 function ProvHomePage() {
   return (
-    <div className="container-fluid h-100 w-100">
+    <div className="container-fluid w-100">
       <div className="d-flex flex-column align-items-center text-center">
         <div>
           <a href="https://vite.dev" target="_blank">
