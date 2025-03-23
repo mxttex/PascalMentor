@@ -1,43 +1,158 @@
-import '../styles/RegistrationModal.css'
+import React, { useState } from 'react';
+
 function RegistrationModal() {
+    const [formData, setFormData] = useState({
+        nome: '',
+        cognome: '',
+        email: '',
+        password: '',
+        confermaPassword: '',
+        indirizzo: 'info',
+        dataNascita: ''
+    });
+
+    const [type, setType] = useState('studente')
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (formData.password !== formData.confermaPassword) {
+            alert('Le password non coincidono!');
+            return;
+        }
+        console.log('Dati inviati:', formData);
+        alert('Registrazione completata!');
+    };
+
     return (
-        <div className="model-dialog model-dialog-centred">
-            <button type="button" class="btn btn-transparent nice-text" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <div>
+            <button 
+                type="button" 
+                className="btn btn-primary" 
+                data-bs-toggle="modal" 
+                data-bs-target="#exampleModal"
+            >
                 Registrati
             </button>
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Registrazione</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            {/* Modale */}
+            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="exampleModalLabel">Registrazione</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <label htmlFor="studentNamePicker">Nome dello studente:</label>
-                            <input type="text" className='rounded-3' placeholder="Nome" id="studentNamePicker"/>
-                            <input type="text" className='rounded-3' placeholder="Cognome" id="studentSurnamePicker" />
-                            <input type="email" className='rounded-3' placeholder="Email" id="studentEmailPicker" />
-                            <input type="password" className='rounded-3' placeholder="Password" id="studentPasswordPicker" />
-                            <input type="password"  className='rounded-3' placeholder="Conferma Password" id="studentConfirmPassword" />
-                            <br />
-                            <select name="indirizzo" id="indirizzo" className='rounded-3'>
-                                <option value="info">Informatica</option>
-                                <option value="auto">Automazione</option>
-                                <option value="bio">Biotecnologie</option>
-                            </select>
-                            <br />
-                            <input type="date" className='rounded-3' placeholder="Data Di Nascita" id="studentBirthPicker" />
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Save changes</button>
+                        <div className="modal-body">
+                            {/* Form di registrazione */}
+                            <form onSubmit={handleSubmit}>
+                                <div className="mb-3">
+                                    <label htmlFor="nome" className="form-label">Nome</label>
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        id="nome" 
+                                        name="nome"
+                                        value={formData.nome} 
+                                        onChange={handleChange} 
+                                        required 
+                                    />
+                                </div>
+
+                                <div className="mb-3">
+                                    <label htmlFor="cognome" className="form-label">Cognome</label>
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        id="cognome" 
+                                        name="cognome"
+                                        value={formData.cognome} 
+                                        onChange={handleChange} 
+                                        required 
+                                    />
+                                </div>
+
+                                <div className="mb-3">
+                                    <label htmlFor="email" className="form-label">Email</label>
+                                    <input 
+                                        type="email" 
+                                        className="form-control" 
+                                        id="email" 
+                                        name="email"
+                                        value={formData.email} 
+                                        onChange={handleChange} 
+                                        required 
+                                    />
+                                </div>
+
+                                <div className="mb-3">
+                                    <label htmlFor="password" className="form-label">Password</label>
+                                    <input 
+                                        type="password" 
+                                        className="form-control" 
+                                        id="password" 
+                                        name="password"
+                                        value={formData.password} 
+                                        onChange={handleChange} 
+                                        required 
+                                    />
+                                </div>
+
+                                <div className="mb-3">
+                                    <label htmlFor="confermaPassword" className="form-label">Conferma Password</label>
+                                    <input 
+                                        type="password" 
+                                        className="form-control" 
+                                        id="confermaPassword" 
+                                        name="confermaPassword"
+                                        value={formData.confermaPassword} 
+                                        onChange={handleChange} 
+                                        required 
+                                    />
+                                </div>
+
+                                <div className="mb-3">
+                                    <label htmlFor="indirizzo" className="form-label">Indirizzo di studio</label>
+                                    <select 
+                                        id="indirizzo" 
+                                        name="indirizzo" 
+                                        className="form-select" 
+                                        value={formData.indirizzo} 
+                                        onChange={handleChange}
+                                    >
+                                        <option value="info">Informatica</option>
+                                        <option value="auto">Automazione</option>
+                                        <option value="bio">Biotecnologie</option>
+                                    </select>
+                                </div>
+
+                                <div className="mb-3">
+                                    <label htmlFor="dataNascita" className="form-label">Data di Nascita</label>
+                                    <input 
+                                        type="date" 
+                                        className="form-control" 
+                                        id="dataNascita" 
+                                        name="dataNascita"
+                                        value={formData.dataNascita} 
+                                        onChange={handleChange} 
+                                        required 
+                                    />
+                                </div>
+
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                                    <button type="submit" className="btn btn-primary">Registrati</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default RegistrationModal
+export default RegistrationModal;
