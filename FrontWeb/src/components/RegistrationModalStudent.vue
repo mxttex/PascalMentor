@@ -16,26 +16,26 @@
                         <form @submit.prevent="handleSubmit">
                             <div class="mb-3">
                                 <label for="nome" class="form-label">Nome</label>
-                                <input type="text" class="form-control" id="nome" name="nome" v-model="this.nome"
-                                    required />
+                                <input type="text" class="form-control" id="nome" name="nome"
+                                    v-model="this.formData.nome" required />
                             </div>
 
                             <div class="mb-3">
                                 <label for="cognome" class="form-label">Cognome</label>
                                 <input type="text" class="form-control" id="cognome" name="cognome"
-                                    v-model="this.cognome" required />
+                                    v-model="this.formData.cognome" required />
                             </div>
 
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" v-model="this.email"
-                                    required />
+                                <input type="email" class="form-control" id="email" name="email"
+                                    v-model="this.formData.email" required />
                             </div>
 
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
                                 <input type="password" class="form-control" id="password" name="password"
-                                    v-model="this.password" required />
+                                    v-model="this.formData.password" required />
                             </div>
 
                             <div class="mb-3">
@@ -46,7 +46,8 @@
 
                             <div class="mb-3">
                                 <label for="indirizzo" class="form-label">Indirizzo di studio</label>
-                                <select id="indirizzo" name="indirizzo" class="form-select" v-model="this.indirizzo">
+                                <select id="indirizzo" name="indirizzo" class="form-select"
+                                    v-model="this.formData.indirizzo">
                                     <option value="info">Informatica</option>
                                     <option value="auto">Automazione</option>
                                     <option value="bio">Biotecnologie</option>
@@ -56,7 +57,7 @@
                             <div class="mb-3">
                                 <label for="dataNascita" class="form-label">Data di Nascita</label>
                                 <input type="date" class="form-control" id="dataNascita" name="dataNascita"
-                                    v-model="this.dataNascita" required />
+                                    v-model="this.formData.dataNascita" required />
                             </div>
 
                             <div class="modal-footer">
@@ -76,25 +77,47 @@ export default {
     name: 'RegistrationModal',
     data() {
         return {
-            nome: '',
-            cognome: '',
-            email: '',
-            password: '',
-            confermaPassword: '',
-            indirizzo: 'info',
-            dataNascita: '',
-            type: 'studente'
+            formData: {
+                nome: '',
+                cognome: '',
+                email: '',
+                password: '',
+                indirizzo: 'info',
+                dataNascita: ''
+            },
+            endpoint: 'http://localhost:8089/api/registerStudent',
+            confermaPassword: ''
         }
     },
     methods: {
-        handleSubmit() {
-            if (this.formData.password !== this.formData.confermaPassword) {
-                alert('Le password non coincidono!');
-                return;
+        async handleSubmit() {
+            try {
+                if (this.formData.password !== this.confermaPassword) {
+                    alert('Le password non coincidono!');
+                    return;
+                }
+
+                let result = await fetch(this.endpoint,
+                    {
+                        method: "POST",
+                        headers: {
+                            'Content-type': 'application/json'
+                        },
+                        body: JSON.stringify(this.formData)
+                    }
+                )
+
+                console.log(result)
+
+                if (result.status === 200) {
+                    alert("ok")
+                }
             }
-            console.log('Dati inviati:', this.formData);
-            alert('Registrazione completata!');
+            catch{
+                alert('Errore nella registrazione')
+            }
         }
+
     }
 }
 </script>
