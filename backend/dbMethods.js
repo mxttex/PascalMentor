@@ -10,7 +10,7 @@ async function AddNewStudent(body) {
             .input('name', sql.VarChar, body.nome)     
             .input('surname', sql.VarChar, body.cognome)
             .input('mail', sql.VarChar, body.email)
-            .input('psw', sql.VarChar, body.password)
+            .input('psw', sql.VarChar(50), body.password)
             .input('indirizzo', sql.VarChar, body.indirizzo)
             .input('dataNascita', sql.VarChar, body.dataNascita)  
             .query(
@@ -32,7 +32,7 @@ async function AddNewTeacher(body) {
         .input('name', sql.VarChar, body.nome)
         .input('surname', sql.VarChar, body.cognome)
         .input('mail', sql.VarChar, body.email)
-        .input('psw', sql.VarChar, body.password)
+        .input('psw', sql.VarChar(50), body.password)
         .input('dataNascita', sql.VarChar, body.dataNascita)
         .query(
             'INSERT into Insegnanti(Nome, Cognome, Mail, Password, DataDiNascita) values(@name, @surname, @mail, @psw, @dataNascita'

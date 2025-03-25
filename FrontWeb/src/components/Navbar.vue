@@ -22,7 +22,7 @@
                 </li>
                 <li class="flex-grow-1"></li>
                 <li class="nav-item">
-                    <RegistrationModalView />
+                    <UserModalView />
                 </li>
             </ul>
         </div>
@@ -30,11 +30,11 @@
 </template>
 
 <script>
-import RegistrationModalView from "../views/RegistrationModalView.vue";
+import UserModalView from "../views/UserModalView.vue";
 
 export default {
     components: {
-        RegistrationModalView,
+        UserModalView,
     }
 };
 </script>
