@@ -22,7 +22,9 @@
                 </li>
                 <li class="flex-grow-1"></li>
                 <li class="nav-item">
-                    <UserModalView />
+                    <a class="nav-link" href="#">
+                        <router-link to="/">Registrati</router-link>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -30,11 +32,11 @@
 </template>
 
 <script>
-import UserModalView from "../views/UserModalView.vue";
+
+import router from '@/router';
 
 export default {
     components: {
-        UserModalView,
     }
 };
 </script>

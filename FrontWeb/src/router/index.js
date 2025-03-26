@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
+import SignInOrRegister from '@/views/SignInOrRegister.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    // {
-    //   path: '/',
-    //   name: 'home',
-    //   component: HomeView,
-    // },
+    {
+      path: '/',
+      name: 'sign-in',
+      component: SignInOrRegister,
+    },
     // {
     //   path: '/about',
     //   name: 'about',
