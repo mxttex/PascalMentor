@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import globalVariables from '../../globalVariables.js'
 export default {
     name: 'LoginPage',
     data() {
@@ -28,7 +29,7 @@ export default {
                 email: '',
                 password: ''   
             },
-            endpoint: 'http://localhost:8089/api/log'
+            endpoint: `${API_URL}log`
         }
     },
     methods: {

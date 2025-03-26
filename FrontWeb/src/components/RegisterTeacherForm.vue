@@ -42,6 +42,7 @@
 
 <script>
 import CryptoJS from 'crypto-js'
+import globalVariables from '../../globalVariables.js'
 export default {
     name: 'RegistrationPage',
     data() {
@@ -53,7 +54,7 @@ export default {
                 password: '',
                 dataNascita: ''
             },
-            endpoint: 'http://localhost:8089/api/registerTeacher',
+            endpoint: `${globalVariables.API_URL}registerTeacher`,
             confermaPassword: '',
             password : ''
         }
