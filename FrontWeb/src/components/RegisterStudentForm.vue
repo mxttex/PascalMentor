@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-5">
-        <h1 class="text-center">Registrazione</h1>
+        <h1 class="text-center">Studente</h1>
         <form @submit.prevent="handleSubmit" class="mt-4">
             <div class="mb-3">
                 <label for="nome" class="form-label">Nome</label>
@@ -19,7 +19,7 @@
 
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" v-model="formData.password" required />
+                <input type="password" class="form-control" id="password" name="password" v-model="password" required />
             </div>
 
             <div class="mb-3">
@@ -41,12 +41,16 @@
                 <input type="date" class="form-control" id="dataNascita" name="dataNascita" v-model="formData.dataNascita" required />
             </div>
 
-            <button type="submit" class="btn btn-primary">Registrati</button>
+            <button type="submit" class="btn btn-transparent">Registrati</button>
+            <button type="button" class="btn btn-transparent" @click="$emit('change-state', 'registerTeacher')">Sei un insegnante?</button>
+            <button type="button" class="btn btn-transparent" @click="$emit('change-state', 'log')">Sei già registrato? Loggati!</button>
         </form>
+        
     </div>
 </template>
 
 <script>
+    import CryptoJS from 'crypto-js'
 export default {
     name: 'RegistrationPage',
     data() {
@@ -60,17 +64,19 @@ export default {
                 dataNascita: ''
             },
             endpoint: 'http://localhost:8089/api/registerStudent',
-            confermaPassword: ''
+            confermaPassword: '',
+            password : ''
         }
     },
     methods: {
         async handleSubmit() {
             try {
-                if (this.formData.password !== this.confermaPassword) {
+                if (this.password !== this.confermaPassword) {
                     alert('Le password non coincidono!');
                     return;
                 }
 
+                this.formData.password = CryptoJS.SHA1(this.password).toString();
                 let result = await fetch(this.endpoint, {
                     method: "POST",
                     headers: {

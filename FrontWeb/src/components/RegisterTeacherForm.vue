@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-5">
-        <h1 class="text-center">Registrazione</h1>
+        <h1 class="text-center">Insegnante</h1>
         <form @submit.prevent="handleSubmit" class="mt-4">
             <div class="mb-3">
                 <label for="nome" class="form-label">Nome</label>
@@ -19,7 +19,7 @@
 
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" v-model="formData.password" required />
+                <input type="password" class="form-control" id="password" name="password" v-model="password" required />
             </div>
 
             <div class="mb-3">
@@ -32,7 +32,10 @@
                 <input type="date" class="form-control" id="dataNascita" name="dataNascita" v-model="formData.dataNascita" required />
             </div>
 
-            <button type="submit" class="btn btn-primary">Registrati</button>
+            <button type="submit" class="btn btn-transparent">Registrati</button>
+            <button type="submit" class="btn btn-transparent" @click="$emit('change-state', 'registerStudent')">Sei uno studente?</button>
+            <button type="submit" class="btn btn-transparent" @click="$emit('change-state', 'log')">Sei già registrato? Loggati!</button>
+
         </form>
     </div>
 </template>
@@ -51,18 +54,19 @@ export default {
                 dataNascita: ''
             },
             endpoint: 'http://localhost:8089/api/registerTeacher',
-            confermaPassword: ''
+            confermaPassword: '',
+            password : ''
         }
     },
     methods: {
         async handleSubmit() {
             try {
-                if (this.formData.password !== this.confermaPassword) {
+                if (this.password !== this.confermaPassword) {
                     alert('Le password non coincidono!');
                     return;
                 }
 
-                this.formData.password = CryptoJS.SHA1(this.formData.password).toString();
+                this.formData.password = CryptoJS.SHA1(this.password).toString();
 
                 let result = await fetch(this.endpoint, {
                     method: "POST",

@@ -1,31 +1,29 @@
 <script>
-import RegistrationModalStudent from '../components/RegistrationModalStudent.vue'
-import RegistrationModalTeacher from '../components/RegistrationModalTeacher.vue'
-import LoginModal from '@/components/LoginModal.vue';
+import LoginForm from '@/components/LoginForm.vue';
+import RegisterStudentForm from '../components/RegisterStudentForm.vue'
+import RegisterTeacherForm from '../components/RegisterTeacherForm.vue'
 
 export default {
     components: {
-        RegistrationModalStudent,
-        LoginModal,
-        RegistrationModalTeacher
+        RegisterStudentForm,
+        LoginForm,
+        RegisterTeacherForm
     },
     data() {
         return {
             action: 'registerStudent'
+        }
+    },
+    methods:{
+        changeState(whatToView){
+            this.action = whatToView
         }
     }
 }
 </script>
 
 <template>
-    <div class="mb-3">
-        <select id="indirizzo" name="indirizzo" class="form-select" v-model="this.action">
-            <option value="registerStudent">Registra Studente</option>
-            <option value="registerTeacher">Registra Insegnante</option>
-            <option value="log">Loggati</option>
-        </select>
-    </div>
-    <RegistrationModalStudent v-if="this.action == 'registerStudent'" />
-    <RegistrationModalTeacher v-if="this.action == 'registerTeacher'" />
-    <LoginModal v-if="this.action == 'log'" />
+    <RegisterStudentForm v-if="this.action == 'registerStudent'" @change-state="changeState" />
+    <RegisterTeacherForm v-if="this.action == 'registerTeacher'" @change-state="changeState" />
+    <LoginForm v-if="this.action == 'log'" @change-state="changeState" />
 </template>

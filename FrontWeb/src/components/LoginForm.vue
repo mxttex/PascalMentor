@@ -12,7 +12,9 @@
                 <input type="password" class="form-control" id="password" name="password" v-model="formData.password" required />
             </div>
 
-            <button type="submit" class="btn btn-primary">Accedi</button>
+            <button type="submit" class="btn btn-transparent">Accedi</button>
+            <button type="button" class="btn btn-transparent" @click="$emit('change-state', 'registerStudent')">Non sei registrato? Iscriviti Subito</button>
+
         </form>
     </div>
 </template>

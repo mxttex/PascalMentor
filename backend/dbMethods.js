@@ -32,10 +32,10 @@ async function AddNewTeacher(body) {
         .input('name', sql.VarChar, body.nome)
         .input('surname', sql.VarChar, body.cognome)
         .input('mail', sql.VarChar, body.email)
-        .input('psw', sql.VarChar(50), body.password)
+        .input('psw', sql.VarChar, body.password)
         .input('dataNascita', sql.VarChar, body.dataNascita)
         .query(
-            'INSERT into Insegnanti(Nome, Cognome, Mail, Password, DataDiNascita) values(@name, @surname, @mail, @psw, @dataNascita'
+            'INSERT into Insegnanti(Nome, Cognome, Mail, Password, DataDiNascita) values(@name, @surname, @mail, @psw, CAST(@dataNascita AS DATE))'
         )
         return insertion.rowsAffected
         
