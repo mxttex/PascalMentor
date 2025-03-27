@@ -4,17 +4,17 @@
         <form @submit.prevent="handleSubmit" class="mt-4">
             <div class="mb-3">
                 <label for="nome" class="form-label">Nome</label>
-                <input type="text" class="form-control" id="nome" name="nome" v-model="formData.nome" required />
+                <input type="text" class="form-control" id="nome" name="nome" v-model="nome" required />
             </div>
 
             <div class="mb-3">
                 <label for="cognome" class="form-label">Cognome</label>
-                <input type="text" class="form-control" id="cognome" name="cognome" v-model="formData.cognome" required />
+                <input type="text" class="form-control" id="cognome" name="cognome" v-model="cognome" required />
             </div>
 
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" v-model="formData.email" required />
+                <input type="email" class="form-control" id="email" name="email" v-model="email" required />
             </div>
 
             <div class="mb-3">
@@ -29,7 +29,7 @@
 
             <div class="mb-3">
                 <label for="dataNascita" class="form-label">Data di Nascita</label>
-                <input type="date" class="form-control" id="dataNascita" name="dataNascita" v-model="formData.dataNascita" required />
+                <input type="date" class="form-control" id="dataNascita" name="dataNascita" v-model="dataNascita" required />
             </div>
 
             <button type="submit" class="btn btn-transparent">Registrati</button>
@@ -40,52 +40,92 @@
     </div>
 </template>
 
-<script>
-import CryptoJS from 'crypto-js'
+<script setup>
+import {SHA1} from 'crypto-js'
 import globalVariables from '../../globalVariables.js'
-export default {
-    name: 'RegistrationPage',
-    data() {
-        return {
-            formData: {
-                nome: '',
-                cognome: '',
-                email: '',
-                password: '',
-                dataNascita: ''
+import { ref } from 'vue';
+
+const nome = ref('')
+const cognome = ref('')
+const email = ref('')
+const password = ref('')
+const dataNascita = ref('')
+const confermaPassword = ref('')
+const endpoint = `${globalVariables.API_URL}registerTeacher`
+
+async function handleSubmit() {
+    try {
+        if (password.value !== confermaPassword.value) {
+            alert('Le password non coincidono!');
+            return;
+        }
+
+        const formData = {
+            'nome': nome.value,
+            'cognome': cognome.value,
+            'email': email.value,
+            'password': SHA1(password.value).toString(),
+            'dataNascita' : dataNascita.value
+        }
+
+        let result = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
             },
-            endpoint: `${globalVariables.API_URL}registerTeacher`,
-            confermaPassword: '',
-            password : ''
+            body: JSON.stringify(formData)
+        });
+
+        if (result.status === 200) {
+            alert("Registrazione avvenuta con successo");
         }
-    },
-    methods: {
-        async handleSubmit() {
-            try {
-                if (this.password !== this.confermaPassword) {
-                    alert('Le password non coincidono!');
-                    return;
-                }
-
-                this.formData.password = CryptoJS.SHA1(this.password).toString();
-
-                let result = await fetch(this.endpoint, {
-                    method: "POST",
-                    headers: {
-                        'Content-type': 'application/json'
-                    },
-                    body: JSON.stringify(this.formData)
-                });
-
-                if (result.status === 200) {
-                    alert("Registrazione avvenuta con successo");
-                }
-            } catch {
-                alert('Errore nella registrazione');
-            }
-        }
+    } catch {
+        alert('Errore nella registrazione');
     }
 }
+// export default {
+//     name: 'RegistrationPage',
+//     data() {
+//         return {
+//             formData: {
+//                 nome: '',
+//                 cognome: '',
+//                 email: '',
+//                 password: '',
+//                 dataNascita: ''
+//             },
+//             endpoint: `${globalVariables.API_URL}registerTeacher`,
+//             confermaPassword: '',
+//             password : ''
+//         }
+//     },
+//     methods: {
+//         async handleSubmit() {
+//             try {
+//                 if (this.password !== this.confermaPassword) {
+//                     alert('Le password non coincidono!');
+//                     return;
+//                 }
+
+//                 this.formData.password = CryptoJS.SHA1(this.password).toString();
+
+//                 let result = await fetch(this.endpoint, {
+//                     method: "POST",
+//                     headers: {
+//                         'Content-type': 'application/json'
+//                     },
+//                     body: JSON.stringify(this.formData)
+//                 });
+
+//                 if (result.status === 200) {
+//                     alert("Registrazione avvenuta con successo");
+//                 }
+//             } catch {
+//                 alert('Errore nella registrazione');
+//             }
+//         }
+//     }
+
 </script>
 
 <style scoped>

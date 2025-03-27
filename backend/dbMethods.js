@@ -4,7 +4,6 @@ const sql = require('mssql')
 
 async function AddNewStudent(body) {
     try {
-      
         let pool = await sql.connect(config);
         
         let insertion = await pool.request()
@@ -52,9 +51,9 @@ async function TryToLog(body, table) {
         let pool = await sql.connect(config);
         let insertion = await pool.request()
         .input('mail', sql.VarChar, body.email)
-        .input('psw', sql.VarChar, password)
+        .input('psw', sql.VarChar, body.password)
         .query(`SELECT * FROM ${table} WHERE mail=@mail AND password=@psw`)
-        
+
         if(insertion.recordset != null /* Da capire qua cosa ritorna se non trova nulla */ || table === 'insegnanti')
             return insertion.recordset
         else

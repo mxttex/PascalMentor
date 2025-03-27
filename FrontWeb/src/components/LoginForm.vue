@@ -1,57 +1,56 @@
 <template>
     <div class="container mt-5">
         <h1 class="text-center">Login</h1>
-        <form @submit.prevent="handleSubmit" class="mt-4">
+        <form @submit.prevent="handleLogin" class="mt-4">
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" v-model="formData.email" required />
+                <input type="email" class="form-control" id="email" name="email" v-model="email" required />
             </div>
 
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" v-model="formData.password" required />
+                <input type="password" class="form-control" id="password" name="password" v-model="password" required />
             </div>
 
             <button type="submit" class="btn btn-transparent">Accedi</button>
-            <button type="button" class="btn btn-transparent" @click="$emit('change-state', 'registerStudent')">Non sei registrato? Iscriviti Subito</button>
+            <button type="button" class="btn btn-transparent" @click="$emit('change-state', 'registerStudent')">Non sei
+                registrato? Iscriviti Subito</button>
 
         </form>
     </div>
 </template>
 
-<script>
+<script setup>
 import globalVariables from '../../globalVariables.js'
-export default {
-    name: 'LoginPage',
-    data() {
-        return {
-            formData: {
-                email: '',
-                password: ''   
-            },
-            endpoint: `${API_URL}log`
-        }
-    },
-    methods: {
-        async handleSubmit() {
-            try {
-                let result = await fetch(this.endpoint, {
-                    method: "POST",
-                    headers: {
-                        'Content-type': 'application/json'
-                    },
-                    body: JSON.stringify(this.formData)
-                });
+import {SHA1}from 'crypto-js';
+import { ref } from 'vue';
 
-                if (result.status === 200) {
-                    alert("Login effettuato con successo");
-                } else {
-                    alert("Credenziali errate");
-                }
-            } catch {
-                alert('Errore nel login');
-            }
+const email = ref('')
+const password = ref('')
+const endpoint = `${globalVariables.API_URL}log`
+
+async function handleLogin() {
+    try {
+        const formData = {
+            'email': email.value,
+            'password': SHA1(password.value).toString()
         }
+        let result = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            }, 
+            body: JSON.stringify(formData)
+        });
+
+        if (result.status === 200) {
+            alert("Login effettuato con successo");
+        } else {
+            alert("Credenziali errate");
+        }
+    } catch(error) {
+        alert('Errore nel login');
+        console.error(error)
     }
 }
 </script>

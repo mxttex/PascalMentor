@@ -27,11 +27,7 @@ router.route('/registerStudent').post((request, response) => {
         response.json(data[0])
       }
       catch {
-        const toReturn = {
-          status : 400
-        }
-        console.log('ritorno: \n', toReturn )
-        return toReturn
+        res.status(400).send()
       }
     }
   )
@@ -44,11 +40,18 @@ router.route('/registerTeacher').post((request, response) => {
         response.json(data[0])
       }
       catch {
-        const toReturn = {
-          status : 400
-        }
-        console.log('ritorno: \n', toReturn )
-        return toReturn
+        res.status(400).send()
+      }
+    })
+})
+router.route('/log').post((req, res) => {
+  DB.TryToLog(req.body, 'studenti').then(
+    (data) => {
+      try {
+        res.json(data[0])
+      }
+      catch(error) {
+        res.status(400).send()
       }
     })
 })
