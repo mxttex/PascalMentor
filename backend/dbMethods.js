@@ -53,8 +53,8 @@ async function TryToLog(body, table) {
         .input('mail', sql.VarChar, body.email)
         .input('psw', sql.VarChar, body.password)
         .query(`SELECT * FROM ${table} WHERE mail=@mail AND password=@psw`)
-
-        if(insertion.recordset != null /* Da capire qua cosa ritorna se non trova nulla */ || table === 'insegnanti')
+        const variabileCheHoDovutoCrearePercheJSFaCagare = []
+        if(insertion.recordset != variabileCheHoDovutoCrearePercheJSFaCagare.toString() || table === 'insegnanti')
             return insertion.recordset
         else
             TryToLog(body, 'insegnanti')
