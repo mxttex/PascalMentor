@@ -1,3 +1,4 @@
+const { request } = require('express');
 const config = require('./dbconfig.js')
 const sql = require('mssql')
 
@@ -46,7 +47,26 @@ async function AddNewTeacher(body) {
     }
 }
 
+async function TryToLog(body, table) {
+    try {
+        let pool = await sql.connect(config);
+        let insertion = await pool.request()
+        .input('mail', sql.VarChar, body.email)
+        .input('psw', sql.VarChar, password)
+        .query(`SELECT * FROM ${table} WHERE mail=@mail AND password=@psw`)
+        
+        if(insertion.recordset != null /* Da capire qua cosa ritorna se non trova nulla */ || table === 'insegnanti')
+            return insertion.recordset
+        else
+            TryToLog(body, 'insegnanti')
+    } catch (error) {
+        console.error(error)
+        return undefined
+    }
+}
+
 module.exports = {
     AddNewStudent: AddNewStudent,
-    AddNewTeacher: AddNewTeacher
+    AddNewTeacher: AddNewTeacher,
+    TryToLog: TryToLog
 }
