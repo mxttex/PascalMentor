@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:cool_alert/cool_alert.dart';
 
 void main() {
   runApp(const SimpleChat());
@@ -180,7 +181,20 @@ class _FormRegistrazioneStudenteState extends State<FormRegistrazioneStudente> {
   }
 
   void confermaInvioDati(){
-    if(firstNameText.text == null) Navigator.pop(context);  //TODO questo metodo
+    if(firstNameText.text == '' ||
+    lastNameText.text == '' ||
+    emailText.text == '' ||
+    pswText.text == '' ||
+    confirmPasswordText.text == '' ||
+    pswText.text != confirmPasswordText.text ||
+    dataDiNascitaText.text == '')
+    {
+      CoolAlert.show(context: context, type: CoolAlertType.error, title: "Errore", text: "ricontrolla i tuoi dati."/* '${firstNameText.text}, ${lastNameText.text}, ${emailText.text}, ${pswText.text}, ${confirmPasswordText.text}, ${dataDiNascitaText.text}' */);
+    }
+    else
+    {
+      CoolAlert.show(context: context, type: CoolAlertType.confirm, title: "Conferma", text: "la registrazione è avvenuta con successo.");
+    }
   }
 
   @override
@@ -254,7 +268,7 @@ class _FormRegistrazioneStudenteState extends State<FormRegistrazioneStudente> {
                   obscureText: true,
                   decoration: const InputDecoration(
                     labelText: 'Confirm you password',
-                    hintText: '12345',
+                    hintText: '*****',
                     border: OutlineInputBorder(),
                   ),
                 ),

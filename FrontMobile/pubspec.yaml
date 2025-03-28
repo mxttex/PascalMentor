@@ -7,6 +7,7 @@ environment:
   sdk: ^3.5.3
 
 dependencies:
+  cool_alert: ^2.0.1
   flutter:
     sdk: flutter
   intl: ^0.20.2
