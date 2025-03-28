@@ -189,12 +189,12 @@ class _FormRegistrazioneStudenteState extends State<FormRegistrazioneStudente> {
     pswText.text != confirmPasswordText.text ||
     dataDiNascitaText.text == '')
     {
-      CoolAlert.show(context: context, type: CoolAlertType.confirm, title: "Conferma", text: "la registrazione è avvenuta con successo.");
+      CoolAlert.show(context: context, type: CoolAlertType.error, title: "Errore", text: "ricontrolla i tuoi dati."/* '${firstNameText.text}, ${lastNameText.text}, ${emailText.text}, ${pswText.text}, ${confirmPasswordText.text}, ${dataDiNascitaText.text}' */);
     }
     else
     {
-      CoolAlert.show(context: context, type: CoolAlertType.error, title: "Errore", text: '${firstNameText.text}, ${lastNameText.text}, ${emailText.text}, ${pswText.text}, ${confirmPasswordText.text}, ${dataDiNascitaText.text}');
-    } //TODO fixa la data che non aggiorna il text
+      CoolAlert.show(context: context, type: CoolAlertType.confirm, title: "Conferma", text: "la registrazione è avvenuta con successo.");
+    }
   }
 
   @override
