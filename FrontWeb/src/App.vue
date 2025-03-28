@@ -3,11 +3,11 @@
 </script>
 
 <template>
-  <header>
+  <header class="h-20">
     <Navbar />
   </header>
 
-  <RouterView />
+  <RouterView class="h-80"/>
 </template>
 
 <style scoped>

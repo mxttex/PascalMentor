@@ -12,19 +12,17 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav d-flex w-100 mt-2 mt-lg-0">
                 <li class="nav-item active">
-                    <a class="nav-link disabled" href="#">Home</a>
+                    <router-link class="nav-link unselectable" to="/">Home</router-link>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Prenota Ripetizioni</a>
+                    <span class="nav-link disabled">Prenota Ripetizioni</span>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Visualizza Recensioni</a>
+                    <span class="nav-link disabled">Visualizza Recensioni</span>
                 </li>
                 <li class="flex-grow-1"></li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <router-link to="/">Registrati</router-link>
-                    </a>
+                    <router-link class="nav-link" to="/sign-in">Registrati</router-link>
                 </li>
             </ul>
         </div>
@@ -32,20 +30,12 @@
 </template>
 
 <script>
-
 import router from '@/router';
-
-export default {
-    components: {
-    }
-};
 </script>
 
 <style scoped>
-/* @import "../styles/Navbar.css"; */
 nav {
     background-color: orange;
-    /*la palette dei colori e' da decidere */
     font-size: 23px;
 }
 
@@ -53,7 +43,21 @@ img {
     width: 4em;
 }
 
-i {
-    width: 100px;
+.navbar-nav .nav-link {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+    color: black;
+    text-decoration: none;
+}
+
+.navbar-nav .nav-link.disabled {
+    color: gray;
+    pointer-events: none;
+    cursor: default;
 }
 </style>

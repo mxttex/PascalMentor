@@ -27,7 +27,7 @@ router.route('/registerStudent').post((request, response) => {
         response.json(data[0])
       }
       catch {
-        res.status(400).send()
+        response.status(400).send()
       }
     }
   )
@@ -40,7 +40,7 @@ router.route('/registerTeacher').post((request, response) => {
         response.json(data[0])
       }
       catch {
-        res.status(400).send()
+        response.status(400).send()
       }
     })
 })
