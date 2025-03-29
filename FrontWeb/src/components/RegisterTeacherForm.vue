@@ -83,48 +83,6 @@ async function handleSubmit() {
         alert('Errore nella registrazione');
     }
 }
-// export default {
-//     name: 'RegistrationPage',
-//     data() {
-//         return {
-//             formData: {
-//                 nome: '',
-//                 cognome: '',
-//                 email: '',
-//                 password: '',
-//                 dataNascita: ''
-//             },
-//             endpoint: `${globalVariables.API_URL}registerTeacher`,
-//             confermaPassword: '',
-//             password : ''
-//         }
-//     },
-//     methods: {
-//         async handleSubmit() {
-//             try {
-//                 if (this.password !== this.confermaPassword) {
-//                     alert('Le password non coincidono!');
-//                     return;
-//                 }
-
-//                 this.formData.password = CryptoJS.SHA1(this.password).toString();
-
-//                 let result = await fetch(this.endpoint, {
-//                     method: "POST",
-//                     headers: {
-//                         'Content-type': 'application/json'
-//                     },
-//                     body: JSON.stringify(this.formData)
-//                 });
-
-//                 if (result.status === 200) {
-//                     alert("Registrazione avvenuta con successo");
-//                 }
-//             } catch {
-//                 alert('Errore nella registrazione');
-//             }
-//         }
-//     }
 
 </script>
 

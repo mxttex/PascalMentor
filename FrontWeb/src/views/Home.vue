@@ -11,7 +11,5 @@
 </script>
 
 <style scoped>
-.eighty-percent{
-    height: 80vh;
-}
+
 </style>
