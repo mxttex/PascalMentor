@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SignInOrRegister from '@/views/SignInOrRegister.vue'
 import Home from '@/views/Home.vue'
+import PersonalArea from '@/views/PersonalArea.vue'
 
 
 const router = createRouter({
@@ -16,6 +17,11 @@ const router = createRouter({
       name: 'sign-in',
       component: SignInOrRegister,
     },
+    {
+      path: '/personal-area',
+      name: 'personal-area',
+      component: PersonalArea,
+    }
   ],
 })
 

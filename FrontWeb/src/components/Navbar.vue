@@ -15,10 +15,7 @@
                     <router-link class="nav-link unselectable" to="/">Home</router-link>
                 </li>
                 <li class="nav-item">
-                    <span class="nav-link disabled">Prenota Ripetizioni</span>
-                </li>
-                <li class="nav-item">
-                    <span class="nav-link disabled">Visualizza Recensioni</span>
+                    <router-link class="nav-link unselectable" to="/personal-area">Area Personale</router-link>
                 </li>
                 <li class="flex-grow-1"></li>
                 <li class="nav-item">

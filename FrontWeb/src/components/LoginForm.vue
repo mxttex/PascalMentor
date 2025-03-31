@@ -42,14 +42,12 @@ async function handleLogin() {
             headers: {
                 'Content-type': 'application/json'
             }, 
-            body: JSON.stringify(formData)
+            body: JSON.stringify(formData),
+            credentials: 'include'
         });
 
         if (result.status === 200) {
-            const userData = await result.json()
-            user.value = userData
-            console.log(userData)
-            console.log(user.value)
+
             router.push('/')
         } else {
             alert("Credenziali errate");

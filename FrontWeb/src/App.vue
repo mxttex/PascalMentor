@@ -9,7 +9,6 @@
   <header class="h-20">
     <Navbar />
   </header>
-
   <RouterView class="h-80"/>
 </template>
 

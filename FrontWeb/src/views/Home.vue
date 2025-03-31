@@ -3,7 +3,7 @@
         <div class="text-center">
             <h1>PascalMentor will soon be available...</h1>
             <div v-if="!renderUser">REGISTER NOW!!!</div>
-            <div v-else>CIAO IUSER {{ renderUser.Nome }}</div>
+            <!-- <div v-else>CIAO IUSER {{ renderUser.Nome }}</div> -->
         </div>
     </div>
 </template>
@@ -14,11 +14,11 @@ import { inject, onMounted, ref } from 'vue';
 const user = inject('user'); 
 const renderUser = ref(null);
 
-onMounted(() => {
-    if (user.value) {
-        renderUser.value = user.value; 
-    }
-});
+// onMounted(() => {
+//     if (user.value) {
+//         renderUser.value = user.value; 
+//     }
+// });
 </script>
 
 <style scoped>
