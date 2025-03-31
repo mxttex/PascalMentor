@@ -5,13 +5,15 @@ var cors = require('cors')
 const DB = require('./dbMethods')
 const app = express()
 const router = express.Router()
-const tokenManager = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser())
 app.use(cors());
 app.use('/api', router);
+
+const secret = 'DavidVeneti'
 
 router.use((request, response, next) => {
   {
@@ -48,13 +50,38 @@ router.route('/log').post((req, res) => {
   DB.TryToLog(req.body, 'studenti').then(
     (data) => {
       try {
-        res.json(data[0])
+        //res.json(data[0])
+        const user = data[0]
+        const payload = user
+        const options = {expiresIn : '1h'}
+        const token = jwt.sign(payload, secret, options)
+
+        res.cookie('token', token, {httpOnly : true})
+        console.log(user)
+        res.send(user)
       }
       catch(error) {
-        res.status(400).send()
+        res.status(400).send(`Credenziali Errate ${error}`)
       }
     })
 })
+
+function verifyToken(req, res, next)
+{
+  const token = req.cookies.token
+  if(token){
+    jwt.verify(token, secret, (err, decoded) => {
+    if(err){
+      res.status(401).send('Token Non Valido')
+    }
+    else
+    {
+      req.user = decoded
+      next()
+    }
+  })
+  }
+}
 
 const PORT = process.env.PORT || 8089
 app.listen(PORT)

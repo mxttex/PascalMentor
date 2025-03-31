@@ -21,13 +21,15 @@
 </template>
 
 <script setup>
+import router from '@/router/index.js';
 import globalVariables from '../../globalVariables.js'
 import {SHA1}from 'crypto-js';
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 
 const email = ref('')
 const password = ref('')
 const endpoint = `${globalVariables.API_URL}log`
+let user = inject('user')
 
 async function handleLogin() {
     try {
@@ -44,7 +46,11 @@ async function handleLogin() {
         });
 
         if (result.status === 200) {
-            alert("Login effettuato con successo");
+            const userData = await result.json()
+            user.value = userData
+            console.log(userData)
+            console.log(user.value)
+            router.push('/')
         } else {
             alert("Credenziali errate");
         }
@@ -52,6 +58,7 @@ async function handleLogin() {
         alert('Errore nel login');
         console.error(error)
     }
+
 }
 </script>
 

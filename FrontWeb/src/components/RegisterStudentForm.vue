@@ -58,6 +58,9 @@
 import {SHA1} from 'crypto-js'
 import globalVariables from '../../globalVariables.js'
 import { ref } from 'vue';
+
+const emit = defineEmits(['change-state'])
+
 const nome = ref('')
 const cognome = ref('')
 const email = ref('')
@@ -93,6 +96,7 @@ async function handleSubmit() {
 
         if (result.status === 200) {
             alert("Registrazione avvenuta con successo");
+            emit('change-state', 'log')
         }
     } catch {
         alert('Errore nella registrazione');
