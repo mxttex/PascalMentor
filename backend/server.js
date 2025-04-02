@@ -49,15 +49,16 @@ router.route("/registerTeacher").post((request, response) => {
 router.route("/log").post((req, res) => {
   DB.TryToLog(req.body, "studenti").then((data) => {
     try {
-      //res.json(data[0])
-      const user = data[0];
-      const payload = user;
+      const user = data.user;
+      const type = data.type
+      const payload = {user};
       const options = { expiresIn: "1h" };
       const token = jwt.sign(payload, secret, options);
 
       res.cookie("token", token, { httpOnly: true });
-      res.status(200).send();
+      res.status(200).send({type: type});
     } catch (error) {
+      console.log(error)
       res.status(400).send(`Credenziali Errate ${error}`);
     }
   });

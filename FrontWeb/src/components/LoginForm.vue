@@ -29,7 +29,7 @@ import { inject, ref } from 'vue';
 const email = ref('')
 const password = ref('')
 const endpoint = `${globalVariables.API_URL}log`
-let user = inject('user')
+let user = inject('userType')
 
 async function handleLogin() {
     try {
@@ -45,9 +45,10 @@ async function handleLogin() {
             body: JSON.stringify(formData),
             credentials: 'include'
         });
-
-        if (result.status === 200) {
-
+        console.log(result.status)
+        const data = await result.json()
+        if (result.status == 200) {
+            //console.log(data)
             router.push('/')
         } else {
             alert("Credenziali errate");

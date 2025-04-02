@@ -16,6 +16,7 @@ onMounted(async () => {
             router.push('/sign-in');
         else{
             user.value = await response.json()
+            console.log('done')
         }
     } catch (error) {
         console.error('Errore nel caricamento dei dati:', error);

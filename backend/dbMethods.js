@@ -23,6 +23,14 @@ async function AddNewStudent(body) {
     }
     
 }
+
+async function seeAll() {
+    let pool = await sql.connect(config);
+        let insertion = await pool.request()
+        .query('SELECT * FROM Studenti')
+
+        return insertion.recordsets
+}
 async function AddNewTeacher(body) {
     try{
         let pool = await sql.connect(config);
@@ -47,24 +55,31 @@ async function AddNewTeacher(body) {
 async function TryToLog(body, table) {
     try {
         let pool = await sql.connect(config);
-        let params = table === 'insegnanti' ? 'Id, Nome, Cognome, Mail, DataDiNascita' : 'Id, Nome, Cognome, Mail, Indirizzo, DataDiNascita'
+        let params = table === 'insegnanti' 
+            ? 'Id, Nome, Cognome, Mail, DataDiNascita' 
+            : 'Id, Nome, Cognome, Mail, Indirizzo, DataDiNascita';
+
         let insertion = await pool.request()
-        .input('mail', sql.VarChar, body.email)
-        .input('psw', sql.VarChar, body.password)
-        .query(`SELECT ${params} FROM ${table} WHERE mail=@mail AND password=@psw`)
-        const variabileCheHoDovutoCrearePercheJSFaCagare = []
-        if(insertion.recordset != variabileCheHoDovutoCrearePercheJSFaCagare.toString() || table === 'insegnanti')
-            return insertion.recordset
-        else
-            TryToLog(body, 'insegnanti')
+            .input('mail', sql.VarChar, body.email)
+            .input('psw', sql.VarChar, body.password)
+            .query(`SELECT ${params} FROM ${table} WHERE mail=@mail AND password=@psw`);
+
+        if (insertion.recordset.length > 0 || table === 'insegnanti') {
+            let toPass = { user: insertion.recordset, type: table };
+            console.log(toPass);
+            return toPass;
+        } else {
+            return TryToLog(body, 'insegnanti');
+        }
     } catch (error) {
-        console.error(error)
-        return undefined
+        console.error(error);
+        return undefined;
     }
 }
+
 
 module.exports = {
     AddNewStudent: AddNewStudent,
     AddNewTeacher: AddNewTeacher,
-    TryToLog: TryToLog
+    TryToLog: TryToLog,
 }

@@ -11,7 +11,7 @@
 <script setup>
 import { inject, onMounted, ref } from 'vue';
 
-const user = inject('user'); 
+const user = inject('userType'); 
 const renderUser = ref(null);
 
 // onMounted(() => {
