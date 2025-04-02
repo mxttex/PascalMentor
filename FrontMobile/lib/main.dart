@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 void main() {
   runApp(const SimpleChat());
@@ -182,6 +183,13 @@ class _FormRegistrazioneStudenteState extends State<FormRegistrazioneStudente> {
     }
   }
 
+  //method to encrypt in sha1 hash function
+  Digest sha1encrypt(element) {
+    var bytes = utf8.encode(element);
+
+    return sha1.convert(bytes);
+  }
+
   void confermaInvioDati() async {
     if (firstNameText.text == '' ||
         lastNameText.text == '' ||
@@ -195,7 +203,7 @@ class _FormRegistrazioneStudenteState extends State<FormRegistrazioneStudente> {
           type: CoolAlertType.error,
           title: "Errore",
           text:
-              "ricontrolla i tuoi dati." /* '${firstNameText.text}, ${lastNameText.text}, ${emailText.text}, ${pswText.text}, ${confirmPasswordText.text}, ${dataDiNascitaText.text}' */);
+              "ricontrolla i tuoi dati.");
       return;
     }
     CoolAlert.show(
@@ -208,7 +216,7 @@ class _FormRegistrazioneStudenteState extends State<FormRegistrazioneStudente> {
       'nome': firstNameText.text,
       'cognome': lastNameText.text,
       'email': emailText.text,
-      'password': pswText.text,
+      'password': sha1encrypt(pswText.text).toString(),
       'indirizzo': _selectedIndirizzo,
       'dataNascita': dataDiNascitaText.text
     };
