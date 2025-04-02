@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(const SimpleChat());
@@ -181,30 +182,44 @@ class _FormRegistrazioneStudenteState extends State<FormRegistrazioneStudente> {
     }
   }
 
-  void confermaInvioDati() async{
-    if(firstNameText.text == '' ||
-    lastNameText.text == '' ||
-    emailText.text == '' ||
-    pswText.text == '' ||
-    confirmPasswordText.text == '' ||
-    pswText.text != confirmPasswordText.text ||
-    dataDiNascitaText.text == '')
-    {
-      CoolAlert.show(context: context, type: CoolAlertType.error, title: "Errore", text: "ricontrolla i tuoi dati."/* '${firstNameText.text}, ${lastNameText.text}, ${emailText.text}, ${pswText.text}, ${confirmPasswordText.text}, ${dataDiNascitaText.text}' */);
+  void confermaInvioDati() async {
+    if (firstNameText.text == '' ||
+        lastNameText.text == '' ||
+        emailText.text == '' ||
+        pswText.text == '' ||
+        confirmPasswordText.text == '' ||
+        pswText.text != confirmPasswordText.text ||
+        dataDiNascitaText.text == '') {
+      CoolAlert.show(
+          context: context,
+          type: CoolAlertType.error,
+          title: "Errore",
+          text:
+              "ricontrolla i tuoi dati." /* '${firstNameText.text}, ${lastNameText.text}, ${emailText.text}, ${pswText.text}, ${confirmPasswordText.text}, ${dataDiNascitaText.text}' */);
+      return;
     }
-    else
-    {
-      CoolAlert.show(context: context, type: CoolAlertType.confirm, title: "Conferma", text: "la registrazione è avvenuta con successo.");
-      //nome,cognome,email,password,indirizzo,dataNascita
-      var message = {'nome': firstNameText.text,
-                      'cognome': lastNameText.text,
-                      'email': emailText.text,
-                      'password': pswText.text,
-                      'indirizzo': _selectedIndirizzo,
-                      'dataNascita': dataDiNascitaText.text};
+    CoolAlert.show(
+        context: context,
+        type: CoolAlertType.confirm,
+        title: "Conferma",
+        text: "la registrazione è avvenuta con successo.");
+    //nome,cognome,email,password,indirizzo,dataNascita
+    var message = {
+      'nome': firstNameText.text,
+      'cognome': lastNameText.text,
+      'email': emailText.text,
+      'password': pswText.text,
+      'indirizzo': _selectedIndirizzo,
+      'dataNascita': dataDiNascitaText.text
+    };
 
-      var url = Uri.https('192.168.189.83:8089/api', 'registerstudent');
-      var responseHttp = await http.post(url, body: message);
+    try {
+      var responseHttp = await http.post(Uri.parse('http://192.168.189.83:8089/api/registerStudent'),headers: {'Content-type':'application/json'}, body: jsonEncode(message));
+    } catch (exception) {
+      CoolAlert.show(
+          context: context,
+          type: CoolAlertType.success,
+          text: exception.toString());
     }
   }
 
@@ -217,7 +232,7 @@ class _FormRegistrazioneStudenteState extends State<FormRegistrazioneStudente> {
                 Navigator.pop(context);
               },
               icon: const Icon(Icons.arrow_back)),
-            title: const Text("Registrazione Studente"),
+          title: const Text("Registrazione Studente"),
         ),
         body: Center(
           child: Column(
@@ -345,17 +360,14 @@ class _FormLoginStudenteState extends State<FormLoginStudente> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
           leading: IconButton(
               onPressed: () {
                 Navigator.pop(context);
               },
               icon: const Icon(Icons.arrow_back)),
-            title: const Text("Login Studente"),
+          title: const Text("Login Studente"),
         ),
-        body: Center(
-
-        )
-    );
+        body: Center());
   }
 }
