@@ -32,9 +32,9 @@
             <div class="mb-3">
                 <label for="indirizzo" class="form-label">Indirizzo di studio</label>
                 <select id="indirizzo" name="indirizzo" class="form-select" v-model="indirizzo">
-                    <option value="info">Informatica</option>
-                    <option value="auto">Automazione</option>
-                    <option value="bio">Biotecnologie</option>
+                    <option value="Informatica">Informatica</option>
+                    <option value="Automazione">Automazione</option>
+                    <option value="Biotecnologie">Biotecnologie</option>
                 </select>
             </div>
 
