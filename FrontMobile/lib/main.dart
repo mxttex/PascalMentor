@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cool_alert/cool_alert.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 void main() {
   runApp(const SimpleChat());
@@ -148,7 +151,7 @@ class _FormRegistrazioneStudenteState extends State<FormRegistrazioneStudente> {
   TextEditingController dataDiNascitaText = TextEditingController();
   DateTime _selectedDate = DateTime.now();
   TextEditingController indirizzoText = TextEditingController();
-  String _selectedValue = 'Informatica';
+  String _selectedIndirizzo = 'Informatica';
   final List<String> _options = ['Informatica', 'Automazione', 'Biotecnologie'];
 
   @override
@@ -180,20 +183,51 @@ class _FormRegistrazioneStudenteState extends State<FormRegistrazioneStudente> {
     }
   }
 
-  void confermaInvioDati(){
-    if(firstNameText.text == '' ||
-    lastNameText.text == '' ||
-    emailText.text == '' ||
-    pswText.text == '' ||
-    confirmPasswordText.text == '' ||
-    pswText.text != confirmPasswordText.text ||
-    dataDiNascitaText.text == '')
-    {
-      CoolAlert.show(context: context, type: CoolAlertType.error, title: "Errore", text: "ricontrolla i tuoi dati."/* '${firstNameText.text}, ${lastNameText.text}, ${emailText.text}, ${pswText.text}, ${confirmPasswordText.text}, ${dataDiNascitaText.text}' */);
+  //method to encrypt in sha1 hash function
+  Digest sha1encrypt(element) {
+    var bytes = utf8.encode(element);
+
+    return sha1.convert(bytes);
+  }
+
+  void confermaInvioDati() async {
+    if (firstNameText.text == '' ||
+        lastNameText.text == '' ||
+        emailText.text == '' ||
+        pswText.text == '' ||
+        confirmPasswordText.text == '' ||
+        pswText.text != confirmPasswordText.text ||
+        dataDiNascitaText.text == '') {
+      CoolAlert.show(
+          context: context,
+          type: CoolAlertType.error,
+          title: "Errore",
+          text:
+              "ricontrolla i tuoi dati.");
+      return;
     }
-    else
-    {
-      CoolAlert.show(context: context, type: CoolAlertType.confirm, title: "Conferma", text: "la registrazione è avvenuta con successo.");
+    CoolAlert.show(
+        context: context,
+        type: CoolAlertType.confirm,
+        title: "Conferma",
+        text: "la registrazione è avvenuta con successo.");
+    //nome,cognome,email,password,indirizzo,dataNascita
+    var message = {
+      'nome': firstNameText.text,
+      'cognome': lastNameText.text,
+      'email': emailText.text,
+      'password': sha1encrypt(pswText.text).toString(),
+      'indirizzo': _selectedIndirizzo,
+      'dataNascita': dataDiNascitaText.text
+    };
+
+    try {
+      var responseHttp = await http.post(Uri.parse('http://192.168.189.83:8089/api/registerStudent'),headers: {'Content-type':'application/json'}, body: jsonEncode(message));
+    } catch (exception) {
+      CoolAlert.show(
+          context: context,
+          type: CoolAlertType.success,
+          text: exception.toString());
     }
   }
 
@@ -206,6 +240,7 @@ class _FormRegistrazioneStudenteState extends State<FormRegistrazioneStudente> {
                 Navigator.pop(context);
               },
               icon: const Icon(Icons.arrow_back)),
+          title: const Text("Registrazione Studente"),
         ),
         body: Center(
           child: Column(
@@ -297,7 +332,7 @@ class _FormRegistrazioneStudenteState extends State<FormRegistrazioneStudente> {
                     labelText: 'Choose an option',
                     border: OutlineInputBorder(),
                   ),
-                  value: _selectedValue,
+                  value: _selectedIndirizzo,
                   items: _options.map((option) {
                     return DropdownMenuItem<String>(
                       value: option,
@@ -306,7 +341,7 @@ class _FormRegistrazioneStudenteState extends State<FormRegistrazioneStudente> {
                   }).toList(),
                   onChanged: (newValue) {
                     setState(() {
-                      _selectedValue = newValue!;
+                      _selectedIndirizzo = newValue!;
                     });
                   },
                 ),
@@ -319,5 +354,28 @@ class _FormRegistrazioneStudenteState extends State<FormRegistrazioneStudente> {
             ],
           ),
         ));
+  }
+}
+
+class FormLoginStudente extends StatefulWidget {
+  const FormLoginStudente({super.key});
+
+  @override
+  State<FormLoginStudente> createState() => _FormLoginStudenteState();
+}
+
+class _FormLoginStudenteState extends State<FormLoginStudente> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back)),
+          title: const Text("Login Studente"),
+        ),
+        body: Center());
   }
 }
