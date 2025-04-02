@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SignInOrRegister from '@/views/SignInOrRegister.vue'
 import Home from '@/views/Home.vue'
+import PersonalArea from '@/views/PersonalArea.vue'
 
 
 const router = createRouter({
@@ -14,11 +15,13 @@ const router = createRouter({
     {
       path: '/sign-in',
       name: 'sign-in',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: SignInOrRegister,
     },
+    {
+      path: '/personal-area',
+      name: 'personal-area',
+      component: PersonalArea,
+    }
   ],
 })
 

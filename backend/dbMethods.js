@@ -16,8 +16,6 @@ async function AddNewStudent(body) {
             .query(
                 'INSERT INTO Studenti (Nome, Cognome, Mail, Password, Indirizzo, DataDiNascita) values (@name, @surname, @mail, @psw, @indirizzo, CAST(@dataNascita AS DATE))'
             );
-        
-            console.log(insertion.rowsAffected)
         return insertion.rowsAffected; 
     } catch (error) {
         console.error("Errore durante l'inserimento nel database:", error);
@@ -49,10 +47,11 @@ async function AddNewTeacher(body) {
 async function TryToLog(body, table) {
     try {
         let pool = await sql.connect(config);
+        let params = table === 'insegnanti' ? 'Id, Nome, Cognome, Mail, DataDiNascita' : 'Id, Nome, Cognome, Mail, Indirizzo, DataDiNascita'
         let insertion = await pool.request()
         .input('mail', sql.VarChar, body.email)
         .input('psw', sql.VarChar, body.password)
-        .query(`SELECT * FROM ${table} WHERE mail=@mail AND password=@psw`)
+        .query(`SELECT ${params} FROM ${table} WHERE mail=@mail AND password=@psw`)
         const variabileCheHoDovutoCrearePercheJSFaCagare = []
         if(insertion.recordset != variabileCheHoDovutoCrearePercheJSFaCagare.toString() || table === 'insegnanti')
             return insertion.recordset
