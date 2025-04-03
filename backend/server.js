@@ -52,7 +52,7 @@ router.route("/log").post((req, res) => {
       const user = data.user;
       const type = data.type
       const payload = {user};
-      const options = { expiresIn: "1h" };
+      const options = { expiresIn: "168h" }; //scade dopo una settimana
       const token = jwt.sign(payload, secret, options);
 
       res.cookie("token", token, { httpOnly: true });

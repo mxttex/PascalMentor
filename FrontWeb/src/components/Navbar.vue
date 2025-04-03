@@ -17,6 +17,9 @@
                 <li class="nav-item">
                     <router-link class="nav-link unselectable" to="/personal-area">Area Personale</router-link>
                 </li>
+                <li v-if="user == 'insegnanti'" class="nav-item">
+                    <router-link class="nav-link" to="/home">Crea Evento</router-link>
+                </li>
                 <li class="flex-grow-1"></li>
                 <li class="nav-item">
                     <router-link class="nav-link" to="/sign-in">Registrati</router-link>
@@ -28,6 +31,12 @@
 
 <script>
 import router from '@/router';
+import { inject, onMounted, ref } from 'vue';
+
+const user = inject('userType')
+const aaa = ref('')
+onMounted(() =>
+aaa = user.value)
 </script>
 
 <style scoped>

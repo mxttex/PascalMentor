@@ -12,52 +12,58 @@
                 <input type="password" class="form-control" id="password" name="password" v-model="password" required />
             </div>
 
-            <button type="submit" class="btn btn-transparent">Accedi</button>
-            <button type="button" class="btn btn-transparent" @click="$emit('change-state', 'registerStudent')">Non sei
-                registrato? Iscriviti Subito</button>
-
+            <button type="submit" class="btn btn-transparent" :disabled="loading">
+                {{ loading ? 'Accesso in corso...' : 'Accedi' }}
+            </button>
+            <button type="button" class="btn btn-transparent" @click="$emit('change-state', 'registerStudent')">
+                Non sei registrato? Iscriviti Subito
+            </button>
         </form>
+
+        <div v-if="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
     </div>
 </template>
 
 <script setup>
 import router from '@/router/index.js';
-import globalVariables from '../../globalVariables.js'
-import {SHA1}from 'crypto-js';
+import globalVariables from '../../globalVariables.js';
+import { SHA1 } from 'crypto-js';
 import { inject, ref } from 'vue';
 
-const email = ref('')
-const password = ref('')
-const endpoint = `${globalVariables.API_URL}log`
-let user = inject('userType')
+const email = ref('');
+const password = ref('');
+const loading = ref(false);
+const errorMessage = ref('');
+const endpoint = `${globalVariables.API_URL}log`;
+const user = inject('userType');
 
 async function handleLogin() {
+    loading.value = true;
+    errorMessage.value = '';
+
     try {
         const formData = {
             'email': email.value,
             'password': SHA1(password.value).toString()
-        }
+        };
+
         let result = await fetch(endpoint, {
             method: "POST",
-            headers: {
-                'Content-type': 'application/json'
-            }, 
+            headers: { 'Content-type': 'application/json' },
             body: JSON.stringify(formData),
             credentials: 'include'
         });
-        console.log(result.status)
-        const data = await result.json()
-        if (result.status == 200) {
-            //console.log(data)
-            router.push('/')
-        } else {
-            alert("Credenziali errate");
-        }
-    } catch(error) {
-        alert('Errore nel login');
-        console.error(error)
-    }
 
+        if (!result.ok) throw new Error('Credenziali errate');
+
+        const data = await result.json();
+        user.value = data.type;
+        router.push('/');
+    } catch (error) {
+        errorMessage.value = error.message || 'Errore nel login';
+    } finally {
+        loading.value = false;
+    }
 }
 </script>
 
