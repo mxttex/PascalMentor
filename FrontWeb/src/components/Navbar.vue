@@ -18,7 +18,7 @@
                     <router-link class="nav-link unselectable" to="/personal-area">Area Personale</router-link>
                 </li>
                 <li v-if="user == 'insegnanti'" class="nav-item">
-                    <router-link class="nav-link" to="/home">Crea Evento</router-link>
+                    <router-link class="nav-link" to="/create-event">Crea Evento</router-link>
                 </li>
                 <li class="flex-grow-1"></li>
                 <li class="nav-item">
@@ -29,14 +29,11 @@
     </nav>
 </template>
 
-<script>
-import router from '@/router';
-import { inject, onMounted, ref } from 'vue';
+<script setup>
+import { inject } from 'vue';
 
-const user = inject('userType')
-const aaa = ref('')
-onMounted(() =>
-aaa = user.value)
+const user = inject('userType');
+
 </script>
 
 <style scoped>

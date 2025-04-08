@@ -44,7 +44,7 @@ async function logout() {
         <div class="card p-4 shadow-lg">
             <h2 class="text-center">Benvenuto, {{ user?.Nome }}</h2>
             <p><strong>Email:</strong> {{ user?.Mail }}</p>
-            <p v-if="type.value != 'insegnanti'"><strong>Indirizzo:</strong> {{ user?.Indirizzo }}</p>
+            <p v-if="type != 'insegnanti'"><strong>Indirizzo:</strong> {{ user?.Indirizzo }}</p>
             <p><strong>Data di nascita:</strong> {{ new Date(user?.DataDiNascita) }}</p>
 
             <button @click="logout" class="btn btn-danger w-100 mt-3">Logout</button>
