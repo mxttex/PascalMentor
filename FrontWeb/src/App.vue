@@ -2,7 +2,9 @@
   import { provide, ref } from 'vue';
   import Navbar from './components/Navbar.vue'
   const userType = ref('')
+  const userId = ref('')
   provide('userType', userType)
+  provide('userId', userId)
 </script>
 
 <template>

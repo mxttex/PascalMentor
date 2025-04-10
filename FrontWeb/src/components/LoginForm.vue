@@ -35,7 +35,8 @@ const password = ref('');
 const loading = ref(false);
 const errorMessage = ref('');
 const endpoint = `${globalVariables.API_URL}log`;
-const user = inject('userType');
+const type = inject('userType');
+const id = inject('userId')
 
 async function handleLogin() {
     loading.value = true;
@@ -57,7 +58,8 @@ async function handleLogin() {
         if (!result.ok) throw new Error('Credenziali errate');
 
         const data = await result.json();
-        user.value = data.type;
+        type.value = data.type;
+        id.value = data.userId;
         router.push('/');
     } catch (error) {
         errorMessage.value = error.message || 'Errore nel login';

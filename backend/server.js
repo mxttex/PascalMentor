@@ -56,7 +56,7 @@ router.route("/log").post((req, res) => {
       const token = jwt.sign(payload, secret, options);
 
       res.cookie("token", token, { httpOnly: true });
-      res.status(200).send({type: type});
+      res.status(200).send({type: type, userId: user.Id});
     } catch (error) {
       console.log(error)
       res.status(400).send(`Credenziali Errate ${error}`);
@@ -71,6 +71,16 @@ router.route("/seePersonalData").get(async (req, res) => {
   }
   else
     res.status(401).send("Token Non Valido");
+});
+
+router.route("/createEvent").post(async (req, res) => {
+  DB.CreateEvent(req.body).then((data) => {
+    try {
+      res.json(data[0]);
+    } catch {
+      res.status(400).send();
+    }
+  });
 });
 
 router.route("/logout").get((req, res) => {

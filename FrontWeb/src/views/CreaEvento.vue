@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import globalVariables from '../../globalVariables';
+const teacherId = inject('userId')
 
 const form = ref({
   subject: "",
@@ -8,12 +9,13 @@ const form = ref({
   startTime: "",
   endTime: "",
   notes: "",
-  nrMaxPartecipants: 1
+  nrMaxPartecipants: 1,
+  teacher: teacherId.value
 })
 
 async function submitForm() {
   const result = await fetch(
-    `${globalVariables}createEvent`,
+    `${globalVariables.API_URL}createEvent`,
     {
       method: "POST",
       headers: {
@@ -22,6 +24,8 @@ async function submitForm() {
       body: JSON.stringify(form.value)
     }
   )
+
+  console.log(form.teacher)
 
   if(result.status == 200){
     alert("ripetizione creata con successo")
