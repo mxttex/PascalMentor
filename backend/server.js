@@ -95,6 +95,17 @@ router.route("/logout").get((req, res) => {
   }
 });
 
+router.route("/seeAllRipetition").get((req, res) => {
+  DB.FetchAllRipetitions().then((data) => {
+    try{
+      res.status(200).send(data[0])
+    }
+    catch{
+      res.status(404).send('Nessuna Ripetizione Trovata')
+    }
+  })
+})
+
 //funzione per vedere se una persona puo' accedere ad una determinata risorsa
 async function verifyToken(token) {
   return new Promise((resolve) => {

@@ -1,4 +1,3 @@
-const { request } = require("express");
 const config = require("./dbconfig.js");
 const sql = require("mssql");
 
@@ -101,7 +100,19 @@ async function CreateNewEvent(form) {
   }
 }
 
+async function FetchAllRipetitions() {
+  try {
+    let pool = await sql.connect(config);
+    let insertion = await pool.request().query('SELECT * FROM RIPETIZIONI')
+    return insertion.recordsets
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
+}
+
 module.exports = {
+  FetchAllRipetitions: FetchAllRipetitions,
   AddNewStudent: AddNewStudent,
   AddNewTeacher: AddNewTeacher,
   TryToLog: TryToLog,

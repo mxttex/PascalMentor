@@ -20,6 +20,9 @@
                 <li v-if="user == 'insegnanti'" class="nav-item">
                     <router-link class="nav-link" to="/create-event">Crea Evento</router-link>
                 </li>
+                <li v-if="user == 'studenti'" class="nav-item">
+                    <router-link class="nav-link" to="/book-ripetition">Prenota Ripetizioni</router-link>
+                </li>
                 <li class="flex-grow-1"></li>
                 <li class="nav-item">
                     <router-link class="nav-link" to="/sign-in">Registrati</router-link>
