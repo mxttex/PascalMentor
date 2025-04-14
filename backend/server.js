@@ -47,22 +47,25 @@ router.route("/registerTeacher").post((request, response) => {
   });
 });
 router.route("/log").post((req, res) => {
-  DB.TryToLog(req.body, "studenti").then((data) => {
+  DB.TryToLog(req.body, "studenti").then((rit) => {
     try {
-      const user = data.user;
-      const type = data.type
-      const payload = {user};
-      const options = { expiresIn: "168h" }; //scade dopo una settimana
+      const user = rit.user[0];
+      const type = rit.type; 
+      
+      const payload = { user };
+      const options = { expiresIn: "168h" }; // scade dopo una settimana
       const token = jwt.sign(payload, secret, options);
-
+      
       res.cookie("token", token, { httpOnly: true });
-      res.status(200).send({type: type, userId: user.Id});
+      res.status(200).send({ type: type, userId: user.Id });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       res.status(400).send(`Credenziali Errate ${error}`);
     }
   });
 });
+
+
 
 router.route("/seePersonalData").get(async (req, res) => {
   const result = await verifyToken(req.cookies.token)

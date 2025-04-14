@@ -26,7 +26,7 @@
 
 <script setup>
 import router from '@/router/index.js';
-import globalVariables from '../../globalVariables.js';
+import globalVariables from '../../../globalVariables.js';
 import { SHA1 } from 'crypto-js';
 import { inject, ref } from 'vue';
 
@@ -58,8 +58,10 @@ async function handleLogin() {
         if (!result.ok) throw new Error('Credenziali errate');
 
         const data = await result.json();
+        console.log(data)
         type.value = data.type;
         id.value = data.userId;
+        console.log(id.value)
         router.push('/');
     } catch (error) {
         errorMessage.value = error.message || 'Errore nel login';

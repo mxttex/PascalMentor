@@ -1,6 +1,6 @@
 <script setup>
 import { inject, onMounted, ref } from 'vue';
-import globalVariables from '../../globalVariables';
+import globalVariables from '../../../globalVariables';
 import router from '@/router';
 
 const user = ref({})

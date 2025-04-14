@@ -56,7 +56,7 @@
 
 <script setup>
 import {SHA1} from 'crypto-js'
-import globalVariables from '../../globalVariables.js'
+import globalVariables from '../../../globalVariables.js'
 import { ref } from 'vue';
 
 const emit = defineEmits(['change-state'])

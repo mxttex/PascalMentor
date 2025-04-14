@@ -68,7 +68,6 @@ async function TryToLog(body, table) {
 
     if (insertion.recordset.length > 0 || table === "insegnanti") {
       let toPass = { user: insertion.recordset, type: table };
-      console.log(toPass);
       return toPass;
     } else {
       return TryToLog(body, "insegnanti");
@@ -81,20 +80,18 @@ async function TryToLog(body, table) {
 
 async function CreateNewEvent(form) {
   try {
-    console.log(form);
-
     let pool = await sql.connect(config);
     let insertion = await pool
       .request()
       .input("subject", sql.VarChar, form.subject)
       .input("date", sql.Date, form.date)
-      .input("startTime", sql.Time, form.startTime)
-      .input("endTime", sql.Time, form.endTime)
+      .input("startTime", sql.VarChar, form.startTime)
+      .input("endTime", sql.VarChar, form.endTime)
       .input("notes", sql.VarChar, form.notes)
       .input("nrMaxPartecipants", sql.Int, form.nrMaxPartecipants)
       .input("teacher", sql.Int, form.teacher)
       .query(
-        `INSERT into Ripetizioni(Insegnanti, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Materia, Note) values (@teacher, CAST(@date as DATE), @startTime, @endTime, @nrMaxPartecipants, @notes)`
+        `INSERT into Ripetizioni(Insegnante, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Materia, Note) values (@teacher, CAST(@date as DATE), CAST(@startTime AS TIME), CAST(@endTime AS TIME), @nrMaxPartecipants, @subject, @notes)`
       );
 
     return insertion.rowsAffected;

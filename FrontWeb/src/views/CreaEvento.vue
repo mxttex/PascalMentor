@@ -1,6 +1,6 @@
 <script setup>
 import { ref, inject } from 'vue';
-import globalVariables from '../../globalVariables';
+import globalVariables from '../../../globalVariables';
 const teacherId = inject('userId')
 
 const form = ref({
