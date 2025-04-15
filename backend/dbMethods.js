@@ -103,7 +103,7 @@ async function CreateNewEvent(form) {
 async function FetchAllRipetitions() {
   try {
     let pool = await sql.connect(config);
-    let insertion = await pool.request().query('SELECT * FROM RIPETIZIONI')
+    let insertion = await pool.request().query('SELECT Nome, Cognome, Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Note FROM Ripetizioni JOIN Insegnanti ON Insegnante = Insegnanti.Id')
     return insertion.recordsets
   } catch (error) {
     console.error(error);

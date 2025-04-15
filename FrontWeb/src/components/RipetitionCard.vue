@@ -1,6 +1,7 @@
 <script setup>
-import { inject } from 'vue';
+import { inject, ref, onMounted } from 'vue';
 import globalVariables from '../../../globalVariables';
+import { formatItalianDate } from '@/common/commonMethods';
 const props = defineProps({
     ripetition: {
         type: Object,
@@ -9,10 +10,16 @@ const props = defineProps({
 })
 
 const userId = inject('userId')
+const date = ref()
 
+onMounted(() => {
+    date.value = formatItalianDate(props.ripetition.Data)
+    console.log(date.value)
+})
 async function PrenotaRipetizione() {
     //alert(`Ripetizione nr ${Id}`)
-    const response = await fetch(
+    try {
+        const response = await fetch(
         `${globalVariables.API_URL}bookSpecificRipetition`,
         {
             headers: { 'Content-type': 'application/json' },
@@ -22,6 +29,9 @@ async function PrenotaRipetizione() {
             }),
         }
     )
+    } catch (error) {
+        alert('errore')
+    }
 }
 </script>
 
@@ -33,7 +43,8 @@ async function PrenotaRipetizione() {
         <div class="card-body">
             <h5 class="card-title">{{ ripetition.Materia }}</h5>
             <p class="card-text">
-                Data: {{ ripetition.Data }}<br>
+                Insegnante: {{ ripetition.Nome + " " + ripetition.Cognome }} <br>
+                Data: {{ date }}<br>
                 Ora: {{ ripetition.OraInizio }} - {{ ripetition.OraFine }}<br>
                 Note: {{ ripetition.Note }}
             </p>
