@@ -39,6 +39,7 @@ class _MainStudenteState extends State<MainStudente> {
               ElevatedButton(onPressed: () {}, child: const Text('Login')),
             ],
           ),
-        ));
+        ),
+        );
   }
 }

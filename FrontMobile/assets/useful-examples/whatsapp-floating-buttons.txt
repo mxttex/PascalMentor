@@ -1,0 +1,32 @@
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,                    //positioning of buttons
+        floatingActionButton: Column(
+            mainAxisSize: MainAxisSize.min,                                                     //mainAxis dimension
+            mainAxisAlignment: MainAxisAlignment.end,                                           //alignment, end = far right
+            children: [
+            // TOP FAB
+            Container(                                                                          //first child of column
+                margin: const EdgeInsets.only(bottom: 8),                                       //padding for button, they would be side-to-side
+                child: FloatingActionButton(
+                heroTag: "cameraFAB",  // Provide unique hero tags for each FAB                 //not-so-useful
+                onPressed: () {                                                                 //method that gets called
+                },
+                backgroundColor: Colors.white,                                                  //color
+                child: Icon(                                                                    //child of floating-button
+                    Icons.camera_alt,                                                           //icon
+                    color: Colors.grey[700],
+                ),
+                ),
+            ),
+            FloatingActionButton(                                                               //other child of column
+                heroTag: "chatFAB",                                                             //not-so-useful
+                onPressed: () {                                                                 //method that gets called
+                // Add your onPressed code for the 'chat' button here
+                },
+                backgroundColor: Theme.of(context).primaryColor,                                //button's color
+                child: const Icon(Icons.message),                                               //icon
+            ),
+          ])
+
+//all of this needs to be done in the scaffold, it makes two button appear on the right-bottom of the screen
+//they stay on top of every component or other thing that may cover them, when clicked they call the methods
+//that are associated.
