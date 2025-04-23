@@ -1,5 +1,5 @@
 <script setup>
-  import { provide, ref } from 'vue';
+  import { provide, ref, onMounted} from 'vue';
   import Navbar from './components/Navbar.vue'
   const userType = ref('')
   const userId = ref('')

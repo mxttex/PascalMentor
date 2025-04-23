@@ -15,7 +15,7 @@
             <button type="submit" class="btn btn-transparent" :disabled="loading">
                 {{ loading ? 'Accesso in corso...' : 'Accedi' }}
             </button>
-            <button type="button" class="btn btn-transparent" @click="$emit('change-state', 'registerStudent')">
+            <button type="button" class="btn btn-transparent" @click="$emit('change-state', 'register')">
                 Non sei registrato? Iscriviti Subito
             </button>
         </form>

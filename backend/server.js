@@ -27,25 +27,16 @@ router.use((request, response, next) => {
   }
 });
 
-router.route("/registerStudent").post((request, response) => {
-  DB.AddNewStudent(request.body).then((data) => {
+router.route("/register").post((req, res) => {
+  DB.AddNewUser(req.body).then((data) => {
     try {
-      response.json(data[0]);
+      res.json(data[0]);
     } catch {
-      response.status(400).send();
+      res.status(400).send();
     }
   });
-});
+})
 
-router.route("/registerTeacher").post((request, response) => {
-  DB.AddNewTeacher(request.body).then((data) => {
-    try {
-      response.json(data[0]);
-    } catch {
-      response.status(400).send();
-    }
-  });
-});
 router.route("/log").post((req, res) => {
   DB.TryToLog(req.body).then((rit) => {
     try {
