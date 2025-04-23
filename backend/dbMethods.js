@@ -49,14 +49,37 @@ async function AddNewTeacher(body) {
   }
 }
 
-async function TryToLog(body, table) {
+// async function TryToLog(body, table) {
+//   try {
+//     let pool = await sql.connect(config);
+//     let params =
+//       table === "insegnanti"
+//         ? "Id, Nome, Cognome, Mail, DataDiNascita"
+//         : "Id, Nome, Cognome, Mail, Indirizzo, DataDiNascita";
+
+//     let insertion = await pool
+//       .request()
+//       .input("mail", sql.VarChar, body.email)
+//       .input("psw", sql.VarChar, body.password)
+//       .query(
+//         `SELECT ${params} FROM ${table} WHERE mail=@mail AND password=@psw`
+//       );
+
+//     if (insertion.recordset.length > 0 || table === "insegnanti") {
+//       let toPass = { user: insertion.recordset, type: table };
+//       return toPass;
+//     } else {
+//       return TryToLog(body, "insegnanti");
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     return undefined;
+//   }
+// }
+
+async function TryToLog(body) {
   try {
     let pool = await sql.connect(config);
-    let params =
-      table === "insegnanti"
-        ? "Id, Nome, Cognome, Mail, DataDiNascita"
-        : "Id, Nome, Cognome, Mail, Indirizzo, DataDiNascita";
-
     let insertion = await pool
       .request()
       .input("mail", sql.VarChar, body.email)
@@ -64,19 +87,13 @@ async function TryToLog(body, table) {
       .query(
         `SELECT ${params} FROM ${table} WHERE mail=@mail AND password=@psw`
       );
+    return insertion.recordset
 
-    if (insertion.recordset.length > 0 || table === "insegnanti") {
-      let toPass = { user: insertion.recordset, type: table };
-      return toPass;
-    } else {
-      return TryToLog(body, "insegnanti");
-    }
   } catch (error) {
-    console.error(error);
-    return undefined;
+    console.log(error)
+    return undefined
   }
 }
-
 async function CreateNewEvent(form) {
   try {
     let pool = await sql.connect(config);

@@ -47,10 +47,10 @@ router.route("/registerTeacher").post((request, response) => {
   });
 });
 router.route("/log").post((req, res) => {
-  DB.TryToLog(req.body, "studenti").then((rit) => {
+  DB.TryToLog(req.body).then((rit) => {
     try {
       const user = rit.user[0];
-      const type = rit.type; 
+      //const type = rit.type; 
       
       const payload = { user };
       const options = { expiresIn: "168h" }; // scade dopo una settimana
@@ -75,6 +75,10 @@ router.route("/seePersonalData").get(async (req, res) => {
   else
     res.status(401).send("Token Non Valido");
 });
+
+router.route("/").get(async (req, res) => {
+  const result = await verifyToken(req.cookies.token)
+})
 
 router.route("/createEvent").post(async (req, res) => {
   DB.CreateEvent(req.body).then((data) => {

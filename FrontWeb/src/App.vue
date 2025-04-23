@@ -5,6 +5,10 @@
   const userId = ref('')
   provide('userType', userType)
   provide('userId', userId)
+
+  onMounted(() => {
+    
+  })
 </script>
 
 <template>
