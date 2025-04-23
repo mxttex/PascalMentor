@@ -85,7 +85,7 @@ async function TryToLog(body) {
       .input("mail", sql.VarChar, body.email)
       .input("psw", sql.VarChar, body.password)
       .query(
-        `SELECT ${params} FROM ${table} WHERE mail=@mail AND password=@psw`
+        `SELECT ID, Nome, Cognome, Tipo, Mail, RatingMedio, DataDiNascita, DataIscrizione, IndirizzoDiStudio FROM ${table} WHERE mail=@mail AND password=@psw`
       );
     return insertion.recordset
 
