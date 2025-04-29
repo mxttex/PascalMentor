@@ -40,17 +40,17 @@ router.route("/register").post((req, res) => {
 router.route("/log").post((req, res) => {
   DB.TryToLog(req.body).then((rit) => {
     try {
-      const user = rit;
+      const user = rit[0];
       const payload = { user };
       const options = { expiresIn: "168h" }; // scade dopo una settimana
       const token = jwt.sign(payload, secret, options);
       
       res.cookie("token", token, { httpOnly: true });
+      console.log(user)
       const ret = {
-        type: user[0].Tipo,
-        userId: user[0].ID
+        type: user.Tipo,
+        userId: user.ID
       }
-      console.log(ret);
       res.status(200).json(ret)
     } catch (error) {
       console.log(error);
@@ -72,6 +72,17 @@ router.route("/seePersonalData").get(async (req, res) => {
 
 router.route("/").get(async (req, res) => {
   const result = await verifyToken(req.cookies.token)
+  if(result.success){
+    console.log(result.user.user); 
+    const ret = {
+      type: result.user.user.Tipo,
+      userId: result.user.user.ID
+    }
+    console.log(ret)
+    res.status(200).json(ret)
+  }
+  else
+    res.status(401).send("Token Non Valido");
 })
 
 router.route("/createEvent").post(async (req, res) => {

@@ -19,7 +19,7 @@ onMounted(async () => {
             router.push('/sign-in');
         else{
             const data = await response.json()
-            user.value = data.user[0]
+            user.value = data.user
             console.log(type.value)
         }
     } catch (error) {
