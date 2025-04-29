@@ -54,16 +54,17 @@ async function TryToLog(body) {
 }
 async function CreateNewEvent(form) {
   try {
+    console.log(form)
     let pool = await sql.connect(config);
     let insertion = await pool
       .request()
-      .input("subject", sql.VarChar, form.subject)
-      .input("date", sql.Date, form.date)
-      .input("startTime", sql.VarChar, form.startTime)
-      .input("endTime", sql.VarChar, form.endTime)
-      .input("notes", sql.VarChar, form.notes)
-      .input("nrMaxPartecipants", sql.Int, form.nrMaxPartecipants)
-      .input("teacher", sql.Int, form.teacher)
+      .input("subject", sql.Int, form.Materia)
+      .input("date", sql.Date, form.Data)
+      .input("startTime", sql.VarChar, form.OraInizio)
+      .input("endTime", sql.VarChar, form.OraFine)
+      .input("notes", sql.VarChar, form.Note)
+      .input("nrMaxPartecipants", sql.Int, form.NumeroMassimoPartecipanti)
+      .input("teacher", sql.Int, form.Insegnante)
       .query(
         `INSERT into Ripetizioni(Insegnante, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Materia, Note) 
         values (@teacher, CAST(@date as DATE), CAST(@startTime AS TIME), CAST(@endTime AS TIME), @nrMaxPartecipants, @subject, @notes)`
@@ -76,10 +77,22 @@ async function CreateNewEvent(form) {
   }
 }
 
+async function FetchSubjects() {
+  try {
+    let pool = await sql.connect(config);
+    let insertion = await pool.request().query('SELECT * FROM Materie')
+    return insertion.recordsets
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
+  
+}
+
 async function FetchAllRipetitions() {
   try {
     let pool = await sql.connect(config);
-    let insertion = await pool.request().query('SELECT Nome, Cognome, Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Note FROM Ripetizioni JOIN Insegnanti ON Insegnante = Insegnanti.Id')
+    let insertion = await pool.request().query('SELECT Utenti.Nome as Nome, Cognome, Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Note , Materie.Nome as Materia FROM (Ripetizioni JOIN Utenti ON Insegnante = Utenti.Id) JOIN Materie on Materia = Materie.Id')
     return insertion.recordsets
   } catch (error) {
     console.error(error);
@@ -92,4 +105,5 @@ module.exports = {
   AddNewUser: AddNewUser,
   TryToLog: TryToLog,
   CreateEvent: CreateNewEvent,
+  fetchSubjects: FetchSubjects,
 };

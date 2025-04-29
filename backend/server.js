@@ -115,6 +115,17 @@ router.route("/seeAllRipetition").get((req, res) => {
   })
 })
 
+router.route("/getSubjects").get((req, res) => {
+  DB.fetchSubjects().then((data) => {
+    try{
+      res.status(200).send(data[0])
+    }
+    catch{
+      res.status(404).send('Nessuna Materia Trovata')
+    }
+  })
+})
+
 //funzione per vedere se una persona puo' accedere ad una determinata risorsa
 async function verifyToken(token) {
   return new Promise((resolve) => {
