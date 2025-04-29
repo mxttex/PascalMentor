@@ -17,10 +17,10 @@
                 <li class="nav-item">
                     <router-link class="nav-link unselectable" to="/personal-area">Area Personale</router-link>
                 </li>
-                <li v-if="user == 'insegnanti'" class="nav-item">
+                <li v-if="user == 'I'" class="nav-item">
                     <router-link class="nav-link" to="/create-event">Crea Evento</router-link>
                 </li>
-                <li v-if="user == 'studenti'" class="nav-item">
+                <li v-if="user == 'S'" class="nav-item">
                     <router-link class="nav-link" to="/book-ripetition">Prenota Ripetizioni</router-link>
                 </li>
                 <li class="flex-grow-1"></li>

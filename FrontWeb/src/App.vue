@@ -12,7 +12,6 @@ provide('userId', userId);
 const router = useRouter();
 
 const fetchUserData = async () => {
-  console.log('Fetching user data...');
   try {
     const response = await fetch(`${globalVariables.API_URL}`, {
       credentials: 'include'

@@ -14,7 +14,7 @@ const date = ref()
 
 onMounted(() => {
     date.value = formatItalianDate(props.ripetition.Data)
-    console.log(date.value)
+    console.log(props.ripetition)
 })
 async function PrenotaRipetizione() {
     //alert(`Ripetizione nr ${Id}`)
