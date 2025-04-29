@@ -1,7 +1,7 @@
 const config = {
     user:"sa",
-    password:"burbero2025",
-    server: `PC1326`,
+    password:"ForzaNapoli",
+    server: `DESKTOP-01ETB9F\\SQLEXPRESS`,
     database:"PascalMentor",
     options:{
         trustConnection: true,

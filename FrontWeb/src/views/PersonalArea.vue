@@ -2,6 +2,7 @@
 import { inject, onMounted, ref } from 'vue';
 import globalVariables from '../../../globalVariables';
 import router from '@/router';
+import { formatItalianDate } from '@/common/commonMethods';
 
 const user = ref({})
 const type = inject('userType')
@@ -45,8 +46,8 @@ async function logout() {
         <div class="card p-4 shadow-lg">
             <h2 class="text-center">Benvenuto, {{ user?.Nome }}</h2>
             <p><strong>Email:</strong> {{ user?.Mail }}</p>
-            <p v-if="type != 'I'"><strong>Indirizzo:</strong> {{ user?.Indirizzo }}</p>
-            <p><strong>Data di nascita:</strong> {{ new Date(user?.DataDiNascita) }}</p>
+            <p v-if="type != 'I'"><strong>Indirizzo:</strong> {{ user?.IndirizzoDiStudio }}</p>
+            <p><strong>Data di nascita:</strong> {{ formatItalianDate(user?.DataDiNascita) }}</p>
 
             <button @click="logout" class="btn btn-danger w-100 mt-3">Logout</button>
         </div>

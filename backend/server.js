@@ -47,10 +47,11 @@ router.route("/log").post((req, res) => {
       
       res.cookie("token", token, { httpOnly: true });
       const ret = {
-        type: user.Tipo,
-        userId: user.Id
+        type: user[0].Tipo,
+        userId: user[0].ID
       }
-      res.status(200).send(res.status(200).send(ret))
+      console.log(ret);
+      res.status(200).json(ret)
     } catch (error) {
       console.log(error);
       res.status(400).send(`Credenziali Errate ${error}`);
