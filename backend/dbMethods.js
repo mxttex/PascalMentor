@@ -22,8 +22,8 @@ async function AddNewUser(body) {
       .input("mail", sql.VarChar, body.email)
       .input("psw", sql.VarChar, body.password)
       .input("dataNascita", sql.VarChar, body.dataNascita)
-      .input("indirizzo", sql.VarChar, body.indirizzoDiStudio || null)
-      .input("tipo", sql.Char, body.tipo) 
+      .input("indirizzo", sql.VarChar, body.indirizzo || null)
+      .input("tipo", sql.Char, body.type) 
       .query(query)
     return insertion.rowsAffected;
   } catch (error) {
@@ -35,6 +35,7 @@ async function AddNewUser(body) {
 async function TryToLog(body) {
   try {
     let pool = await sql.connect(config);
+    
     let insertion = await pool
       .request()
       .input("mail", sql.VarChar, body.email)

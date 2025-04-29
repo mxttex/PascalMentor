@@ -40,15 +40,17 @@ router.route("/register").post((req, res) => {
 router.route("/log").post((req, res) => {
   DB.TryToLog(req.body).then((rit) => {
     try {
-      const user = rit.user[0];
-      //const type = rit.type; 
-      
+      const user = rit;
       const payload = { user };
       const options = { expiresIn: "168h" }; // scade dopo una settimana
       const token = jwt.sign(payload, secret, options);
       
       res.cookie("token", token, { httpOnly: true });
-      res.status(200).send({ type: type, userId: user.Id });
+      const ret = {
+        type: user.Tipo,
+        userId: user.Id
+      }
+      res.status(200).send(res.status(200).send(ret))
     } catch (error) {
       console.log(error);
       res.status(400).send(`Credenziali Errate ${error}`);

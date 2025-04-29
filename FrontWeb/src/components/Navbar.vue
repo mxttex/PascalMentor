@@ -25,7 +25,7 @@
                 </li>
                 <li class="flex-grow-1"></li>
                 <li class="nav-item">
-                    <router-link class="nav-link" to="/sign-in">Registrati</router-link>
+                    <router-link class="nav-link" to="/sign-in">Loggati</router-link>
                 </li>
             </ul>
         </div>

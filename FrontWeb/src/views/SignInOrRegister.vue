@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import LoginForm from '@/components/LoginForm.vue';
 import RegisterUser from '@/components/RegisterUser.vue';
-const action = ref('register')
+const action = ref('log')
 function changeState(whatToView) {
     action.value = whatToView
 }
