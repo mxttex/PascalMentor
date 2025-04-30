@@ -73,12 +73,10 @@ router.route("/seePersonalData").get(async (req, res) => {
 router.route("/").get(async (req, res) => {
   const result = await verifyToken(req.cookies.token)
   if(result.success){
-    console.log(result.user.user); 
     const ret = {
       type: result.user.user.Tipo,
       userId: result.user.user.ID
     }
-    console.log(ret)
     res.status(200).json(ret)
   }
   else
@@ -126,6 +124,18 @@ router.route("/getSubjects").get((req, res) => {
   })
 })
 
+router.route("/bookSpecificRipetition").post((
+  (req, res) => 
+    DB.BookRipetition(req.body).then(
+      (data) => {
+        try {
+          res.status(200).send()
+        } catch (error) {
+          res.status(500).send(error)
+        }
+      }
+    )
+))
 //funzione per vedere se una persona puo' accedere ad una determinata risorsa
 async function verifyToken(token) {
   return new Promise((resolve) => {

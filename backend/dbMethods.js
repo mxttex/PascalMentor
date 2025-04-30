@@ -100,10 +100,25 @@ async function FetchAllRipetitions() {
   }
 }
 
+async function BookRipetition(body){
+  try {
+    let pool = await sql.connect(config);
+    let insertion = await pool.request()
+    .input("studente", sql.Int, body.studentId)
+    .input("ripetizione", sql.Int, body.ripetitionId)
+    .query("INSERT INTO Partecipazioni(Studente, Ripetizione) VALUES (@studente, @ripetizione)")
+    return insertion.rowsAffected
+  } catch (error) {
+    console.log(error)
+    return undefined
+  }
+}
+
 module.exports = {
   FetchAllRipetitions: FetchAllRipetitions,
   AddNewUser: AddNewUser,
   TryToLog: TryToLog,
   CreateEvent: CreateNewEvent,
   fetchSubjects: FetchSubjects,
+  BookRipetition: BookRipetition
 };

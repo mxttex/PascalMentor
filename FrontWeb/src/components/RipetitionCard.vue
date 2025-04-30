@@ -14,23 +14,28 @@ const date = ref()
 
 onMounted(() => {
     date.value = formatItalianDate(props.ripetition.Data)
-    console.log(props.ripetition)
 })
 async function PrenotaRipetizione() {
-    //alert(`Ripetizione nr ${Id}`)
     try {
         const response = await fetch(
         `${globalVariables.API_URL}bookSpecificRipetition`,
         {
             headers: { 'Content-type': 'application/json' },
+            method: 'POST',
             body: JSON.stringify({
                 studentId: userId.value,
-                ripetitionId: ripetition.Id
+                ripetitionId: props.ripetition.Id
             }),
         }
     )
+    if(response.ok){
+        alert('Ripetizione Prenotate con Successo')
+    }
+    else{
+        alert(response.errorMessage)
+    }
     } catch (error) {
-        alert('errore')
+        alert(error)
     }
 }
 </script>
@@ -45,7 +50,7 @@ async function PrenotaRipetizione() {
             <p class="card-text">
                 Insegnante: {{ ripetition.Nome + " " + ripetition.Cognome }} <br>
                 Data: {{ date }}<br>
-                Ora: {{ ripetition.OraInizio }} - {{ ripetition.OraFine }}<br>
+                Ora: {{ ripetition.OraInizio.split('T')[1].substring(0, 5) }} - {{ ripetition.OraFine.split('T')[1].substring(0, 5) }}<br>
                 Note: {{ ripetition.Note }}
             </p>
             <button class="btn btn-primary" @click="PrenotaRipetizione()">Prenota</button>

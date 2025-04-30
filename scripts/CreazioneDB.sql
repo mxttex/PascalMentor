@@ -33,7 +33,8 @@ CREATE TABLE Ripetizioni(
 
 CREATE TABLE Partecipazioni(
 	Studente INT REFERENCES Utenti(Id),
-	Ripetizione INT REFERENCES Ripetizioni(Id))
+	Ripetizione INT REFERENCES Ripetizioni(Id)
+	PRIMARY KEY(Studente, Ripetizione))
 
 CREATE TABLE Feedbacks(
 	Id int identity(1,1) PRIMARY KEY,
