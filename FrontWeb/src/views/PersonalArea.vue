@@ -3,7 +3,7 @@ import { inject, onMounted, ref } from 'vue';
 import globalVariables from '../../../globalVariables';
 import router from '@/router';
 import { formatItalianDate } from '@/common/commonMethods';
-
+import SeePersonalRipetitions from '@/components/SeePersonalRipetitions.vue';
 const user = ref({})
 const type = inject('userType')
 
@@ -50,6 +50,8 @@ async function logout() {
             <p><strong>Data di nascita:</strong> {{ formatItalianDate(user?.DataDiNascita) }}</p>
 
             <button @click="logout" class="btn btn-danger w-100 mt-3">Logout</button>
+            <SeePersonalRipetitions />
+        
         </div>
     </div>
 

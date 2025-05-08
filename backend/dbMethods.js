@@ -3,17 +3,17 @@ const sql = require("mssql");
 
 async function AddNewUser(body) {
   try {
-    let query = body.tipo === "I" ?  
-    `INSERT INTO Utenti 
+    let query = body.tipo === "I" ?
+      `INSERT INTO Utenti 
     (Nome, Cognome, Tipo, Mail, Password, DataDiNascita, DataIscrizione, IndirizzoDiStudio) 
     VALUES 
     (@name, @surname, @tipo, @mail, @psw, CAST(@dataNascita AS DATE), GETDATE())`
-    : 
-    `INSERT INTO Utenti 
+      :
+      `INSERT INTO Utenti 
     (Nome, Cognome, Tipo, Mail, Password, DataDiNascita, DataIscrizione, IndirizzoDiStudio) 
     VALUES 
     (@name, @surname, @tipo, @mail, @psw, CAST(@dataNascita AS DATE), GETDATE(), @indirizzo)`
-    ;
+      ;
     let pool = await sql.connect(config);
     let insertion = await pool
       .request()
@@ -23,7 +23,7 @@ async function AddNewUser(body) {
       .input("psw", sql.VarChar, body.password)
       .input("dataNascita", sql.VarChar, body.dataNascita)
       .input("indirizzo", sql.VarChar, body.indirizzo || null)
-      .input("tipo", sql.Char, body.type) 
+      .input("tipo", sql.Char, body.type)
       .query(query)
     return insertion.rowsAffected;
   } catch (error) {
@@ -35,7 +35,7 @@ async function AddNewUser(body) {
 async function TryToLog(body) {
   try {
     let pool = await sql.connect(config);
-    
+
     let insertion = await pool
       .request()
       .input("mail", sql.VarChar, body.email)
@@ -86,7 +86,7 @@ async function FetchSubjects() {
     console.error(error);
     return undefined;
   }
-  
+
 }
 
 async function FetchAllRipetitions() {
@@ -100,14 +100,36 @@ async function FetchAllRipetitions() {
   }
 }
 
-async function BookRipetition(body){
+async function BookRipetition(body) {
   try {
     let pool = await sql.connect(config);
     let insertion = await pool.request()
-    .input("studente", sql.Int, body.studentId)
-    .input("ripetizione", sql.Int, body.ripetitionId)
-    .query("INSERT INTO Partecipazioni(Studente, Ripetizione) VALUES (@studente, @ripetizione)")
+      .input("studente", sql.Int, body.studentId)
+      .input("ripetizione", sql.Int, body.ripetitionId)
+      .query("INSERT INTO Partecipazioni(Studente, Ripetizione) VALUES (@studente, @ripetizione)")
     return insertion.rowsAffected
+  } catch (error) {
+    console.log(error)
+    return undefined
+  }
+}
+
+async function FetchRipetionsByUserId(body) {
+  try {
+    let query = body.type === 'S' ? `SELECT *
+              FROM Ripetizioni JOIN Partecipazioni ON Ripetizione = Id
+              WHERE Partecipazioni.Studente = @id`
+      :
+      `SELECT *
+              FROM Ripetizioni 
+              WHERE Insegnante = @id`
+
+    let pool = await sql.connect(config)
+    let result = await pool.request()
+      .input('id', sql.Int, body.id)
+      .query(query)
+
+    return result.recordsets
   } catch (error) {
     console.log(error)
     return undefined
@@ -120,5 +142,6 @@ module.exports = {
   TryToLog: TryToLog,
   CreateEvent: CreateNewEvent,
   fetchSubjects: FetchSubjects,
-  BookRipetition: BookRipetition
+  BookRipetition: BookRipetition,
+  GetRipetitionsById: FetchRipetionsByUserId
 };

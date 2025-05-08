@@ -136,6 +136,19 @@ router.route("/bookSpecificRipetition").post((
       }
     )
 ))
+
+router.route("/getAllUserRipetition").post(
+  (req, res) => {
+    DB.GetRipetitionsById(req.body).then(
+      (data) => {
+        try {
+          res.json(data[0])
+        } catch (error) {
+          res.status(404).send('Nessuna ripetizione trovata')
+        }
+      }
+    )
+  })
 //funzione per vedere se una persona puo' accedere ad una determinata risorsa
 async function verifyToken(token) {
   return new Promise((resolve) => {
