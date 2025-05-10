@@ -32,7 +32,8 @@ async function PrenotaRipetizione() {
         alert('Ripetizione Prenotate con Successo')
     }
     else{
-        alert(response.errorMessage)
+        const errorMessage = await response.text()
+        alert(errorMessage)
     }
     } catch (error) {
         alert(error)

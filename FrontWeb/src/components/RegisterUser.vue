@@ -57,7 +57,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { SHA1 } from 'crypto-js'
+import { SHA256 } from 'crypto-js'
 import globalVariables from '../../../globalVariables.js'
 
 const isTeacher = ref(false)
@@ -80,7 +80,7 @@ async function handleSubmit() {
         nome: nome.value,
         cognome: cognome.value,
         email: email.value,
-        password: SHA1(password.value).toString(),
+        password: SHA256(password.value).toString(),
         dataNascita: dataNascita.value
     }
 

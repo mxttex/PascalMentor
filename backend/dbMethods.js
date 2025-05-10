@@ -54,7 +54,6 @@ async function TryToLog(body) {
 }
 async function CreateNewEvent(form) {
   try {
-    console.log(form)
     let pool = await sql.connect(config);
     let insertion = await pool
       .request()
@@ -114,6 +113,34 @@ async function BookRipetition(body) {
   }
 }
 
+async function UpdateSubscribersInSpecificRipetition(id) {
+  try {
+      let pool = await sql.connect(config);
+      let insertion = await pool.request()
+      .input("id", sql.Int, id)
+      .query('UPDATE Ripetizioni SET NumeroIscritti += 1 WHERE Id=@id')
+      return insertion.rowsAffected
+  } catch (error) {
+    console.log(error)
+    return undefined
+    
+  }
+}
+
+async function IsSpecificRipetitionAvailable(id) {
+  try {
+    let pool = await sql.connect(config);
+    let result = await pool.request()
+      .input("id", sql.Int, id)
+      .query('SELECT NumeroMassimoPartecipanti, NumeroIscritti FROM Ripetizioni WHERE Id = @id');
+    const ripetizione = result.recordset[0];
+    return ripetizione.NumeroIscritti < ripetizione.NumeroMassimoPartecipanti;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+
 async function FetchRipetionsByUserId(body) {
   try {
     let query = body.type === 'S' ? `SELECT *
@@ -143,5 +170,7 @@ module.exports = {
   CreateEvent: CreateNewEvent,
   fetchSubjects: FetchSubjects,
   BookRipetition: BookRipetition,
-  GetRipetitionsById: FetchRipetionsByUserId
+  GetRipetitionsById: FetchRipetionsByUserId,
+  UpdateSubscribersInSpecificRipetition: UpdateSubscribersInSpecificRipetition,
+  IsSpecificRipetitionAvailable: IsSpecificRipetitionAvailable
 };

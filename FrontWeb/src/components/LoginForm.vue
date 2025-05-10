@@ -27,7 +27,7 @@
 <script setup>
 import router from '@/router/index.js';
 import globalVariables from '../../../globalVariables.js';
-import { SHA1 } from 'crypto-js';
+import { SHA256 } from 'crypto-js';
 import { inject, ref } from 'vue';
 
 const email = ref('');
@@ -45,7 +45,7 @@ async function handleLogin() {
     try {
         const formData = {
             'email': email.value,
-            'password': SHA1(password.value).toString()
+            'password': SHA256(password.value).toString()
         };
 
         let result = await fetch(endpoint, {

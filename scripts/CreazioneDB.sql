@@ -13,7 +13,7 @@ CREATE TABLE Utenti(
 	Cognome VARCHAR(20) NOT NULL,
 	Tipo CHAR(1) DEFAULT('S'),
 	Mail VARCHAR(50) UNIQUE NOT NULL,
-	Password VARCHAR(50) NOT NULL,
+	Password VARCHAR(64) NOT NULL,
 	RatingMedio FLOAT DEFAULT(0),
 	DataDiNascita DATE NOT NULL,
 	DataIscrizione DATE NOT NULL,
@@ -27,6 +27,7 @@ CREATE TABLE Ripetizioni(
 	OraInizio TIME NOT NULL,
 	OraFine TIME,
 	NumeroMassimoPartecipanti INT DEFAULT(1),
+	NumeroIscritti INT DEFAULT(0),
 	Insegnante INT REFERENCES Utenti(Id) NOT NULL,
 	Materia INT REFERENCES Materie(Id) NOT NULL,
 	Note VARCHAR(150))
