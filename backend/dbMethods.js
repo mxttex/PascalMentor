@@ -91,7 +91,9 @@ async function FetchSubjects() {
 async function FetchAllRipetitions() {
   try {
     let pool = await sql.connect(config);
-    let insertion = await pool.request().query('SELECT Utenti.Nome as Nome, Cognome, Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Note , Materie.Nome as Materia FROM (Ripetizioni JOIN Utenti ON Insegnante = Utenti.Id) JOIN Materie on Materia = Materie.Id')
+    let insertion = await pool.request().query(`SELECT Utenti.Nome as Nome, Cognome, Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Note , Materie.Nome as Materia 
+                                                FROM (Ripetizioni JOIN Utenti ON Insegnante = Utenti.Id) JOIN Materie on Materia = Materie.Id
+                                                WHERE NumeroIscritti < NumeroMassimoPartecipanti AND Data >= GETDATE()`)
     return insertion.recordsets
   } catch (error) {
     console.error(error);
