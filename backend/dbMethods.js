@@ -1,7 +1,7 @@
 const config = require("./dbconfig.js");
 const sql = require("mssql");
 
-async function AddNewUser(body) {
+export const AddNewUser = async (body) => {
   try {
     let query = body.tipo === "I" ?
       `INSERT INTO Utenti 
@@ -32,7 +32,7 @@ async function AddNewUser(body) {
   }
 }
 
-async function TryToLog(body) {
+export const TryToLog = async (body) => {
   try {
     let pool = await sql.connect(config);
 
@@ -52,7 +52,7 @@ async function TryToLog(body) {
     return undefined
   }
 }
-async function CreateNewEvent(form) {
+export const CreateNewEvent = async (form) => {
   try {
     let pool = await sql.connect(config);
     let insertion = await pool
@@ -76,7 +76,7 @@ async function CreateNewEvent(form) {
   }
 }
 
-async function FetchSubjects() {
+export const FetchSubjects = async () => {
   try {
     let pool = await sql.connect(config);
     let insertion = await pool.request().query('SELECT * FROM Materie')
@@ -88,7 +88,7 @@ async function FetchSubjects() {
 
 }
 
-async function FetchAllRipetitions() {
+export const FetchAllRipetitions = async() => {
   try {
     let pool = await sql.connect(config);
     let insertion = await pool.request().query(`SELECT Utenti.Nome as Nome, Cognome, Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Note , Materie.Nome as Materia 
@@ -101,7 +101,7 @@ async function FetchAllRipetitions() {
   }
 }
 
-async function BookRipetition(body) {
+export const BookRipetition = async (body) => {
   try {
     let pool = await sql.connect(config);
     let insertion = await pool.request()
@@ -115,7 +115,7 @@ async function BookRipetition(body) {
   }
 }
 
-async function UpdateSubscribersInSpecificRipetition(id) {
+export const UpdateSubscribersInSpecificRipetition = async(id) => {
   try {
       let pool = await sql.connect(config);
       let insertion = await pool.request()
@@ -129,7 +129,7 @@ async function UpdateSubscribersInSpecificRipetition(id) {
   }
 }
 
-async function IsSpecificRipetitionAvailable(id) {
+export const IsSpecificRipetitionAvailable = async(id) => {
   try {
     let pool = await sql.connect(config);
     let result = await pool.request()
@@ -143,7 +143,7 @@ async function IsSpecificRipetitionAvailable(id) {
   }
 }
 
-async function FetchRipetionsByUserId(body) {
+export const FetchRipetionsByUserId = async (body) => {
   try {
     let query = body.type === 'S' ? `SELECT *
               FROM Ripetizioni JOIN Partecipazioni ON Ripetizione = Id
@@ -165,14 +165,14 @@ async function FetchRipetionsByUserId(body) {
   }
 }
 
-module.exports = {
-  FetchAllRipetitions: FetchAllRipetitions,
-  AddNewUser: AddNewUser,
-  TryToLog: TryToLog,
-  CreateEvent: CreateNewEvent,
-  fetchSubjects: FetchSubjects,
-  BookRipetition: BookRipetition,
-  GetRipetitionsById: FetchRipetionsByUserId,
-  UpdateSubscribersInSpecificRipetition: UpdateSubscribersInSpecificRipetition,
-  IsSpecificRipetitionAvailable: IsSpecificRipetitionAvailable
-};
+// module.exports = {
+//   FetchAllRipetitions: FetchAllRipetitions,
+//   AddNewUser: AddNewUser,
+//   TryToLog: TryToLog,
+//   CreateEvent: CreateNewEvent,
+//   fetchSubjects: FetchSubjects,
+//   BookRipetition: BookRipetition,
+//   GetRipetitionsById: FetchRipetionsByUserId,
+//   UpdateSubscribersInSpecificRipetition: UpdateSubscribersInSpecificRipetition,
+//   IsSpecificRipetitionAvailable: IsSpecificRipetitionAvailable
+// };
