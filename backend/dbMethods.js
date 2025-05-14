@@ -1,7 +1,7 @@
 const config = require("./dbconfig.js");
 const sql = require("mssql");
 
-export const AddNewUser = async (body) => {
+const AddNewUser = async (body) => {
   try {
     let query = body.tipo === "I" ?
       `INSERT INTO Utenti 
@@ -32,7 +32,7 @@ export const AddNewUser = async (body) => {
   }
 }
 
-export const TryToLog = async (body) => {
+const TryToLog = async (body) => {
   try {
     let pool = await sql.connect(config);
 
@@ -52,7 +52,7 @@ export const TryToLog = async (body) => {
     return undefined
   }
 }
-export const CreateNewEvent = async (form) => {
+const CreateNewEvent = async (form) => {
   try {
     let pool = await sql.connect(config);
     let insertion = await pool
@@ -76,7 +76,7 @@ export const CreateNewEvent = async (form) => {
   }
 }
 
-export const FetchSubjects = async () => {
+const FetchSubjects = async () => {
   try {
     let pool = await sql.connect(config);
     let insertion = await pool.request().query('SELECT * FROM Materie')
@@ -88,7 +88,7 @@ export const FetchSubjects = async () => {
 
 }
 
-export const FetchAllRipetitions = async() => {
+const FetchAllRipetitions = async () => {
   try {
     let pool = await sql.connect(config);
     let insertion = await pool.request().query(`SELECT Utenti.Nome as Nome, Cognome, Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Note , Materie.Nome as Materia 
@@ -101,7 +101,7 @@ export const FetchAllRipetitions = async() => {
   }
 }
 
-export const BookRipetition = async (body) => {
+const BookRipetition = async (body) => {
   try {
     let pool = await sql.connect(config);
     let insertion = await pool.request()
@@ -115,21 +115,20 @@ export const BookRipetition = async (body) => {
   }
 }
 
-export const UpdateSubscribersInSpecificRipetition = async(id) => {
+const UpdateSubscribersInSpecificRipetition = async (id) => {
   try {
-      let pool = await sql.connect(config);
-      let insertion = await pool.request()
+    let pool = await sql.connect(config);
+    let insertion = await pool.request()
       .input("id", sql.Int, id)
       .query('UPDATE Ripetizioni SET NumeroIscritti += 1 WHERE Id=@id')
-      return insertion.rowsAffected
+    return insertion.rowsAffected
   } catch (error) {
     console.log(error)
     return undefined
-    
+
   }
 }
-
-export const IsSpecificRipetitionAvailable = async(id) => {
+const IsSpecificRipetitionAvailable = async (id) => {
   try {
     let pool = await sql.connect(config);
     let result = await pool.request()
@@ -143,7 +142,7 @@ export const IsSpecificRipetitionAvailable = async(id) => {
   }
 }
 
-export const FetchRipetionsByUserId = async (body) => {
+const FetchRipetionsByUserId = async (body) => {
   try {
     let query = body.type === 'S' ? `SELECT *
               FROM Ripetizioni JOIN Partecipazioni ON Ripetizione = Id
@@ -165,14 +164,34 @@ export const FetchRipetionsByUserId = async (body) => {
   }
 }
 
-// module.exports = {
-//   FetchAllRipetitions: FetchAllRipetitions,
-//   AddNewUser: AddNewUser,
-//   TryToLog: TryToLog,
-//   CreateEvent: CreateNewEvent,
-//   fetchSubjects: FetchSubjects,
-//   BookRipetition: BookRipetition,
-//   GetRipetitionsById: FetchRipetionsByUserId,
-//   UpdateSubscribersInSpecificRipetition: UpdateSubscribersInSpecificRipetition,
-//   IsSpecificRipetitionAvailable: IsSpecificRipetitionAvailable
-// };
+const FilterEventBySubject = async (subject) => {
+  try {
+    let pool = sql.connect(config)
+    let results = await pool.request()
+      .input('materia', sql.VarChar, subject)
+      .query(
+        `SELECT *
+       FROM Ripetizioni JOIN Materie ON Materia = Materie.Id
+       WHERE Materie.Nome = @materia`
+      )
+
+    return results.recordsets
+  } catch (error) {
+    console.log(error)
+    return undefined
+  }
+}
+
+
+module.exports = {
+  FetchAllRipetitions: FetchAllRipetitions,
+  AddNewUser: AddNewUser,
+  TryToLog: TryToLog,
+  CreateEvent: CreateNewEvent,
+  fetchSubjects: FetchSubjects,
+  BookRipetition: BookRipetition,
+  GetRipetitionsById: FetchRipetionsByUserId,
+  UpdateSubscribersInSpecificRipetition: UpdateSubscribersInSpecificRipetition,
+  IsSpecificRipetitionAvailable: IsSpecificRipetitionAvailable,
+  FilterEventBySubject: FilterEventBySubject
+};

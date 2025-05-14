@@ -14,17 +14,7 @@ const form = ref({
   teacher: teacherId.value
 });
 
-const subjects = ref([]);
-
-onMounted(() => {
-  fetch(`${globalVariables.API_URL}getSubjects`, {
-    method: "GET",
-    headers: { 'Content-Type': 'application/json' }
-  })
-    .then(res => res.json())
-    .then(data => { subjects.value = data; })
-    .catch(err => console.error('Error fetching subjects:', err));
-});
+const subjects = inject('subjects');
 
 async function submitForm() {
   const payload = {

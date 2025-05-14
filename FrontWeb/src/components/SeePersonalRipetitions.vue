@@ -25,5 +25,7 @@ onMounted(async () => {
 </script>
 
 <template>
-
+    <v-for >
+        <RipetitionCard v-for="ripetition in list" :key="ripetition.Id" :ripetition="book" />
+    </v-for>
 </template>
