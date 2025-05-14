@@ -4,6 +4,7 @@ import 'pages/login_page.dart';
 
 import 'pages/studentPages/main_studente.dart';
 import 'pages/studentPages/form_registrazione_studente.dart';
+import 'pages/studentPages/form_login_studente.dart';
 
 import 'pages/teacherPages/main_insegnante.dart';
 import 'pages/teacherPages/form_registrazione_insegnante.dart';

@@ -36,7 +36,11 @@ class _MainStudenteState extends State<MainStudente> {
                     Navigator.pushNamed(context, '/formregistrazionestudente');
                   },
                   child: const Text('Registrati')),
-              ElevatedButton(onPressed: () {}, child: const Text('Login')),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/formloginstudente');
+                },
+                child: const Text('Login')),
             ],
           ),
         ),
