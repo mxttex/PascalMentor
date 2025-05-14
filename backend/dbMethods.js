@@ -166,13 +166,13 @@ const FetchRipetionsByUserId = async (body) => {
 
 const FilterEventBySubject = async (subject) => {
   try {
-    let pool = sql.connect(config)
+    let pool = await sql.connect(config)
     let results = await pool.request()
       .input('materia', sql.VarChar, subject)
       .query(
-        `SELECT *
-       FROM Ripetizioni JOIN Materie ON Materia = Materie.Id
-       WHERE Materie.Nome = @materia`
+        `SELECT Utenti.Nome as Nome, Cognome, Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Note , Materie.Nome as Materia 
+                                                FROM (Ripetizioni JOIN Utenti ON Insegnante = Utenti.Id) JOIN Materie on Materia = Materie.Id
+                                                WHERE NumeroIscritti < NumeroMassimoPartecipanti AND Data >= GETDATE() AND Materia = @materia`
       )
 
     return results.recordsets

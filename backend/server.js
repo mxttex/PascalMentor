@@ -144,8 +144,8 @@ router.route("/getAllUserRipetition").post((req, res) => {
   });
 });
 
-router.route("/getEventsById::subject").get((req, res) => {
-  DB.FilterEventBySubject(req.params[":subject"]).then((data) => {
+router.route("/getEventsById:subject").get((req, res) => {
+  DB.FilterEventBySubject(req.params.subject.substring(1)).then((data) => {
     try {
       res.json(data[0])
     } catch (error) {
