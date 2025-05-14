@@ -153,6 +153,8 @@ router.route("/getEventsById:subject").get((req, res) => {
     }
   })
 })
+
+
 //funzione per vedere se una persona puo' accedere ad una determinata risorsa
 async function verifyToken(token) {
   return new Promise((resolve) => {

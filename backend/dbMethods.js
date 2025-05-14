@@ -182,6 +182,21 @@ const FilterEventBySubject = async (subject) => {
   }
 }
 
+const addFeedback = async (body) => {
+  try {
+    let pool = await sql.connect()
+    let insertion = await pool.request()
+    .input('Voto', sql.Float, body.voto)
+    .input('Descrizione', sql.VarChar, body.descrizione)
+    .input('Studente', sql.Int, body.studenteId)
+    .input('Ripetizione', sql.Int, body.ripetitionId)
+    .query(`INSERT INTO Feedbacks(Rating, Descrizione, Studente, Ripetizione) VALUES @Voto, @Descrizione, @Studente, @Ripetizione`)
+  } catch (error) {
+    console.log(error);
+    return undefined
+  }
+}
+
 
 module.exports = {
   FetchAllRipetitions: FetchAllRipetitions,
