@@ -1,8 +1,9 @@
 <script setup>
 import RipetitionCard from '@/components/RipetitionCard.vue';
 import globalVariables from '../../../globalVariables';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, inject } from 'vue';
 const list = ref()
+const subjects = inject('subjects');
 
 onMounted(async () => {
     const response = await fetch(
@@ -21,19 +22,20 @@ onMounted(async () => {
 
 <template>
 
-    <div class="containers">
+    <div>
         <div class="d-flex flex-wrap gap-3">
-            <div class="mb-3">
+            <div id="filterBox">
                 <label for="subjectFilter">Filtra per materia:</label>
                 <select v-model="selectedSubject" id="subjectFilter" class="form-select w-auto d-inline-block ms-2">
-                    <option value="">Tutte le materie</option>
-                    <option v-for="subject in availableSubjects" :key="subject" :value="subject">
-                        {{ subject }}
-                    </option>
+                    <option>Tutte le materie</option>
+                    <option v-for="subject in subjects" :key="subject.Id" :value="subject.Id" value="">{{ subject.Nome }}</option>                    
                 </select>
             </div>
             <br>
-            <RipetitionCard v-for="book in list" :key="book.Id" :ripetition="book" />
+            <div class="containers">
+                <RipetitionCard v-for="book in list" :key="book.Id" :ripetition="book" />
+            </div>
+
         </div>
     </div>
 </template>
@@ -45,5 +47,10 @@ onMounted(async () => {
     flex-flow: row wrap;
     gap: 30px;
     margin: 10px;
+}
+#filterBox {
+    margin-left: 5.75em;
+    margin-top: 0.7em;
+    font-size: 1.5em;
 }
 </style>
