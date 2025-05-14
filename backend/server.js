@@ -143,6 +143,16 @@ router.route("/getAllUserRipetition").post((req, res) => {
     }
   });
 });
+
+router.route("/getEventsById::subject").get((req, res) => {
+  DB.FilterEventBySubject(req.params[":subject"]).then((data) => {
+    try {
+      res.json(data[0])
+    } catch (error) {
+      res.status(200).send('Nessuna Ripetizione Trovata')
+    }
+  })
+})
 //funzione per vedere se una persona puo' accedere ad una determinata risorsa
 async function verifyToken(token) {
   return new Promise((resolve) => {
