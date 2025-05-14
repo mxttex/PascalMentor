@@ -88,7 +88,7 @@ const FetchSubjects = async () => {
 
 }
 
-const FetchAllRipetitions = async() => {
+const FetchAllRipetitions = async () => {
   try {
     let pool = await sql.connect(config);
     let insertion = await pool.request().query(`SELECT Utenti.Nome as Nome, Cognome, Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Note , Materie.Nome as Materia 
@@ -115,20 +115,20 @@ const BookRipetition = async (body) => {
   }
 }
 
-const UpdateSubscribersInSpecificRipetition = async(id) => {
+const UpdateSubscribersInSpecificRipetition = async (id) => {
   try {
-      let pool = await sql.connect(config);
-      let insertion = await pool.request()
+    let pool = await sql.connect(config);
+    let insertion = await pool.request()
       .input("id", sql.Int, id)
       .query('UPDATE Ripetizioni SET NumeroIscritti += 1 WHERE Id=@id')
-      return insertion.rowsAffected
+    return insertion.rowsAffected
   } catch (error) {
     console.log(error)
     return undefined
-    
+
   }
 }
- const IsSpecificRipetitionAvailable = async(id) => {
+const IsSpecificRipetitionAvailable = async (id) => {
   try {
     let pool = await sql.connect(config);
     let result = await pool.request()
@@ -142,7 +142,7 @@ const UpdateSubscribersInSpecificRipetition = async(id) => {
   }
 }
 
- const FetchRipetionsByUserId = async (body) => {
+const FetchRipetionsByUserId = async (body) => {
   try {
     let query = body.type === 'S' ? `SELECT *
               FROM Ripetizioni JOIN Partecipazioni ON Ripetizione = Id
@@ -164,15 +164,34 @@ const UpdateSubscribersInSpecificRipetition = async(id) => {
   }
 }
 
+const FilterEventBySubject = async (subject) => {
+  try {
+    let pool = sql.connect(config)
+    let results = await pool.request()
+      .input('materia', sql.VarChar, subject)
+      .query(
+        `SELECT *
+       FROM Ripetizioni JOIN Materie ON Materia = Materie.Id
+       WHERE Materie.Nome = @materia`
+      )
+
+    return results.recordsets
+  } catch (error) {
+    console.log(error)
+    return undefined
+  }
+}
+
 
 module.exports = {
-    FetchAllRipetitions: FetchAllRipetitions,
-    AddNewUser: AddNewUser,
-    TryToLog: TryToLog,
-    CreateEvent: CreateNewEvent,
-    fetchSubjects: FetchSubjects,
-    BookRipetition: BookRipetition,
-    GetRipetitionsById: FetchRipetionsByUserId,
-    UpdateSubscribersInSpecificRipetition: UpdateSubscribersInSpecificRipetition,
-    IsSpecificRipetitionAvailable: IsSpecificRipetitionAvailable
-  };
+  FetchAllRipetitions: FetchAllRipetitions,
+  AddNewUser: AddNewUser,
+  TryToLog: TryToLog,
+  CreateEvent: CreateNewEvent,
+  fetchSubjects: FetchSubjects,
+  BookRipetition: BookRipetition,
+  GetRipetitionsById: FetchRipetionsByUserId,
+  UpdateSubscribersInSpecificRipetition: UpdateSubscribersInSpecificRipetition,
+  IsSpecificRipetitionAvailable: IsSpecificRipetitionAvailable,
+  FilterEventBySubject: FilterEventBySubject
+};

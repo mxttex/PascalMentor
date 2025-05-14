@@ -6,8 +6,10 @@ import globalVariables from '../../globalVariables';
 
 const userType = ref('');
 const userId = ref('');
+const subjects = ref([])
 provide('userType', userType);
 provide('userId', userId);
+provide('subjects', subjects)
 
 const router = useRouter();
 
@@ -29,9 +31,23 @@ const fetchUserData = async () => {
   }
 };
 
-onMounted(fetchUserData);
+const fetchAll = async () => {
+  await fetchAllSubjects();
+  await fetchUserData();
+}
+
+const fetchAllSubjects = async () => {
+  fetch(`${globalVariables.API_URL}getSubjects`, {
+    method: "GET",
+    headers: { 'Content-Type': 'application/json' }
+  })
+    .then(res => res.json())
+    .then(data => { subjects.value = data; })
+    .catch(err => console.error('Error fetching subjects:', err));
+}
+onMounted(fetchAll);
 router.afterEach(() => {
-  fetchUserData();
+  fetchAll();
 });
 window.addEventListener('popstate', fetchUserData);
 </script>
