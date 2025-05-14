@@ -3,11 +3,11 @@ GO
 
 -- 2) Utenti (5 insegnanti T e 10 studenti S)
 INSERT INTO Utenti (Nome, Cognome, Tipo, Mail, Password, RatingMedio, DataDiNascita, DataIscrizione, IndirizzoDiStudio) VALUES
-('Marco',   'Rossi',   'T', 'marco.rossi@pm.com',    HASHBYTES('SHA2_256','Pwd123!'), 4.5, '1980-05-12', '2024-01-10', 'Uni Roma'),
-('Laura',   'Bianchi', 'T', 'laura.bianchi@pm.com',  HASHBYTES('SHA2_256','Pwd123!'), 4.8, '1975-11-30', '2023-09-05', 'Uni Milano'),
-('Luca',    'Verdi',   'T', 'luca.verdi@pm.com',      HASHBYTES('SHA2_256','Pwd123!'), 4.2, '1982-02-20', '2024-02-14', 'Uni Torino'),
-('Anna',    'Neri',    'T', 'anna.neri@pm.com',       HASHBYTES('SHA2_256','Pwd123!'), 4.7, '1978-07-07', '2023-12-01', 'Uni Napoli'),
-('Giovanni','Gialli',  'T', 'giovanni.gialli@pm.com', HASHBYTES('SHA2_256','Pwd123!'), 4.6, '1985-09-15', '2024-03-20', 'Uni Bologna'),
+('Marco',   'Rossi',   'I', 'marco.rossi@pm.com',    HASHBYTES('SHA2_256','Pwd123!'), 4.5, '1980-05-12', '2024-01-10', 'Uni Roma'),
+('Laura',   'Bianchi', 'I', 'laura.bianchi@pm.com',  HASHBYTES('SHA2_256','Pwd123!'), 4.8, '1975-11-30', '2023-09-05', 'Uni Milano'),
+('Luca',    'Verdi',   'I', 'luca.verdi@pm.com',      HASHBYTES('SHA2_256','Pwd123!'), 4.2, '1982-02-20', '2024-02-14', 'Uni Torino'),
+('Anna',    'Neri',    'I', 'anna.neri@pm.com',       HASHBYTES('SHA2_256','Pwd123!'), 4.7, '1978-07-07', '2023-12-01', 'Uni Napoli'),
+('Giovanni','Gialli',  'I', 'giovanni.gialli@pm.com', HASHBYTES('SHA2_256','Pwd123!'), 4.6, '1985-09-15', '2024-03-20', 'Uni Bologna'),
 
 ('Sara',    'Russo',   'S', 'sara.russo@pm.com',      HASHBYTES('SHA2_256','Pwd123!'),    NULL, '2003-04-02', '2024-04-01', NULL),
 ('Paolo',   'Costa',   'S', 'paolo.costa@pm.com',     HASHBYTES('SHA2_256','Pwd123!'),    NULL, '2001-08-19', '2024-01-20', NULL),
