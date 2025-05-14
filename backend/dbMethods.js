@@ -182,7 +182,7 @@ const FilterEventBySubject = async (subject) => {
   }
 }
 
-const addFeedback = async (body) => {
+const AddFeedback = async (body) => {
   try {
     let pool = await sql.connect()
     let insertion = await pool.request()
@@ -208,5 +208,6 @@ module.exports = {
   GetRipetitionsById: FetchRipetionsByUserId,
   UpdateSubscribersInSpecificRipetition: UpdateSubscribersInSpecificRipetition,
   IsSpecificRipetitionAvailable: IsSpecificRipetitionAvailable,
-  FilterEventBySubject: FilterEventBySubject
+  FilterEventBySubject: FilterEventBySubject,
+  AddFeedback: AddFeedback
 };
