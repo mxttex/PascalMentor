@@ -233,26 +233,3 @@ class _FormRegistrazioneStudenteState extends State<FormRegistrazioneStudente> {
         ));
   }
 }
-
-class FormLoginStudente extends StatefulWidget {
-  const FormLoginStudente({super.key});
-
-  @override
-  State<FormLoginStudente> createState() => _FormLoginStudenteState();
-}
-
-class _FormLoginStudenteState extends State<FormLoginStudente> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(Icons.arrow_back)),
-          title: const Text("Login Studente"),
-        ),
-        body: const Center());
-  }
-}

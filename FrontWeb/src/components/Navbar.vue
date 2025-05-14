@@ -24,7 +24,7 @@
                     <router-link class="nav-link" to="/book-ripetition">Prenota Ripetizioni</router-link>
                 </li>
                 <li class="flex-grow-1"></li>
-                <li class="nav-item">
+                <li class="nav-item" style="margin-right: 10px;">
                     <router-link class="nav-link" to="/sign-in">Loggati</router-link>
                 </li>
             </ul>
