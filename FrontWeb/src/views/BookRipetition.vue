@@ -35,6 +35,7 @@ onMounted(async () => {
             <div class="containers">
                 <RipetitionCard v-for="book in list" :key="book.Id" :ripetition="book" />
             </div>
+
         </div>
     </div>
 </template>
