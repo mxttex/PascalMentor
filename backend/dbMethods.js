@@ -186,17 +186,47 @@ const AddFeedback = async (body) => {
   try {
     let pool = await sql.connect()
     let insertion = await pool.request()
-    .input('Voto', sql.Float, body.voto)
-    .input('Descrizione', sql.VarChar, body.descrizione)
-    .input('Studente', sql.Int, body.studenteId)
-    .input('Ripetizione', sql.Int, body.ripetitionId)
-    .query(`INSERT INTO Feedbacks(Rating, Descrizione, Studente, Ripetizione) VALUES @Voto, @Descrizione, @Studente, @Ripetizione`)
+      .input('Voto', sql.Float, body.voto)
+      .input('Descrizione', sql.VarChar, body.descrizione)
+      .input('Studente', sql.Int, body.studenteId)
+      .input('Ripetizione', sql.Int, body.ripetitionId)
+      .query(`INSERT INTO Feedbacks(Rating, Descrizione, Studente, Ripetizione) VALUES @Voto, @Descrizione, @Studente, @Ripetizione`)
+    return insertion.rowsAffected
   } catch (error) {
     console.log(error);
     return undefined
   }
 }
 
+const FetchFeedbacks = async (body) => {
+  try {
+    let pool = await sql.connect()
+    let insertion = await pool.request()
+      .input('ripetizione', sql.Int, body.ripetitionId)
+      .query('SELECT * FROM Feedbacks WHERE Ripetizione = @ripetizione')
+
+    return insertion.recordsets
+  } catch (error) {
+    console.log()
+    return undefined
+  }
+}
+
+const FetchAllFeedbackByTeacher = async (body) => {
+  try {
+    let pool = await sql.connect()
+    let insertion = await pool.request()
+      .input('teacher', sql.Int, body.teacherId)
+      .query(`SELECT *
+              FROM (Feedbacks JOIN Ripetizioni ON Ripetizione = Ripetizioni.Id) JOIN Utenti ON Ripetizioni.Insegnante = Utenti.ID
+              WHERE Utenti.ID = @insegnante`)
+
+      return insertion.recordsets
+  } catch (error) {
+    console.log(error)
+    return undefined
+  }
+}
 
 module.exports = {
   FetchAllRipetitions: FetchAllRipetitions,
