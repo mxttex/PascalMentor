@@ -40,7 +40,7 @@ const loadByFilter = async () => {
 <template>
 
     <div>
-        <div class="d-flex flex-wrap gap-3">
+        <div>
             <div id="filterBox">
                 <label for="subjectFilter">Filtra per materia:</label>
                 <select v-model="selectedSubject" id="subjectFilter" class="form-select w-auto d-inline-block ms-2"
