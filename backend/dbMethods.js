@@ -198,11 +198,11 @@ const AddFeedback = async (body) => {
   }
 }
 
-const FetchFeedbacks = async (body) => {
+const FetchFeedbacks = async (ripetition) => {
   try {
     let pool = await sql.connect()
     let insertion = await pool.request()
-      .input('ripetizione', sql.Int, body.ripetitionId)
+      .input('ripetizione', sql.Int, ripetition)
       .query('SELECT * FROM Feedbacks WHERE Ripetizione = @ripetizione')
 
     return insertion.recordsets
@@ -212,14 +212,14 @@ const FetchFeedbacks = async (body) => {
   }
 }
 
-const FetchAllFeedbackByTeacher = async (body) => {
+const FetchAllFeedbackByTeacher = async (teacher) => {
   try {
     let pool = await sql.connect()
     let insertion = await pool.request()
-      .input('teacher', sql.Int, body.teacherId)
-      .query(`SELECT *
+      .input('teacher', sql.Int, teacher)
+      .query(`SELECT Ripetizioni.Id, Rating, Note
               FROM (Feedbacks JOIN Ripetizioni ON Ripetizione = Ripetizioni.Id) JOIN Utenti ON Ripetizioni.Insegnante = Utenti.ID
-              WHERE Utenti.ID = @insegnante`)
+              WHERE Utenti.ID = 1`)
 
       return insertion.recordsets
   } catch (error) {
@@ -239,5 +239,7 @@ module.exports = {
   UpdateSubscribersInSpecificRipetition: UpdateSubscribersInSpecificRipetition,
   IsSpecificRipetitionAvailable: IsSpecificRipetitionAvailable,
   FilterEventBySubject: FilterEventBySubject,
-  AddFeedback: AddFeedback
+  AddFeedback: AddFeedback,
+  FetchFeedbacks: FetchFeedbacks,
+  FetchAllFeedbackByTeacher: FetchAllFeedbackByTeacher
 };

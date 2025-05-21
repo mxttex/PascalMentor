@@ -4,14 +4,14 @@
             <h1>PascalMentor will soon be available...</h1>
             <div v-if="!renderUser">REGISTER NOW!!!</div>
             <!-- <div v-else>CIAO IUSER {{ renderUser.Nome }}</div> -->
+            <LeaveFeedback />
         </div>
     </div>
 </template>
 
 <script setup>
 import { inject, onMounted, ref } from 'vue';
-
-const user = inject('userType'); 
+import LeaveFeedback from '@/components/LeaveFeedback.vue';
 const renderUser = ref(null);
 
 // onMounted(() => {

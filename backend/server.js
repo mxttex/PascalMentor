@@ -149,7 +149,26 @@ router.route("/getEventsById:subject").get((req, res) => {
     try {
       res.json(data[0])
     } catch (error) {
-      res.status(200).send('Nessuna Ripetizione Trovata')
+      res.status(404).send('Nessuna Ripetizione Trovata')
+    }
+  })
+})
+
+router.route("/getFeedbacks:ripetition").get((req, res) => {
+  DB.FetchFeedbacks(req.params.ripetition.substring(1)).then((data) => {
+    try {
+      res.json(data[0])
+    } catch (error) {
+      res.status(404).send("Non esistono feedback per questo evento")
+    }
+  })
+})
+router.route("/getFeedbacksByTeacher:teacher").get((req, res) => {
+  DB.FetchAllFeedbackByTeacher(req.params.teacher.substring(1)).then((data) => {
+    try {
+      res.json(data[0])
+    } catch (error) {
+      res.status(404).send("Non esistono feedback per questo evento")
     }
   })
 })
