@@ -38,23 +38,19 @@ const loadByFilter = async () => {
 </script>
 
 <template>
-
     <div>
-        <div class="d-flex flex-wrap gap-3">
-            <div id="filterBox">
-                <label for="subjectFilter">Filtra per materia:</label>
-                <select v-model="selectedSubject" id="subjectFilter" class="form-select w-auto d-inline-block ms-2"
-                    @change="loadByFilter()">
-                    <option value="">Tutte le materie</option>
-                    <option v-for="subject in subjects" :key="subject.Id" :value="subject.Id" value="">{{ subject.Nome
-                        }}</option>
-                </select>
-            </div>
-            <br>
-            <div class="containers">
-                <RipetitionCard v-for="book in list" :key="book.Id" :ripetition="book" />
-            </div>
-
+        <div id="filterBox">
+            <label for="subjectFilter">Filtra per materia:</label>
+            <select v-model="selectedSubject" id="subjectFilter" class="form-select w-auto d-inline-block ms-2"
+                @change="loadByFilter()">
+                <option value="">Tutte le materie</option>
+                <option v-for="subject in subjects" :key="subject.Id" :value="subject.Id" value="">{{ subject.Nome
+                }}</option>
+            </select>
+        </div>
+        <br>
+        <div class="containers">
+            <RipetitionCard v-for="book in list" :key="book.Id" :ripetition="book" />
         </div>
     </div>
 </template>
