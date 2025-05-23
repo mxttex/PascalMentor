@@ -3,17 +3,16 @@ const sql = require("mssql");
 
 const AddNewUser = async (body) => {
   try {
-    let query = body.tipo === "I" ?
-      `INSERT INTO Utenti 
+    let query =
+      body.tipo === "I"
+        ? `INSERT INTO Utenti 
     (Nome, Cognome, Tipo, Mail, Password, DataDiNascita, DataIscrizione, IndirizzoDiStudio) 
     VALUES 
     (@name, @surname, @tipo, @mail, @psw, CAST(@dataNascita AS DATE), GETDATE())`
-      :
-      `INSERT INTO Utenti 
+        : `INSERT INTO Utenti 
     (Nome, Cognome, Tipo, Mail, Password, DataDiNascita, DataIscrizione, IndirizzoDiStudio) 
     VALUES 
-    (@name, @surname, @tipo, @mail, @psw, CAST(@dataNascita AS DATE), GETDATE(), @indirizzo)`
-      ;
+    (@name, @surname, @tipo, @mail, @psw, CAST(@dataNascita AS DATE), GETDATE(), @indirizzo)`;
     let pool = await sql.connect(config);
     let insertion = await pool
       .request()
@@ -24,13 +23,13 @@ const AddNewUser = async (body) => {
       .input("dataNascita", sql.VarChar, body.dataNascita)
       .input("indirizzo", sql.VarChar, body.indirizzo || null)
       .input("tipo", sql.Char, body.type)
-      .query(query)
+      .query(query);
     return insertion.rowsAffected;
   } catch (error) {
     console.error(error);
     return undefined;
   }
-}
+};
 
 const TryToLog = async (body) => {
   try {
@@ -45,13 +44,12 @@ const TryToLog = async (body) => {
         FROM Utenti 
         WHERE mail=@mail AND password=@psw`
       );
-    return insertion.recordset
-
+    return insertion.recordset;
   } catch (error) {
-    console.log(error)
-    return undefined
+    console.log(error);
+    return undefined;
   }
-}
+};
 const CreateNewEvent = async (form) => {
   try {
     let pool = await sql.connect(config);
@@ -74,162 +72,174 @@ const CreateNewEvent = async (form) => {
     console.error(error);
     return undefined;
   }
-}
+};
 
 const FetchSubjects = async () => {
   try {
     let pool = await sql.connect(config);
-    let insertion = await pool.request().query('SELECT * FROM Materie')
-    return insertion.recordsets
+    let insertion = await pool.request().query("SELECT * FROM Materie");
+    return insertion.recordsets;
   } catch (error) {
     console.error(error);
     return undefined;
   }
-
-}
+};
 
 const FetchAllRipetitions = async () => {
   try {
     let pool = await sql.connect(config);
-    let insertion = await pool.request().query(`SELECT Utenti.Nome as Nome, Cognome, Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Note , Materie.Nome as Materia 
+    let insertion = await pool.request()
+      .query(`SELECT Utenti.Nome as Nome, Cognome, Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Note , Materie.Nome as Materia 
                                                 FROM (Ripetizioni JOIN Utenti ON Insegnante = Utenti.Id) JOIN Materie on Materia = Materie.Id
-                                                WHERE NumeroIscritti < NumeroMassimoPartecipanti AND Data >= GETDATE()`)
-    return insertion.recordsets
+                                                WHERE NumeroIscritti < NumeroMassimoPartecipanti AND Data >= GETDATE()`);
+    return insertion.recordsets;
   } catch (error) {
     console.error(error);
     return undefined;
   }
-}
+};
 
 const BookRipetition = async (body) => {
   try {
     let pool = await sql.connect(config);
-    let insertion = await pool.request()
+    let insertion = await pool
+      .request()
       .input("studente", sql.Int, body.studentId)
       .input("ripetizione", sql.Int, body.ripetitionId)
-      .query("INSERT INTO Partecipazioni(Studente, Ripetizione) VALUES (@studente, @ripetizione)")
-    return insertion.rowsAffected
+      .query(
+        "INSERT INTO Partecipazioni(Studente, Ripetizione) VALUES (@studente, @ripetizione)"
+      );
+    return insertion.rowsAffected;
   } catch (error) {
-    console.log(error)
-    return undefined
+    console.log(error);
+    return undefined;
   }
-}
+};
 
 const UpdateSubscribersInSpecificRipetition = async (id) => {
   try {
     let pool = await sql.connect(config);
-    let insertion = await pool.request()
+    let insertion = await pool
+      .request()
       .input("id", sql.Int, id)
-      .query('UPDATE Ripetizioni SET NumeroIscritti += 1 WHERE Id=@id')
-    return insertion.rowsAffected
+      .query("UPDATE Ripetizioni SET NumeroIscritti += 1 WHERE Id=@id");
+    return insertion.rowsAffected;
   } catch (error) {
-    console.log(error)
-    return undefined
-
+    console.log(error);
+    return undefined;
   }
-}
+};
 const IsSpecificRipetitionAvailable = async (id) => {
   try {
     let pool = await sql.connect(config);
-    let result = await pool.request()
+    let result = await pool
+      .request()
       .input("id", sql.Int, id)
-      .query('SELECT NumeroMassimoPartecipanti, NumeroIscritti FROM Ripetizioni WHERE Id = @id');
+      .query(
+        "SELECT NumeroMassimoPartecipanti, NumeroIscritti FROM Ripetizioni WHERE Id = @id"
+      );
     const ripetizione = result.recordset[0];
     return ripetizione.NumeroIscritti < ripetizione.NumeroMassimoPartecipanti;
   } catch (error) {
     console.error(error);
     return false;
   }
-}
+};
 
 const FetchRipetionsByUserId = async (body) => {
   try {
-    let query = body.type === 'S' ? `SELECT *
-              FROM Ripetizioni JOIN Partecipazioni ON Ripetizione = Id
-              WHERE Partecipazioni.Studente = @id`
-      :
-      `SELECT *
+    let query =
+      body.type === "S"
+        ?   `SELECT Ripetizioni.Id, Data, OraInizio, OraFine, Utenti.Nome as NomeInsegnante, Utenti.Cognome as CognomeInsegnante, Materie.Nome as Materia, Note
+            FROM ((Ripetizioni JOIN Partecipazioni ON Ripetizione = Id) JOIN Utenti on Utenti.ID = Insegnante) JOIN Materie ON Materia = Materie.Id
+            WHERE Partecipazioni.Studente = @id`
+        : `SELECT *
               FROM Ripetizioni 
-              WHERE Insegnante = @id`
+              WHERE Insegnante = @id`;
 
-    let pool = await sql.connect(config)
-    let result = await pool.request()
-      .input('id', sql.Int, body.id)
-      .query(query)
+    let pool = await sql.connect(config);
+    let result = await pool
+      .request()
+      .input("id", sql.Int, body.id)
+      .query(query);
 
-    return result.recordsets
+    return result.recordsets;
   } catch (error) {
-    console.log(error)
-    return undefined
+    console.log(error);
+    return undefined;
   }
-}
+};
 
 // const FetchAllRipetitionByItsId = async (id) => {
-  
+
 // }
 const FilterEventBySubject = async (subject) => {
   try {
-    let pool = await sql.connect(config)
-    let results = await pool.request()
-      .input('materia', sql.VarChar, subject)
+    let pool = await sql.connect(config);
+    let results = await pool
+      .request()
+      .input("materia", sql.VarChar, subject)
       .query(
         `SELECT Utenti.Nome as Nome, Cognome, Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Note , Materie.Nome as Materia 
                                                 FROM (Ripetizioni JOIN Utenti ON Insegnante = Utenti.Id) JOIN Materie on Materia = Materie.Id
                                                 WHERE NumeroIscritti < NumeroMassimoPartecipanti AND Data >= GETDATE() AND Materia = @materia`
-      )
+      );
 
-    return results.recordsets
+    return results.recordsets;
   } catch (error) {
-    console.log(error)
-    return undefined
+    console.log(error);
+    return undefined;
   }
-}
+};
 
 const AddFeedback = async (body) => {
   try {
-    let pool = await sql.connect()
-    let insertion = await pool.request()
-      .input('Voto', sql.Float, body.voto)
-      .input('Descrizione', sql.VarChar, body.descrizione)
-      .input('Studente', sql.Int, body.studenteId)
-      .input('Ripetizione', sql.Int, body.ripetitionId)
-      .query(`INSERT INTO Feedbacks(Rating, Descrizione, Studente, Ripetizione) VALUES @Voto, @Descrizione, @Studente, @Ripetizione`)
-    return insertion.rowsAffected
+    let pool = await sql.connect();
+    let insertion = await pool
+      .request()
+      .input("Voto", sql.Float, body.voto)
+      .input("Descrizione", sql.VarChar, body.descrizione)
+      .input("Studente", sql.Int, body.studenteId)
+      .input("Ripetizione", sql.Int, body.ripetitionId)
+      .query(
+        `INSERT INTO Feedbacks(Rating, Descrizione, Studente, Ripetizione) VALUES @Voto, @Descrizione, @Studente, @Ripetizione`
+      );
+    return insertion.rowsAffected;
   } catch (error) {
     console.log(error);
-    return undefined
+    return undefined;
   }
-}
+};
 
 const FetchFeedbacks = async (ripetition) => {
   try {
-    let pool = await sql.connect()
-    let insertion = await pool.request()
-      .input('ripetizione', sql.Int, ripetition)
-      .query('SELECT * FROM Feedbacks WHERE Ripetizione = @ripetizione')
+    let pool = await sql.connect();
+    let insertion = await pool
+      .request()
+      .input("ripetizione", sql.Int, ripetition)
+      .query("SELECT * FROM Feedbacks WHERE Ripetizione = @ripetizione");
 
-    return insertion.recordsets
+    return insertion.recordsets;
   } catch (error) {
-    console.log()
-    return undefined
+    console.log();
+    return undefined;
   }
-}
+};
 
 const FetchAllFeedbackByTeacher = async (teacher) => {
   try {
-    let pool = await sql.connect()
-    let insertion = await pool.request()
-      .input('teacher', sql.Int, teacher)
+    let pool = await sql.connect();
+    let insertion = await pool.request().input("teacher", sql.Int, teacher)
       .query(`SELECT Ripetizioni.Id, Rating, Note
               FROM (Feedbacks JOIN Ripetizioni ON Ripetizione = Ripetizioni.Id) JOIN Utenti ON Ripetizioni.Insegnante = Utenti.ID
-              WHERE Utenti.ID = 1`)
+              WHERE Utenti.ID = 1`);
 
-      return insertion.recordsets
+    return insertion.recordsets;
   } catch (error) {
-    console.log(error)
-    return undefined
+    console.log(error);
+    return undefined;
   }
-}
+};
 
 module.exports = {
   FetchAllRipetitions: FetchAllRipetitions,
@@ -244,5 +254,5 @@ module.exports = {
   FilterEventBySubject: FilterEventBySubject,
   AddFeedback: AddFeedback,
   FetchFeedbacks: FetchFeedbacks,
-  FetchAllFeedbackByTeacher: FetchAllFeedbackByTeacher
+  FetchAllFeedbackByTeacher: FetchAllFeedbackByTeacher,
 };
