@@ -25,7 +25,7 @@ const loadByFilter = async () => {
     else {
         console.log(selectedSubject.value)
         fetch(
-            `${globalVariables.API_URL}getEventsById:${selectedSubject.value}`, {
+            `${globalVariables.API_URL}getEventsBySubject:${selectedSubject.value}`, {
             method: "GET",
             headers: { 'Content-Type': 'application/json' }
         }

@@ -1,26 +1,10 @@
 <template>
-    <div class="container d-flex justify-content-center align-items-center eighty-percent">
-        <div class="text-center">
-            <h1>PascalMentor will soon be available...</h1>
-            <div v-if="!renderUser">REGISTER NOW!!!</div>
-            <!-- <div v-else>CIAO IUSER {{ renderUser.Nome }}</div> -->
-            <LeaveFeedback />
-        </div>
-    </div>
+<SeePersonalRipetitions />
 </template>
 
-<script setup>
-import { inject, onMounted, ref } from 'vue';
-import LeaveFeedback from '@/components/LeaveFeedback.vue';
-const renderUser = ref(null);
 
-// onMounted(() => {
-//     if (user.value) {
-//         renderUser.value = user.value; 
-//     }
-// });
+<script setup>
+import SeePersonalRipetitions from '@/components/SeePersonalRipetitions.vue';
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

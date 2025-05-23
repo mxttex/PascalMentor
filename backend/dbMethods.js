@@ -164,6 +164,9 @@ const FetchRipetionsByUserId = async (body) => {
   }
 }
 
+// const FetchAllRipetitionByItsId = async (id) => {
+  
+// }
 const FilterEventBySubject = async (subject) => {
   try {
     let pool = await sql.connect(config)
@@ -235,7 +238,7 @@ module.exports = {
   CreateEvent: CreateNewEvent,
   fetchSubjects: FetchSubjects,
   BookRipetition: BookRipetition,
-  GetRipetitionsById: FetchRipetionsByUserId,
+  GetRipetitionsByUserId: FetchRipetionsByUserId,
   UpdateSubscribersInSpecificRipetition: UpdateSubscribersInSpecificRipetition,
   IsSpecificRipetitionAvailable: IsSpecificRipetitionAvailable,
   FilterEventBySubject: FilterEventBySubject,
