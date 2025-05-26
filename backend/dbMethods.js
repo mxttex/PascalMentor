@@ -170,9 +170,6 @@ const FetchRipetionsByUserId = async (body) => {
   }
 };
 
-// const FetchAllRipetitionByItsId = async (id) => {
-
-// }
 const FilterEventBySubject = async (subject) => {
   try {
     let pool = await sql.connect(config);
@@ -194,7 +191,8 @@ const FilterEventBySubject = async (subject) => {
 
 const AddFeedback = async (body) => {
   try {
-    let pool = await sql.connect();
+    console.log(body)
+    let pool = await sql.connect(config);
     let insertion = await pool
       .request()
       .input("Voto", sql.Float, body.voto)
@@ -202,7 +200,7 @@ const AddFeedback = async (body) => {
       .input("Studente", sql.Int, body.studenteId)
       .input("Ripetizione", sql.Int, body.ripetitionId)
       .query(
-        `INSERT INTO Feedbacks(Rating, Descrizione, Studente, Ripetizione) VALUES @Voto, @Descrizione, @Studente, @Ripetizione`
+        `INSERT INTO Feedbacks(Rating, Descrizione, Studente, Ripetizione) VALUES (@Voto, @Descrizione, @Studente, @Ripetizione)`
       );
     return insertion.rowsAffected;
   } catch (error) {

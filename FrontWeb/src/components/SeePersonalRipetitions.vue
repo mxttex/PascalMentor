@@ -7,6 +7,9 @@ const pastLessons = ref([])
 const futureLessons = ref([])
 import globalVariables from '../../../globalVariables';
 import { formatItalianDate } from '@/common/commonMethods';
+import LeaveFeedback from './LeaveFeedback.vue';
+const showModal = ref(false)
+const ripetitionId = ref()
 
 onMounted(async () => {
     fetch(`${globalVariables.API_URL}getAllUserRipetition`, {
@@ -24,9 +27,19 @@ onMounted(async () => {
         .catch(err => console.error('Error fetching subjects:', err));
 })
 
-const LeaveFeedback = async (params) => {
-    alert('da implementare')
+const ShowModal = (id) => {
+    ripetitionId.value = id
+    console.log(ripetitionId.value)
+    showModal.value = true
+} 
+
+const CloseModal = () => {
+    showModal.value = false
+    ripetitionId.value = undefined
 }
+// const LeaveFeedback = async (params) => {
+//     alert('da implementare')
+// }
 </script>
 
 <template>
@@ -38,7 +51,7 @@ const LeaveFeedback = async (params) => {
             <section class="mb-5" >
                 <h2 class="h5 mb-3">Prossime Lezioni</h2>
                 <div class="row g-3">
-                    <div class="col-md-6 col-lg-4" v-for="lesson in futureLessons" :key="lesson.id" @click="LeaveFeedback">
+                    <div class="col-md-6 col-lg-4" v-for="lesson in futureLessons" :key="lesson.id">
                         <RipetionCardForInfo :lesson="lesson" />
                     </div>
                 </div>
@@ -49,10 +62,12 @@ const LeaveFeedback = async (params) => {
                 <h2 class="h5 mb-3">Lezioni Frequentate</h2>
                 <div class="row g-3">
                     <div class="col-md-6 col-lg-4" v-for="lesson in pastLessons" :key="lesson.id">
-                        <RipetionCardForInfo :lesson="lesson" />
+                        <RipetionCardForInfo :lesson="lesson" @click="ShowModal(lesson.Id)" />
                     </div>
                 </div>
             </section>
+
+           <LeaveFeedback v-if="showModal" :ripetitionId="ripetitionId" @close="CloseModal()"/>
         </div>
     </div>
 </template>

@@ -37,6 +37,16 @@ router.route("/register").post((req, res) => {
   });
 });
 
+router.route("/addFeedback").post((req,res) => {
+  DB.AddFeedback(req.body).then((rit) => {
+    try{
+      res.status(200).send('Feedback aggiunto con successo')
+    }
+    catch(ex){
+      res.status(500).send("Errore Interno al Server: ", ex)
+    }
+  })
+})
 router.route("/log").post((req, res) => {
   DB.TryToLog(req.body).then((rit) => {
     try {
