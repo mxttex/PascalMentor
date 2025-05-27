@@ -6,7 +6,6 @@ const userId = inject('userId')
 const pastLessons = ref([])
 const futureLessons = ref([])
 import globalVariables from '../../../globalVariables';
-import { formatItalianDate } from '@/common/commonMethods';
 import LeaveFeedback from './LeaveFeedback.vue';
 const showModal = ref(false)
 const ripetitionId = ref()
@@ -37,13 +36,10 @@ const CloseModal = () => {
     showModal.value = false
     ripetitionId.value = undefined
 }
-// const LeaveFeedback = async (params) => {
-//     alert('da implementare')
-// }
+
 </script>
 
 <template>
-    <div v-if="userType === `S`">
         <div class="container py-5">
             <h1 class="mb-4">Le tue Ripetizioni</h1>
 
@@ -69,5 +65,4 @@ const CloseModal = () => {
 
            <LeaveFeedback v-if="showModal" :ripetitionId="ripetitionId" @close="CloseModal()"/>
         </div>
-    </div>
 </template>
