@@ -1,12 +1,12 @@
 <script setup>
-import RipetionCardForInfo from './RipetionCardForInfo.vue';
+import RipetionCardForInfo from '@/components/RipetionCardForInfo.vue';
 import { inject, onMounted, ref } from 'vue';
 const userType = inject('userType')
 const userId = inject('userId')
 const pastLessons = ref([])
 const futureLessons = ref([])
 import globalVariables from '../../../globalVariables';
-import LeaveFeedback from './LeaveFeedback.vue';
+import LeaveFeedback from '@/components/LeaveFeedback.vue';
 const showModal = ref(false)
 const ripetitionId = ref()
 

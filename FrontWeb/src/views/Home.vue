@@ -1,94 +1,82 @@
 <template>
-  <section class="presentation-box" v-if="visible">
-    <div class="header">
-      <h2 v-if="type === null">Benvenuto su PascalMentor!</h2>
-      <h2 v-else-if="type === 'S'">Bentornato Studente 👨‍🎓</h2>
-      <h2 v-else-if="type === 'I'">Bentornato Insegnante 👩‍🏫</h2>
-    </div>
+  <section class="home-box">
+    <h2 v-if="type === null">Benvenuto su PascalMentor</h2>
+    <h2 v-else-if="type === 'S'">Bentornato Studente 👨‍🎓</h2>
+    <h2 v-else-if="type === 'I'">Bentornato Insegnante 👩‍🏫</h2>
 
-    <div class="content">
-      <transition name="fade" mode="out-in">
-        <template v-if="type === 'S'">
-          <div key="student">
-            <p>
-              📚 Esplora i prossimi eventi, scopri insegnanti con ottime recensioni e partecipa attivamente!
-            </p>
-            <button class="primary" @click="navigateTo('events')">Vai agli eventi</button>
-          </div>
-        </template>
+    <p class="subtitle">
+      <template v-if="type === ''">
+        Per accedere ai contenuti, effettua il login.
+      </template>
+      <template v-else-if="type === 'S'">
+        Clicca per gestire le tue ripetizioni o prenotarne di nuove.
+      </template>
+      <template v-else-if="type === 'I'">
+        Clicca per creare nuove ripetizioni o vedere quelle esistenti.
+      </template>
+    </p>
 
-        <template v-else-if="type === 'I'">
-          <div key="teacher">
-            <p>
-              ✍️ Crea eventi formativi, gestisci le iscrizioni e ricevi feedback dai tuoi studenti.
-            </p>
-            <button class="primary" @click="navigateTo('dashboard')">Vai al pannello</button>
-          </div>
-        </template>
+    <div class="button-group">
+      <template v-if="type === ''">
+        <button class="primary" @click="goTo('log')">Accedi</button>
+      </template>
 
-        <template v-else>
-          <div key="guest">
-            <p>
-              ✨ PascalMentor è la piattaforma ideale per imparare, insegnare e crescere insieme.
-              Scopri lezioni, eventi e recensioni autentiche.
-            </p>
-            <div class="button-group">
-              <button class="secondary" @click="navigateTo('register-student')">Registrati Studente</button>
-              <button class="secondary" @click="navigateTo('register-teacher')">Registrati Insegnante</button>
-            </div>
-          </div>
-        </template>
-      </transition>
+      <template v-else-if="type === 'S'">
+        <button class="primary" @click="goTo('followed-ripetition')">Le mie Ripetizioni</button>
+        <button class="secondary" @click="goTo('book-ripetition')">Prenota una Lezione</button>
+      </template>
+
+      <template v-else-if="type === 'I'">
+        <button class="primary" @click="goTo('create-event')">Crea Evento</button>
+        <button class="secondary" @click="goTo('created-ripetition')">Le mie Ripetizioni</button>
+      </template>
     </div>
   </section>
 </template>
 
 <script setup>
-import { inject, ref } from 'vue'
+import { inject } from 'vue'
 import { useRouter } from 'vue-router'
 
-const type = inject('userType') // 'S' | 'I' | null
-const visible = ref(true)
+const type = inject('userType') // null | 'S' | 'I'
 const router = useRouter()
 
-const navigateTo = (routeName) => {
+const goTo = (routeName) => {
   router.push({ name: routeName })
 }
 </script>
 
 <style scoped>
-.presentation-box {
-  background: linear-gradient(135deg, #e3f2fd, #fce4ec);
+.home-box {
+  background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
   padding: 2.5rem 2rem;
-  margin: 2rem auto;
-  max-width: 900px;
+  margin: 3rem auto;
+  max-width: 800px;
   border-radius: 20px;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
   text-align: center;
   animation: fadeIn 0.6s ease;
 }
 
-.header h2 {
+h2 {
   font-size: 2rem;
-  color: #333;
   margin-bottom: 1rem;
+  color: #333;
 }
 
-.content p {
-  font-size: 1.2rem;
-  color: #444;
+.subtitle {
+  font-size: 1.1rem;
   margin-bottom: 2rem;
-  line-height: 1.6;
+  color: #555;
 }
 
 .button-group {
   display: flex;
-  justify-content: center;
-  gap: 1.2rem;
   flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
 }
 
-/* Pulsanti */
 button {
   font-size: 1rem;
   padding: 0.8rem 1.6rem;
@@ -108,7 +96,7 @@ button {
 }
 
 .secondary {
-  background-color: #ffffff;
+  background-color: white;
   color: #007bff;
   border: 2px solid #007bff;
 }
@@ -118,7 +106,6 @@ button {
   color: white;
 }
 
-/* Animazioni */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -128,15 +115,5 @@ button {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.4s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
 }
 </style>

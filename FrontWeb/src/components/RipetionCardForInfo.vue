@@ -1,5 +1,5 @@
 <template>
-    <div class="card h-100 shadow-sm border-0" v-if="type == 'S'">
+    <!-- <div class="card h-100 shadow-sm border-0" v-if="type == 'S'">
         <div class="card-body">
             <h5 class="card-title">{{ lesson.Materia }}</h5>
             <h6 class="card-subtitle mb-2 text-muted">
@@ -7,8 +7,8 @@
             </h6>
             <p class="card-text mb-0"><i class="bi bi-calendar-event"></i> {{ formatItalianDate(lesson.Data) }}</p>
         </div>
-    </div>
-    <div v-else>
+    </div> -->
+    <div>
         <div class="card-body">
             <h5 class="card-title">{{ lesson.Materia }}</h5>
             <h6 class="card-subtitle mb-2 text-muted">
@@ -18,7 +18,7 @@
             <h6 class="card-subtitle mb-2 text-muted">Iscritti: {{ lesson.NumeroIscritti }}</h6>
             <p class="card-text mb-0"><i class="bi bi-calendar-event"></i> {{ formatItalianDate(lesson.Data) }}</p>
             <button @click="ShowIscrittiModal()">Visualizza Partecipanti</button>
-            <button v-if="Date(lesson.Data) < Date.now()"  @click="ShowFeedbackModal()">Visualizza Partecipanti</button>
+            <button  @click="ShowFeedbackModal()">Lascia Feedback</button>
         </div>
     </div>
 
@@ -40,6 +40,7 @@ const showPartecipants = ref(false)
 
 const ShowFeedbackModal = () => {
     showFeedback.value = showFeedback.value ?  false :  true
+    console.log(showFeedback.value)
 }
 const ShowIscrittiModal = () => {
     showPartecipants.value =  showPartecipants.value ?  false :  true

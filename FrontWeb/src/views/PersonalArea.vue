@@ -3,7 +3,7 @@ import { inject, onMounted, ref } from 'vue';
 import globalVariables from '../../../globalVariables';
 import router from '@/router';
 import { formatItalianDate } from '@/common/commonMethods';
-import SeeFollowedRipetitions from '@/components/SeeFollowedRipetitions.vue';
+import SeeFollowedRipetitions from '@/views/SeeFollowedRipetitions.vue';
 const user = ref({})
 const type = inject('userType')
 
