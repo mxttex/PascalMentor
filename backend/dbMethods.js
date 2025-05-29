@@ -150,7 +150,7 @@ const FetchRipetionsByUserId = async (body) => {
   try {
     let query =
       body.type === "S"
-        ?   `SELECT Ripetizioni.Id, Data, OraInizio, OraFine, Utenti.Nome as NomeInsegnante, Utenti.Cognome as CognomeInsegnante, Materie.Nome as Materia, Note
+        ?   `SELECT Ripetizioni.Id, Data, OraInizio, OraFine, Utenti.Nome as NomeInsegnante, Utenti.Cognome as CognomeInsegnante, Materie.Nome as Materia, Note, Partecipazioni.FeedbackGiaLasciato as FeedbackGiaLasciato
             FROM ((Ripetizioni JOIN Partecipazioni ON Ripetizione = Id) JOIN Utenti on Utenti.ID = Insegnante) JOIN Materie ON Materia = Materie.Id
             WHERE Partecipazioni.Studente = @id`
         : `SELECT *
@@ -191,7 +191,6 @@ const FilterEventBySubject = async (subject) => {
 
 const AddFeedback = async (body) => {
   try {
-    console.log(body)
     let pool = await sql.connect(config);
     let insertion = await pool
       .request()
@@ -200,14 +199,37 @@ const AddFeedback = async (body) => {
       .input("Studente", sql.Int, body.studenteId)
       .input("Ripetizione", sql.Int, body.ripetitionId)
       .query(
-        `INSERT INTO Feedbacks(Rating, Descrizione, Studente, Ripetizione) VALUES (@Voto, @Descrizione, @Studente, @Ripetizione)`
-      );
-    return insertion.rowsAffected;
+        `INSERT INTO Feedbacks(Rating, Descrizione, Studente, Ripetizione) VALUES (@Voto, @Descrizione, @Studente, @Ripetizione)`,
+      )
+      
+    if(UpdateFeedbackState(body.studenteId, body.ripetitionId))
+      return insertion.rowsAffected;
   } catch (error) {
     console.log(error);
     return undefined;
   }
 };
+
+const UpdateFeedbackState = async (student, ripetition) => {
+  console.log(`Studente: ${student}\nRipetizione: ${ripetition}`)
+  try {
+    let pool = await sql.connect(config)
+    let update = await pool
+    .request()
+    .input("Studente", sql.Int, student)
+    .input("Ripetizione", sql.Int, ripetition)
+    .query(
+      'UPDATE Partecipazioni SET FeedbackGiaLasciato = 1 WHERE Ripetizione = @Ripetizione AND Studente = @Studente'
+    )
+    console.log(update.rowsAffected)
+    if(update.rowsAffected == 1)
+      return true
+    else
+      throw new Error("Errore nell'inserimento del feedback");
+  } catch (error) {
+    throw new Error("Errore nell'inserimento del feedback");
+  }
+}
 
 const FetchFeedbacks = async (ripetition) => {
   try {

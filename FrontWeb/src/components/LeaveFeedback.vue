@@ -20,7 +20,7 @@
 
           <div class="modal-buttons">
             <button type="submit">Invia</button>
-            <button type="button" class="btn-close" @click="close">Annulla</button>
+            <button type="button" class="btn-close" @click="close"></button>
           </div>
         </form>
 
@@ -33,14 +33,13 @@
 </template>
 
 <script setup>
-import { ref, watch, defineProps, defineEmits, inject } from 'vue';
+import { ref, defineProps, defineEmits, inject } from 'vue';
 import globalVariables from '../../../globalVariables';
 
 const props = defineProps(['ripetitionId']);
 const emit = defineEmits(['close']);
 
 const feedback = ref({ rating: 0, message: '' });
-const hoverRating = ref(0);
 const submitted = ref(false);
 const userId = inject('userId')
 
@@ -192,6 +191,7 @@ button:hover {
 .star.half {
   background: linear-gradient(90deg, #ffcc00 50%, #ccc 50%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 

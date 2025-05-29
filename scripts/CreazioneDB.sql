@@ -35,6 +35,7 @@ CREATE TABLE Ripetizioni(
 CREATE TABLE Partecipazioni(
 	Studente INT REFERENCES Utenti(Id),
 	Ripetizione INT REFERENCES Ripetizioni(Id)
+	FeedbackGiaLasciato TINYINT DEFAULT(0)
 	PRIMARY KEY(Studente, Ripetizione))
 
 CREATE TABLE Feedbacks(

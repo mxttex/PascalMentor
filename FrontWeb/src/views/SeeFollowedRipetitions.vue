@@ -6,9 +6,6 @@ const userId = inject('userId')
 const pastLessons = ref([])
 const futureLessons = ref([])
 import globalVariables from '../../../globalVariables';
-import LeaveFeedback from '@/components/LeaveFeedback.vue';
-const showModal = ref(false)
-const ripetitionId = ref()
 
 onMounted(async () => {
     fetch(`${globalVariables.API_URL}getAllUserRipetition`, {
@@ -26,16 +23,7 @@ onMounted(async () => {
         .catch(err => console.error('Error fetching subjects:', err));
 })
 
-const ShowModal = (id) => {
-    ripetitionId.value = id
-    console.log(ripetitionId.value)
-    showModal.value = true
-} 
 
-const CloseModal = () => {
-    showModal.value = false
-    ripetitionId.value = undefined
-}
 
 </script>
 
@@ -58,11 +46,10 @@ const CloseModal = () => {
                 <h2 class="h5 mb-3">Lezioni Frequentate</h2>
                 <div class="row g-3">
                     <div class="col-md-6 col-lg-4" v-for="lesson in pastLessons" :key="lesson.id">
-                        <RipetionCardForInfo :lesson="lesson" @click="ShowModal(lesson.Id)" />
+                        <RipetionCardForInfo :lesson="lesson" />
                     </div>
                 </div>
             </section>
 
-           <LeaveFeedback v-if="showModal" :ripetitionId="ripetitionId" @close="CloseModal()"/>
         </div>
 </template>
