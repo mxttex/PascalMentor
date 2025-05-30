@@ -1,6 +1,7 @@
 <script setup>
 import { ref, inject, onMounted } from 'vue';
 import globalVariables from '../../../globalVariables';
+import router from '@/router';
 
 const teacherId = inject('userId');
 
@@ -37,6 +38,7 @@ async function submitForm() {
 
   if (response.ok) {
     alert('Ripetizione creata con successo');
+    router.push('/')
   } else {
     alert('Errore durante la creazione della ripetizione');
   }
