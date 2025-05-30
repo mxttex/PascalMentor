@@ -151,11 +151,11 @@ const FetchRipetionsByUserId = async (body) => {
     let query =
       body.type === "S"
         ?   `SELECT Ripetizioni.Id, Data, OraInizio, OraFine, Utenti.Nome as NomeInsegnante, Utenti.Cognome as CognomeInsegnante, Materie.Nome as Materia, Note, Partecipazioni.FeedbackGiaLasciato as FeedbackGiaLasciato
-            FROM ((Ripetizioni JOIN Partecipazioni ON Ripetizione = Id) JOIN Utenti on Utenti.ID = Insegnante) JOIN Materie ON Materia = Materie.Id
-            WHERE Partecipazioni.Studente = @id`
-        : `SELECT *
-              FROM Ripetizioni 
-              WHERE Insegnante = @id`;
+             FROM ((Ripetizioni JOIN Partecipazioni ON Ripetizione = Id) JOIN Utenti on Utenti.ID = Insegnante) JOIN Materie ON Materia = Materie.Id
+             WHERE Partecipazioni.Studente = @id`
+        :   `SELECT Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, NumeroIscritti, Insegnante, Materie.Nome as Materia, Note
+             FROM Ripetizioni JOIN Materie on Materia = Materie.Id
+             WHERE Insegnante = @id`;
 
     let pool = await sql.connect(config);
     let result = await pool
@@ -233,7 +233,7 @@ const UpdateFeedbackState = async (student, ripetition) => {
 
 const FetchFeedbacks = async (ripetition) => {
   try {
-    let pool = await sql.connect();
+    let pool = await sql.connect(config);
     let insertion = await pool
       .request()
       .input("ripetizione", sql.Int, ripetition)
@@ -248,7 +248,7 @@ const FetchFeedbacks = async (ripetition) => {
 
 const FetchAllFeedbackByTeacher = async (teacher) => {
   try {
-    let pool = await sql.connect();
+    let pool = await sql.connect(config);
     let insertion = await pool.request().input("teacher", sql.Int, teacher)
       .query(`SELECT Ripetizioni.Id, Rating, Note
               FROM (Feedbacks JOIN Ripetizioni ON Ripetizione = Ripetizioni.Id) JOIN Utenti ON Ripetizioni.Insegnante = Utenti.ID
@@ -261,6 +261,20 @@ const FetchAllFeedbackByTeacher = async (teacher) => {
   }
 };
 
+const FetchPartecipantsToCertainRipetition = async (ripetition) => {
+  try {
+    let pool = await sql.connect(config)
+    let fetch = await pool.request().input("ripetizione", sql.Int, ripetition)
+    .query(`SELECT Nome, Cognome, DataDiNascita
+            FROM Partecipazioni JOIN Utenti on Studente = Utenti.ID
+            WHERE Ripetizione = @ripetizione`)
+    return fetch.recordsets
+
+  } catch (error) {
+    console.log(error);
+    return undefined
+  }
+}
 module.exports = {
   FetchAllRipetitions: FetchAllRipetitions,
   AddNewUser: AddNewUser,
@@ -275,4 +289,5 @@ module.exports = {
   AddFeedback: AddFeedback,
   FetchFeedbacks: FetchFeedbacks,
   FetchAllFeedbackByTeacher: FetchAllFeedbackByTeacher,
+  FetchPartecipantsToCertainRipetition : FetchPartecipantsToCertainRipetition
 };

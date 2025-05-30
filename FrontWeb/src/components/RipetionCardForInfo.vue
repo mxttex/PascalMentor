@@ -18,13 +18,13 @@
             <h6 class="card-subtitle mb-2 text-muted">Massimo Partecipanti: {{ lesson.NumeroMassimoPartecipanti }}</h6>
             <h6 class="card-subtitle mb-2 text-muted">Iscritti: {{ lesson.NumeroIscritti }}</h6>
             <p class="card-text mb-0"><i class="bi bi-calendar-event"></i> {{ formatItalianDate(lesson.Data) }}</p>
-            <button @click="ShowIscrittiModal()">Visualizza Partecipanti</button>
-            <button v-if="new Date(lesson.Data) < Date.now()" @click="ShowFeedbackModal()">Visualizza i Feedback</button>
+            <button @click="ShowIscrittiModal(lesson.Id)">Visualizza Partecipanti</button>
+            <button v-if="new Date(lesson.Data) < Date.now()" @click="ShowFeedbackModal(lesson.Id)">Visualizza i Feedback</button>
         </div>
     </div>
 
-    <FeedbackModal v-if="showFeedback"/>
-    <PartecipantsModal v-if="showPartecipants"/>
+    <FeedbackModal v-if="showFeedback" @close="CloseModal('')"/>
+    <PartecipantsModal v-if="showPartecipants" :ripetition="ripetitionId" @close="CloseModal('seePartecipants')"/>
     <LeaveFeedback :ripetition-id="ripetitionId" @close="CloseModal('leavefeedback')" v-if="showLeaveFeedback" />
 </template>
 
@@ -44,10 +44,11 @@ const showLeaveFeedback = ref(false)
 const ripetitionId = ref(undefined)
 const type = inject('userType')
 
-const ShowFeedbackModal = () => {
+const ShowFeedbackModal = (id) => {
     showFeedback.value = showFeedback.value ?  false :  true
 }
-const ShowIscrittiModal = () => {
+const ShowIscrittiModal = (id) => {
+    ripetitionId.value = id
     showPartecipants.value =  showPartecipants.value ?  false :  true
 }
 

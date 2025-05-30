@@ -183,6 +183,18 @@ router.route("/getFeedbacksByTeacher:teacher").get((req, res) => {
   })
 })
 
+router.route("/fetchPartecipantsToCertainRipetition:ripetition").get(
+  (req, res) => {
+  DB.FetchPartecipantsToCertainRipetition(req.params.ripetition.substring(1)).then((data) => {
+    try {
+      console.log(data)
+      res.json(data[0])
+    } catch (error) {
+      res.status(404).send("Nessuno studente previsto")
+    }
+  })
+})
+
 
 //funzione per vedere se una persona puo' accedere ad una determinata risorsa
 async function verifyToken(token) {

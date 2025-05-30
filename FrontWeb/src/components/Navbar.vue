@@ -20,6 +20,9 @@
                 <li v-if="user == 'I'" class="nav-item">
                     <router-link class="nav-link" to="/create-event">Crea Evento</router-link>
                 </li>
+                <li v-if="user !== ''" class="nav-item">
+                    <router-link class="nav-link" to="/see-ripetitions">Visualizza i tuoi eventi</router-link>
+                </li>
                 <li v-if="user == 'S'" class="nav-item">
                     <router-link class="nav-link" to="/book-ripetition">Prenota Ripetizioni</router-link>
                 </li>

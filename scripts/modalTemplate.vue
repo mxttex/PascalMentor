@@ -4,17 +4,13 @@
       <div class="modal-content">
         <header class="modal-header">
           <slot name="header">
-            <h2>Visualizza i partecipanti</h2>
+            <h2>Modal Title</h2>
           </slot>
         </header>
 
         <section class="modal-body">
           <slot>
-            <div v-for="partecipant in partecipants" :key="partecipant.Id">
-                <p>Nome: {{ partecipant.Nome }}</p>
-                <p>Cognome: {{ partecipant.Cognome }}</p>
-                <p>Data di Nascita: {{ formatItalianDate(partecipant.DataDiNascita) }}</p>
-            </div>
+            Modal content goes here...
           </slot>
         </section>
 
@@ -29,27 +25,13 @@
 </template>
 
 <script setup>
-import { formatItalianDate } from '@/common/commonMethods';
-import { defineEmits, onMounted, ref } from 'vue';
-import globalVariables from '../../../globalVariables';
+import { defineEmits } from 'vue';
 
-const partecipants = ref([])
 const emit = defineEmits(['close']);
 
-const props = defineProps(['ripetition'])
 const close = () => {
   emit('close');
 };
-
-onMounted(async () => {
-    console.log(props.ripetition)
-    await fetch(
-        `${globalVariables.API_URL}fetchPartecipantsToCertainRipetition:${props.ripetition}`
-    )
-    .then(res => res.json())
-    .then(data => { partecipants.value = data })
-    .catch(error => console.log(error))
-})
 </script>
 
 <style scoped>
