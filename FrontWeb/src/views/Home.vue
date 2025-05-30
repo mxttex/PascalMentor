@@ -18,7 +18,7 @@
 
     <div class="button-group">
       <template v-if="type === ''">
-        <button class="primary" @click="goTo('log')">Accedi</button>
+        <button class="primary" @click="goTo('sign-in')">Accedi</button>
       </template>
 
       <template v-else-if="type === 'S'">

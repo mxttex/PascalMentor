@@ -80,8 +80,8 @@ async function submitForm() {
       </div>
 
       <div class="mb-3">
-        <label for="notes" class="form-label">Note</label>
-        <textarea v-model="form.notes" class="form-control" id="notes" rows="3" placeholder="Inserisci eventuali note"></textarea>
+        <label for="notes" class="form-label">Argomenti:</label>
+        <textarea v-model="form.notes" class="form-control" id="notes" rows="3" placeholder="Inserire gli argomenti" required></textarea>
       </div>
 
       <button type="submit" class="btn btn-primary">Crea Ripetizione</button>
