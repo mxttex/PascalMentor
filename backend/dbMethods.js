@@ -265,7 +265,7 @@ const FetchPartecipantsToCertainRipetition = async (ripetition) => {
   try {
     let pool = await sql.connect(config)
     let fetch = await pool.request().input("ripetizione", sql.Int, ripetition)
-    .query(`SELECT Nome, Cognome, DataDiNascita
+    .query(`SELECT Nome, Cognome, DataDiNascita, IndirizzoDiStudio as Indirizzo
             FROM Partecipazioni JOIN Utenti on Studente = Utenti.ID
             WHERE Ripetizione = @ripetizione`)
     return fetch.recordsets

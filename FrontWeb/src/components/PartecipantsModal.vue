@@ -11,9 +11,9 @@
         <section class="modal-body">
           <slot>
             <div v-for="partecipant in partecipants" :key="partecipant.Id">
-                <p>Nome: {{ partecipant.Nome }}</p>
-                <p>Cognome: {{ partecipant.Cognome }}</p>
-                <p>Data di Nascita: {{ formatItalianDate(partecipant.DataDiNascita) }}</p>
+                <h5> {{ partecipant.Nome }} -  {{ partecipant.Cognome }}</h5>
+                <h6>Data di Nascita: {{ formatItalianDate(partecipant.DataDiNascita) }}</h6>
+                <h6>Indirizzo: {{ partecipant.Indirizzo }}</h6>
             </div>
           </slot>
         </section>
