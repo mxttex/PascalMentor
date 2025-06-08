@@ -150,10 +150,10 @@ const FetchRipetionsByUserId = async (body) => {
   try {
     let query =
       body.type === "S"
-        ?   `SELECT Ripetizioni.Id, Data, OraInizio, OraFine, Utenti.Nome as NomeInsegnante, Utenti.Cognome as CognomeInsegnante, Materie.Nome as Materia, Note, Partecipazioni.FeedbackGiaLasciato as FeedbackGiaLasciato
+        ? `SELECT Ripetizioni.Id, Data, OraInizio, OraFine, Utenti.Nome as NomeInsegnante, Utenti.Cognome as CognomeInsegnante, Materie.Nome as Materia, Note, Partecipazioni.FeedbackGiaLasciato as FeedbackGiaLasciato
              FROM ((Ripetizioni JOIN Partecipazioni ON Ripetizione = Id) JOIN Utenti on Utenti.ID = Insegnante) JOIN Materie ON Materia = Materie.Id
              WHERE Partecipazioni.Studente = @id`
-        :   `SELECT Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, NumeroIscritti, Insegnante, Materie.Nome as Materia, Note
+        : `SELECT Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, NumeroIscritti, Insegnante, Materie.Nome as Materia, Note
              FROM Ripetizioni JOIN Materie on Materia = Materie.Id
              WHERE Insegnante = @id`;
 
@@ -199,10 +199,10 @@ const AddFeedback = async (body) => {
       .input("Studente", sql.Int, body.studenteId)
       .input("Ripetizione", sql.Int, body.ripetitionId)
       .query(
-        `INSERT INTO Feedbacks(Rating, Descrizione, Studente, Ripetizione) VALUES (@Voto, @Descrizione, @Studente, @Ripetizione)`,
-      )
-      
-    if(UpdateFeedbackState(body.studenteId, body.ripetitionId))
+        `INSERT INTO Feedbacks(Rating, Descrizione, Studente, Ripetizione) VALUES (@Voto, @Descrizione, @Studente, @Ripetizione)`
+      );
+
+    if (UpdateFeedbackState(body.studenteId, body.ripetitionId))
       return insertion.rowsAffected;
   } catch (error) {
     console.log(error);
@@ -211,25 +211,23 @@ const AddFeedback = async (body) => {
 };
 
 const UpdateFeedbackState = async (student, ripetition) => {
-  console.log(`Studente: ${student}\nRipetizione: ${ripetition}`)
+  console.log(`Studente: ${student}\nRipetizione: ${ripetition}`);
   try {
-    let pool = await sql.connect(config)
+    let pool = await sql.connect(config);
     let update = await pool
-    .request()
-    .input("Studente", sql.Int, student)
-    .input("Ripetizione", sql.Int, ripetition)
-    .query(
-      'UPDATE Partecipazioni SET FeedbackGiaLasciato = 1 WHERE Ripetizione = @Ripetizione AND Studente = @Studente'
-    )
-    console.log(update.rowsAffected)
-    if(update.rowsAffected == 1)
-      return true
-    else
-      throw new Error("Errore nell'inserimento del feedback");
+      .request()
+      .input("Studente", sql.Int, student)
+      .input("Ripetizione", sql.Int, ripetition)
+      .query(
+        "UPDATE Partecipazioni SET FeedbackGiaLasciato = 1 WHERE Ripetizione = @Ripetizione AND Studente = @Studente"
+      );
+    console.log(update.rowsAffected);
+    if (update.rowsAffected == 1) return true;
+    else throw new Error("Errore nell'inserimento del feedback");
   } catch (error) {
     throw new Error("Errore nell'inserimento del feedback");
   }
-}
+};
 
 const FetchFeedbacks = async (ripetition) => {
   try {
@@ -263,18 +261,31 @@ const FetchAllFeedbackByTeacher = async (teacher) => {
 
 const FetchPartecipantsToCertainRipetition = async (ripetition) => {
   try {
-    let pool = await sql.connect(config)
+    let pool = await sql.connect(config);
     let fetch = await pool.request().input("ripetizione", sql.Int, ripetition)
-    .query(`SELECT Nome, Cognome, DataDiNascita, IndirizzoDiStudio as Indirizzo
+      .query(`SELECT Nome, Cognome, DataDiNascita, IndirizzoDiStudio as Indirizzo
             FROM Partecipazioni JOIN Utenti on Studente = Utenti.ID
-            WHERE Ripetizione = @ripetizione`)
-    return fetch.recordsets
-
+            WHERE Ripetizione = @ripetizione`);
+    return fetch.recordsets;
   } catch (error) {
     console.log(error);
-    return undefined
+    return undefined;
   }
-}
+};
+
+const FetchFeedbacksByRipetition = async (ripetition) => {
+  try {
+    let pool = await sql.connect(config);
+    let fetch = await pool.request().input("ripetizione", sql.Int, ripetition)
+      .query(`SELECT Feedbacks.Id as Id, Rating, Descrizione, Utenti.Nome as Nome, Cognome, Materie.Nome as Materia, Ripetizioni.Data
+              FROM ((Feedbacks JOIN Utenti on Studente = Utenti.ID) JOIN Ripetizioni on Ripetizione = Ripetizioni.Id) JOIN Materie on Materia = Materie.Id
+              WHERE Ripetizione = @ripetizione`);
+    return fetch.recordsets
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
+};
 module.exports = {
   FetchAllRipetitions: FetchAllRipetitions,
   AddNewUser: AddNewUser,
@@ -289,5 +300,6 @@ module.exports = {
   AddFeedback: AddFeedback,
   FetchFeedbacks: FetchFeedbacks,
   FetchAllFeedbackByTeacher: FetchAllFeedbackByTeacher,
-  FetchPartecipantsToCertainRipetition : FetchPartecipantsToCertainRipetition
+  FetchPartecipantsToCertainRipetition: FetchPartecipantsToCertainRipetition,
+  FetchFeedbacksByRipetition : FetchFeedbacksByRipetition
 };

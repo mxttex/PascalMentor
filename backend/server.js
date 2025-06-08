@@ -37,16 +37,15 @@ router.route("/register").post((req, res) => {
   });
 });
 
-router.route("/addFeedback").post((req,res) => {
+router.route("/addFeedback").post((req, res) => {
   DB.AddFeedback(req.body).then((rit) => {
-    try{
-      res.status(200).send('Feedback aggiunto con successo')
+    try {
+      res.status(200).send("Feedback aggiunto con successo");
+    } catch (ex) {
+      res.status(500).send("Errore Interno al Server: ", ex);
     }
-    catch(ex){
-      res.status(500).send("Errore Interno al Server: ", ex)
-    }
-  })
-})
+  });
+});
 router.route("/log").post((req, res) => {
   DB.TryToLog(req.body).then((rit) => {
     try {
@@ -127,10 +126,14 @@ router.route("/getSubjects").get((req, res) => {
 });
 router.route("/bookSpecificRipetition").post(async (req, res) => {
   try {
-    const isAvailable = await DB.IsSpecificRipetitionAvailable(req.body.ripetitionId);
+    const isAvailable = await DB.IsSpecificRipetitionAvailable(
+      req.body.ripetitionId
+    );
     if (!isAvailable) {
       console.log(isAvailable);
-      return res.status(400).send(`Non e' piu' possibile prenotare ripetizione`);
+      return res
+        .status(400)
+        .send(`Non e' piu' possibile prenotare ripetizione`);
     }
 
     await DB.BookRipetition(req.body);
@@ -142,7 +145,6 @@ router.route("/bookSpecificRipetition").post(async (req, res) => {
     res.status(500).send(error);
   }
 });
-
 
 router.route("/getAllUserRipetition").post((req, res) => {
   DB.GetRipetitionsByUserId(req.body).then((data) => {
@@ -157,44 +159,58 @@ router.route("/getAllUserRipetition").post((req, res) => {
 router.route("/getEventsBySubject:subject").get((req, res) => {
   DB.FilterEventBySubject(req.params.subject.substring(1)).then((data) => {
     try {
-      res.json(data[0])
+      res.json(data[0]);
     } catch (error) {
-      res.status(404).send('Nessuna Ripetizione Trovata')
+      res.status(404).send("Nessuna Ripetizione Trovata");
     }
-  })
-})
+  });
+});
 
 router.route("/getFeedbacks:ripetition").get((req, res) => {
   DB.FetchFeedbacks(req.params.ripetition.substring(1)).then((data) => {
     try {
-      res.json(data[0])
+      res.json(data[0]);
     } catch (error) {
-      res.status(404).send("Non esistono feedback per questo evento")
+      res.status(404).send("Non esistono feedback per questo evento");
     }
-  })
-})
+  });
+});
 router.route("/getFeedbacksByTeacher:teacher").get((req, res) => {
   DB.FetchAllFeedbackByTeacher(req.params.teacher.substring(1)).then((data) => {
     try {
-      res.json(data[0])
+      res.json(data[0]);
     } catch (error) {
-      res.status(404).send("Non esistono feedback per questo evento")
+      res.status(404).send("Non esistono feedback per questo evento");
     }
-  })
-})
+  });
+});
 
-router.route("/fetchPartecipantsToCertainRipetition:ripetition").get(
-  (req, res) => {
-  DB.FetchPartecipantsToCertainRipetition(req.params.ripetition.substring(1)).then((data) => {
-    try {
-      console.log(data)
-      res.json(data[0])
-    } catch (error) {
-      res.status(404).send("Nessuno studente previsto")
+router
+  .route("/fetchPartecipantsToCertainRipetition:ripetition")
+  .get((req, res) => {
+    DB.FetchPartecipantsToCertainRipetition(
+      req.params.ripetition.substring(1)
+    ).then((data) => {
+      try {
+        console.log(data);
+        res.json(data[0]);
+      } catch (error) {
+        res.status(404).send("Nessuno studente previsto");
+      }
+    });
+  });
+
+router.route("/fetchFeedbacksByLesson:ripetition").get((req, res) => {
+  DB.FetchFeedbacksByRipetition(req.params.ripetition.substring(1)).then(
+    (data) => {
+      try {
+        res.json(data[0]);
+      } catch (error) {
+        res.status(404).send('No feedbacks found')
+      }
     }
-  })
-})
-
+  );
+});
 
 //funzione per vedere se una persona puo' accedere ad una determinata risorsa
 async function verifyToken(token) {

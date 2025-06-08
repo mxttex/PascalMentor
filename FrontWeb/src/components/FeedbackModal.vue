@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <header class="modal-header">
                     <slot name="header">
-                        <h2>Feedback per la lezione di {{ lesson.Materia }} del {{ formatItalianDate(lesson.Data) }}
+                        <h2>Feedback per la lezione di {{ materia }} del {{ formatItalianDate(data) }}
                         </h2>
                     </slot>
                 </header>
@@ -38,15 +38,29 @@
 
 <script setup>
 import { formatItalianDate } from '@/common/commonMethods';
-import { defineEmits, defineProps, ref } from 'vue';
+import { defineEmits, defineProps, onMounted, ref } from 'vue';
+import globalVariables from '../../../globalVariables';
 
 const emit = defineEmits(['close']);
 const props = defineProps(['lesson'])
 const feedbacks = ref([])
+const materia = ref('')
+const data = ref('')
 
 const close = () => {
     emit('close');
 };
+
+onMounted( async () => {
+    await fetch(`${globalVariables.API_URL}fetchFeedbacksByLesson:${props.lesson}`)
+    .then(res => res.json())
+    .then(data => {feedbacks.value = data})
+    .then(console.log(feedbacks.value))
+    .catch(err => alert(err))
+
+    materia.value = feedbacks.value[0].Materia
+    data.value = feedbacks.value[0].Data
+})
 </script>
 
 <style scoped>

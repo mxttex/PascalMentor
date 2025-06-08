@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    <FeedbackModal v-if="showFeedback" @close="CloseModal('')"/>
+    <FeedbackModal v-if="showFeedback" @close="CloseModal('')" :lesson="ripetitionId"></FeedbackModal>
     <PartecipantsModal v-if="showPartecipants" :ripetition="ripetitionId" @close="CloseModal('seePartecipants')"/>
     <LeaveFeedback :ripetition-id="ripetitionId" @close="CloseModal('leavefeedback')" v-if="showLeaveFeedback" />
 </template>
@@ -45,6 +45,7 @@ const ripetitionId = ref(undefined)
 const type = inject('userType')
 
 const ShowFeedbackModal = (id) => {
+    ripetitionId.value = id
     showFeedback.value = showFeedback.value ?  false :  true
 }
 const ShowIscrittiModal = (id) => {
@@ -69,7 +70,7 @@ const CloseModal = (whichModal) => {
             break
         default:
             showFeedback.value = false;
-            ripetitionId = undefined
+            ripetitionId.value = undefined
             break
     }
 }
