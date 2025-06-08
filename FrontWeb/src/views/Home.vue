@@ -28,7 +28,7 @@
 
       <template v-else-if="type === 'I'">
         <button class="primary" @click="goTo('create-event')">Crea Evento</button>
-        <button class="secondary" @click="goTo('see-ripetition')">Le mie Ripetizioni</button>
+        <button class="secondary" @click="goTo('see-ripetitions')">Le mie Ripetizioni</button>
       </template>
     </div>
   </section>
