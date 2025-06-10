@@ -28,13 +28,13 @@ CREATE TABLE Ripetizioni(
 	OraFine TIME,
 	NumeroMassimoPartecipanti INT DEFAULT(1),
 	NumeroIscritti INT DEFAULT(0),
-	Insegnante INT REFERENCES Utenti(Id) NOT NULL,
-	Materia INT REFERENCES Materie(Id) NOT NULL,
+	FOREIGN KEY Insegnante INT REFERENCES Utenti(Id) NOT NULL,
+	FOREIGN KEY Materia INT REFERENCES Materie(Id) NOT NULL,
 	Note VARCHAR(150))
 
 CREATE TABLE Partecipazioni(
-	Studente INT REFERENCES Utenti(Id),
-	Ripetizione INT REFERENCES Ripetizioni(Id)
+	FOREIGN KEY Studente INT REFERENCES Utenti(Id),
+	FOREIGN KEY Ripetizione INT REFERENCES Ripetizioni(Id)
 	FeedbackGiaLasciato TINYINT DEFAULT(0)
 	PRIMARY KEY(Studente, Ripetizione))
 
@@ -42,5 +42,5 @@ CREATE TABLE Feedbacks(
 	Id int identity(1,1) PRIMARY KEY,
 	Rating FLOAT,
 	Descrizione VARCHAR(150),
-	Studente INT REFERENCES Utenti(Id),
-	Ripetizione INT REFERENCES Ripetizioni(Id))
+	FOREIGN KEY Studente INT REFERENCES Utenti(Id),
+	FOREIGN KEY Ripetizione INT REFERENCES Ripetizioni(Id))
