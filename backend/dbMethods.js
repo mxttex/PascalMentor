@@ -1,4 +1,4 @@
-import config from './dbconfig.js'
+const config = require("./dbconfig")
 const sql = require("mssql");
 
 const AddNewUser = async (body) => {
