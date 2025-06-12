@@ -68,5 +68,6 @@ const loadByFilter = async () => {
     margin-left: 5.75em;
     margin-top: 0.7em;
     font-size: 1.5em;
+    justify-items: center;
 }
 </style>

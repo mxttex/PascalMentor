@@ -1,24 +1,24 @@
 <template>
     <div class="card h-100 shadow-sm border-0" v-if="type == 'S'">
         <div class="card-body">
-            <h5 class="card-title">{{ lesson.Materia }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">
+            <h5 class="card-title mainTitle">{{ lesson.Materia }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted sub">
                 Con: {{ lesson.NomeInsegnante }} {{ lesson.CognomeInsegnante }}
             </h6>
-            <p class="card-text mb-0"><i class="bi bi-calendar-event"></i> {{ formatItalianDate(lesson.Data) }}</p>
-            <button v-if="new Date(lesson.Data) < Date.now() && lesson.FeedbackGiaLasciato == 0" @click="ShowLeaveFeedback(lesson.Id)">Lascia Feedback</button>
+            <p class="card-text mb-2 sub"><i class="bi bi-calendar-event"></i> {{ formatItalianDate(lesson.Data) }}</p>
+            <button v-if="new Date(lesson.Data) < Date.now() && lesson.FeedbackGiaLasciato == 0" @click="ShowLeaveFeedback(lesson.Id)" class="defaultButton">Lascia Feedback</button>
         </div>
     </div>
     <div v-else>
         <div class="card-body">
-            <h5 class="card-title">{{ lesson.Materia }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">
+            <h5 class="card-title mainTitle">{{ lesson.Materia }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted sub">
                 Argomenti: {{ lesson.Note }}
             </h6>
-            <h6 class="card-subtitle mb-2 text-muted">Massimo Partecipanti: {{ lesson.NumeroMassimoPartecipanti }}</h6>
-            <h6 class="card-subtitle mb-2 text-muted">Iscritti: {{ lesson.NumeroIscritti }}</h6>
-            <p class="card-text mb-0"><i class="bi bi-calendar-event"></i> {{ formatItalianDate(lesson.Data) }}</p>
-            <button @click="ShowIscrittiModal(lesson.Id)">Visualizza Partecipanti</button>
+            <h6 class="card-subtitle mb-2 text-muted sub">Massimo Partecipanti: {{ lesson.NumeroMassimoPartecipanti }}</h6>
+            <h6 class="card-subtitle mb-2 text-muted sub">Iscritti: {{ lesson.NumeroIscritti }}</h6>
+            <p class="card-text mb-2 sub"><i class="bi bi-calendar-event"></i> {{ formatItalianDate(lesson.Data) }}</p>
+            <button @click="ShowIscrittiModal(lesson.Id)" class="defaultButton sub">Visualizza Partecipanti</button>
             <button v-if="new Date(lesson.Data) < Date.now()" @click="ShowFeedbackModal(lesson.Id)">Visualizza i Feedback</button>
         </div>
     </div>
@@ -76,3 +76,49 @@ const CloseModal = (whichModal) => {
 }
 
 </script>
+
+<style scoped>
+    .mainTitle {
+        font-size: 1.4em;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 0.2em;
+        margin-bottom: 0.2em;
+    }
+
+    .sub {
+        margin-top: 0.2em;
+        margin-bottom: 0.2em;        
+    }
+
+    .defaultButton {
+  /* EF4765 FF9A5A */
+  background: linear-gradient(to bottom right, #ffc691, #ffa341);
+  border: 20px;
+  border-radius: 12px;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.5;
+  outline: transparent;
+  padding: 0 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow .2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.defaultButton:not([disabled]):focus {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+}
+
+.defaultButton:not([disabled]):hover {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+}
+</style>

@@ -1,34 +1,34 @@
 <template>
   <section class="home-box">
     <h2 v-if="type === null">Benvenuto su PascalMentor</h2>
-    <h2 v-else-if="type === 'S'">Bentornato Studente 👨‍🎓</h2>
-    <h2 v-else-if="type === 'I'">Bentornato Insegnante 👩‍🏫</h2>
+    <h2 class="title" v-else-if="type === 'S'">Bentornato Studente</h2>
+    <h2 class="title" v-else-if="type === 'I'">Bentornato Insegnante</h2>
 
     <p class="subtitle">
       <template v-if="type === ''">
-        Per accedere ai contenuti, effettua il login.
+        <p class="blueBoxText">Per accedere ai contenuti, effettua il login.</p>
       </template>
       <template v-else-if="type === 'S'">
-        Clicca per gestire le tue ripetizioni o prenotarne di nuove.
+        <p class="text">Clicca per gestire le tue ripetizioni o prenotarne di nuove.</p>
       </template>
       <template v-else-if="type === 'I'">
-        Clicca per creare nuove ripetizioni o vedere quelle esistenti.
+        <p class="text">Clicca per creare nuove ripetizioni o vedere quelle esistenti.</p>
       </template>
     </p>
 
     <div class="button-group">
       <template v-if="type === ''">
-        <button class="primary" @click="goTo('sign-in')">Accedi</button>
+        <button class="defaultButton" @click="goTo('sign-in')">Accedi</button>
       </template>
 
       <template v-else-if="type === 'S'">
-        <button class="primary" @click="goTo('see-ripetitions')">Le mie Ripetizioni</button>
-        <button class="secondary" @click="goTo('book-ripetition')">Prenota una Lezione</button>
+        <button class="primary defaultButton" @click="goTo('see-ripetitions')">Le mie Ripetizioni</button>
+        <button class="secondary defaultButton" @click="goTo('book-ripetition')">Prenota una Lezione</button>
       </template>
 
       <template v-else-if="type === 'I'">
-        <button class="primary" @click="goTo('create-event')">Crea Evento</button>
-        <button class="secondary" @click="goTo('see-ripetitions')">Le mie Ripetizioni</button>
+        <button class="primary defaultButton" @click="goTo('create-event')">Crea Evento</button>
+        <button class="secondary defaultButton" @click="goTo('see-ripetitions')">Le mie Ripetizioni</button>
       </template>
     </div>
   </section>
@@ -47,8 +47,9 @@ const goTo = (routeName) => {
 </script>
 
 <style scoped>
+/* f8f9fa */
 .home-box {
-  background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+  background: linear-gradient(135deg, #ff9100, #ffd664);
   padding: 2.5rem 2rem;
   margin: 3rem auto;
   max-width: 800px;
@@ -77,15 +78,6 @@ h2 {
   justify-content: center;
 }
 
-button {
-  font-size: 1rem;
-  padding: 0.8rem 1.6rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
 .primary {
   background-color: #007bff;
   color: white;
@@ -111,9 +103,56 @@ button {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
+.blueBoxText {
+  font-size: 1.4em;
+  font-weight: bold;
+  color:rgb(255, 254, 250);
+}
+
+.text {
+    color: white;
+    font-size: 1.04em;
+}
+
+.title {
+    color: white;
+    font-size: 2em;
+}
+
+.defaultButton {
+  /* EF4765 FF9A5A */
+  background: linear-gradient(to bottom right, #ffc691, #ffa341);
+  border: 20px;
+  border-radius: 12px;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.5;
+  outline: transparent;
+  padding: 0 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow .2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+.defaultButton:not([disabled]):focus {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+}
+.defaultButton:not([disabled]):hover {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+}
+
 </style>

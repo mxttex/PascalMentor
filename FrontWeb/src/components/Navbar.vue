@@ -6,11 +6,11 @@
         </button>
 
         <a class="navbar-brand" href="#">
-            <img src="/logo.svg" alt="PascalMentor" />
+            <img src="/logo_white.svg" alt="PascalMentor"/>
         </a>
 
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-            <ul class="navbar-nav d-flex w-100 mt-2 mt-lg-0">
+            <ul class="navbar-nav d-flex justify-content-center align-items-center w-100 gap-3 mt-2 mt-lg-0">
                 <li class="nav-item active">
                     <router-link class="nav-link unselectable" to="/">Home</router-link>
                 </li>
@@ -28,7 +28,7 @@
                 </li>
                 <li class="flex-grow-1"></li>
                 <li class="nav-item" style="margin-right: 10px;">
-                    <router-link class="nav-link" to="/sign-in">Loggati</router-link>
+                    <router-link class="nav-link" to="/sign-in"><i class="bi bi-door-open-fill" style="font-size: 2em;"></i></router-link>
                 </li>
                 <li class="nav-item">
                     <router-link class="nav-link unselectable" to="/chat">Parla con l'Ai</router-link>
@@ -47,7 +47,7 @@ const user = inject('userType');
 
 <style scoped>
 nav {
-    background-color: orange;
+    background: linear-gradient(135deg, #ff9100, #ffd664);
     font-size: 23px;
 }
 
@@ -57,16 +57,17 @@ img {
 
 .navbar-nav .nav-link {
     text-decoration: none;
-    color: black;
+    color: white;
     font-weight: bold;
+    font-size: 1.1em;
 }
 
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-link:focus {
-    color: black;
+    /*color: rgb(255, 247, 0);*/
     text-decoration: none;
+    text-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
 }
-
 .navbar-nav .nav-link.disabled {
     color: gray;
     pointer-events: none;
