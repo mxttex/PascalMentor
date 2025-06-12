@@ -1,22 +1,22 @@
 <template>
     <div class="container mt-5">
-        <h1 class="text-center">Login</h1>
+        <h1 class="text-center title">Login</h1>
         <form @submit.prevent="handleLogin" class="mt-4">
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
+                <label for="email" class="form-label text">Email</label>
                 <input type="email" class="form-control" id="email" name="email" v-model="email" required />
             </div>
 
             <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
+                <label for="password" class="form-label text">Password</label>
                 <input type="password" class="form-control" id="password" name="password" v-model="password" required />
             </div>
 
             <button type="submit" class="btn btn-transparent" :disabled="loading">
-                {{ loading ? 'Accesso in corso...' : 'Accedi' }}
+                <p class="text">{{ loading ? 'Accesso in corso...' : 'Accedi' }}</p>
             </button>
             <button type="button" class="btn btn-transparent" @click="$emit('change-state', 'register')">
-                Non sei registrato? Iscriviti Subito
+                <p class="text">Non sei registrato? Iscriviti Subito</p>
             </button>
         </form>
 
@@ -76,8 +76,18 @@ async function handleLogin() {
     max-width: 400px;
     margin: auto;
     padding: 20px;
-    background: #f8f9fa;
+    background: linear-gradient(135deg, #ff9100, #ffd664);
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.text {
+    color: white;
+    font-size: 1.04em;
+}
+
+.title {
+    color: white;
+    font-size: 2em;
 }
 </style>

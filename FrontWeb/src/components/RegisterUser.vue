@@ -1,42 +1,42 @@
 <template>
     <div class="container mt-5">
-        <h1 class="text-center">{{ isTeacher ? 'Insegnante' : 'Studente' }}</h1>
+        <h1 class="text-center title">{{ isTeacher ? 'Insegnante' : 'Studente' }}</h1>
 
         <div class="text-center mb-4">
-            <button class="btn btn-outline-primary me-2" :class="{ active: !isTeacher }"
+            <button class="defaultButton me-2" :class="{ active: !isTeacher }"
                 @click="isTeacher = false">Studente</button>
-            <button class="btn btn-outline-secondary" :class="{ active: isTeacher }"
+            <button class="defaultButton" :class="{ active: isTeacher }"
                 @click="isTeacher = true">Insegnante</button>
         </div>
 
         <form @submit.prevent="handleSubmit" class="mt-3">
             <div class="mb-3">
-                <label for="nome" class="form-label">Nome</label>
+                <label for="nome" class="form-label text">Nome</label>
                 <input type="text" class="form-control" id="nome" v-model="nome" required />
             </div>
 
             <div class="mb-3">
-                <label for="cognome" class="form-label">Cognome</label>
+                <label for="cognome" class="form-label text">Cognome</label>
                 <input type="text" class="form-control" id="cognome" v-model="cognome" required />
             </div>
 
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
+                <label for="email" class="form-label text">Email</label>
                 <input type="email" class="form-control" id="email" v-model="email" required />
             </div>
 
             <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
+                <label for="password" class="form-label text">Password</label>
                 <input type="password" class="form-control" id="password" v-model="password" required />
             </div>
 
             <div class="mb-3">
-                <label for="confermaPassword" class="form-label">Conferma Password</label>
+                <label for="confermaPassword" class="form-label text">Conferma Password</label>
                 <input type="password" class="form-control" id="confermaPassword" v-model="confermaPassword" required />
             </div>
 
             <div v-if="!isTeacher" class="mb-3">
-                <label for="indirizzo" class="form-label">Indirizzo di studio</label>
+                <label for="indirizzo" class="form-label text">Indirizzo di studio</label>
                 <select id="indirizzo" class="form-select" v-model="indirizzo">
                     <option value="Informatica">Informatica</option>
                     <option value="Automazione">Automazione</option>
@@ -45,12 +45,12 @@
             </div>
 
             <div class="mb-3">
-                <label for="dataNascita" class="form-label">Data di Nascita</label>
+                <label for="dataNascita" class="form-label text">Data di Nascita</label>
                 <input type="date" class="form-control" id="dataNascita" v-model="dataNascita" required />
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Registrati</button>
-            <a @click="$emit('change-state', 'log')">Sei gia' registrato? Loggati!</a>
+            <button type="submit" class="defaultButton w-100">Registrati</button>
+            <a @click="$emit('change-state', 'log')" class="text">Sei gia' registrato? Loggati!</a>
         </form>
     </div>
 </template>
@@ -119,14 +119,47 @@ async function handleSubmit() {
     max-width: 500px;
     margin: auto;
     padding: 20px;
-    background: #f8f9fa;
+    background: linear-gradient(135deg, #ff9100, #ffd664);
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-button.active {
-    font-weight: bold;
-    background-color: #0d6efd;
+.defaultButton {
+  /* EF4765 FF9A5A */
+  background: linear-gradient(to bottom right, #ffc691, #ffa341);
+  border: 20px;
+  border-radius: 12px;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.5;
+  outline: transparent;
+  padding: 0 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow .2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+.defaultButton:not([disabled]):focus {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+}
+.defaultButton:not([disabled]):hover {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+}
+
+.text {
     color: white;
+    font-size: 1.04em;
+}
+
+.title {
+    color: white;
+    font-size: 3em;
 }
 </style>

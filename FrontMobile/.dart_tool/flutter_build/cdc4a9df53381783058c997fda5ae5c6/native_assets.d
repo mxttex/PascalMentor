@@ -1,0 +1,1 @@
+ C:\\Users\\Nikolas\\Desktop\\PascalMentor\\FrontMobile\\.dart_tool\\flutter_build\\cdc4a9df53381783058c997fda5ae5c6\\native_assets.yaml: 

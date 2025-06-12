@@ -46,13 +46,13 @@ async function submitForm() {
 </script>
 
 <template>
-  <div class="container my-5">
-    <h2 class="mb-4">Crea una Nuova Ripetizione</h2>
+  <div class="container my-5 ss">
+    <h2 class="mb-4 title">Crea una Nuova Ripetizione</h2>
     <form @submit.prevent="submitForm">
       <div class="mb-3">
-        <label for="subject" class="form-label">Materia</label>
+        <label for="subject" class="form-label text">Materia</label>
         <select v-model="form.subject" class="form-select" id="subject" required>
-          <option disabled value="">Seleziona una materia</option>
+          <option disabled value="" class="text">Seleziona una materia</option>
           <option v-for="subject in subjects" :key="subject.Id" :value="subject.Id">
             {{ subject.Nome }}
           </option>
@@ -60,31 +60,82 @@ async function submitForm() {
       </div>
 
       <div class="mb-3">
-        <label for="date" class="form-label">Data</label>
+        <label for="date" class="form-label text">Data</label>
         <input v-model="form.date" type="date" class="form-control" id="date" required />
       </div>
 
       <div class="mb-3">
-        <label for="startTime" class="form-label">Ora di inizio:</label>
+        <label for="startTime" class="form-label text">Ora di inizio:</label>
         <input v-model="form.startTime" type="time" class="form-control" id="startTime" required />
       </div>
 
       <div class="mb-3">
-        <label for="endTime" class="form-label">Ora di fine:</label>
+        <label for="endTime" class="form-label text">Ora di fine:</label>
         <input v-model="form.endTime" type="time" class="form-control" id="endTime" required />
       </div>
 
       <div class="mb-3">
-        <label for="maxPartecipants" class="form-label">Numero massimo di partecipanti:</label>
-        <input v-model.number="form.nrMaxPartecipants" type="number" class="form-control" id="maxPartecipants" required />
+        <label for="maxPartecipants" class="form-label text">Numero massimo di partecipanti:</label>
+        <input v-model.number="form.nrMaxPartecipants" type="number" class="form-control" id="maxPartecipants"
+          required />
       </div>
 
       <div class="mb-3">
-        <label for="notes" class="form-label">Argomenti:</label>
-        <textarea v-model="form.notes" class="form-control" id="notes" rows="3" placeholder="Inserire gli argomenti" required></textarea>
+        <label for="notes" class="form-label text">Argomenti:</label>
+        <textarea v-model="form.notes" class="form-control" id="notes" rows="3" placeholder="Inserire gli argomenti"
+          required></textarea>
       </div>
 
-      <button type="submit" class="btn btn-primary">Crea Ripetizione</button>
+      <button type="submit" class="btn btn-primary defaultButton">Crea Ripetizione</button>
     </form>
   </div>
 </template>
+
+<style scoped>
+.ss {
+  background: linear-gradient(135deg, #ff9100, #ffd664);
+  border-radius: 1em;
+  padding: 1.5em;
+}
+
+.text {
+  color: white;
+  font-size: 1.04em;
+}
+
+.title {
+  color: white;
+  font-size: 2em;
+}
+
+.defaultButton {
+  /* EF4765 FF9A5A */
+  background: linear-gradient(to bottom right, #ffc691, #ffa341);
+  border: 20px;
+  border-radius: 12px;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.5;
+  outline: transparent;
+  padding: 0 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow .2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.defaultButton:not([disabled]):focus {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+}
+
+.defaultButton:not([disabled]):hover {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+}
+</style>

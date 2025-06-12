@@ -28,28 +28,61 @@ onMounted(async () => {
 </script>
 
 <template>
-        <div class="container py-5">
-            <h1 class="mb-4">Le tue Ripetizioni</h1>
+    <div class="container ss">
+        <h1 class="mainTitle">Le tue Ripetizioni</h1>
 
-            <!-- Lezioni Future -->
-            <section class="mb-5" >
-                <h2 class="h5 mb-3">Prossime Lezioni</h2>
-                <div class="row g-3">
-                    <div class="col-md-6 col-lg-4" v-for="lesson in futureLessons" :key="lesson.id">
+        <!-- Lezioni Future -->
+        <section class="mb-5">
+            <h2 class="subTitle">Prossime Lezioni</h2>
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-4" v-for="lesson in futureLessons" :key="lesson.id">
+                    <div class="cardBg">
                         <RipetionCardForInfo :lesson="lesson" />
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- Lezioni Frequentate -->
-            <section>
-                <h2 class="h5 mb-3">Lezioni Frequentate</h2>
-                <div class="row g-3">
-                    <div class="col-md-6 col-lg-4" v-for="lesson in pastLessons" :key="lesson.id">
+        <!-- Lezioni Frequentate -->
+        <section>
+            <h2 class="subTitle">Lezioni Frequentate</h2>
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-4" v-for="lesson in pastLessons" :key="lesson.id">
+                    <div class="cardBg">
                         <RipetionCardForInfo :lesson="lesson" />
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-        </div>
+    </div>
 </template>
+
+<style scoped>
+.ss {
+    background: linear-gradient(135deg, #ff9100, #ffd664);
+    border-radius: 1em;
+    padding: 1.5em;
+    align-self: center;
+    margin-top: 2em;
+}
+
+.mainTitle {
+    text-align: center;
+    color: white;
+    font-size: 3.5em;
+    font-weight: bold;
+}
+
+.subTitle {
+    text-align: left;
+    color: white;
+    font-size: 2em;
+}
+
+.cardBg {
+    background: white;
+    border-radius: 1em;
+    padding: 1em;
+}
+</style>
