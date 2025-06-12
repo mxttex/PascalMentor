@@ -39,6 +39,7 @@ router.route("/register").post((req, res) => {
 router.route("/addFeedback").post((req, res) => {
   DB.AddFeedback(req.body).then((rit) => {
     try {
+      if(DB.updateRating(req.body.ripetitionId))
       res.status(200).send("Feedback aggiunto con successo");
     } catch (ex) {
       res.status(500).send("Errore Interno al Server: ", ex);
@@ -54,7 +55,6 @@ router.route("/log").post((req, res) => {
       const token = jwt.sign(payload, process.env.SECRET, options);
 
       res.cookie("token", token, { httpOnly: true });
-      console.log(user);
       const ret = {
         type: user.Tipo,
         userId: user.ID,
@@ -129,7 +129,6 @@ router.route("/bookSpecificRipetition").post(async (req, res) => {
       req.body.ripetitionId
     );
     if (!isAvailable) {
-      console.log(isAvailable);
       return res
         .status(400)
         .send(`Non e' piu' possibile prenotare ripetizione`);
@@ -191,7 +190,6 @@ router
       req.params.ripetition.substring(1)
     ).then((data) => {
       try {
-        console.log(data);
         res.json(data[0]);
       } catch (error) {
         res.status(404).send("Nessuno studente previsto");
