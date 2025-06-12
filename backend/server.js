@@ -1,3 +1,4 @@
+require('dotenv').config();
 var express = require("express");
 var bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -17,8 +18,6 @@ app.use(
   })
 );
 app.use("/api", router);
-
-const secret = "DavidVeneti";
 
 router.use((request, response, next) => {
   {
@@ -52,7 +51,7 @@ router.route("/log").post((req, res) => {
       const user = rit[0];
       const payload = { user };
       const options = { expiresIn: "168h" }; // scade dopo una settimana
-      const token = jwt.sign(payload, secret, options);
+      const token = jwt.sign(payload, process.env.SECRET, options);
 
       res.cookie("token", token, { httpOnly: true });
       console.log(user);
@@ -233,7 +232,7 @@ async function verifyToken(token) {
       return resolve({ success: false, user: null });
     }
 
-    jwt.verify(token, secret, (err, decoded) => {
+    jwt.verify(token, process.env.SECRET, (err, decoded) => {
       if (err) {
         return resolve({ success: false, user: null });
       }

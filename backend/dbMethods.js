@@ -202,7 +202,12 @@ const AddFeedback = async (body) => {
         `INSERT INTO Feedbacks(Rating, Descrizione, Studente, Ripetizione) VALUES (@Voto, @Descrizione, @Studente, @Ripetizione)`
       );
 
-    if (UpdateFeedbackState(body.studenteId, body.ripetitionId))
+      let selection = await pool.request().input("Ripetizione", sql.Int, body.ripetitionId).query('SELECT Insegnante FROM Ripetizioni WHERE Id=@Ripetizione')
+      console.log(selection)
+      console.log(selection.recordset[0].Insegnante)
+      let teacher = selection.recordset.Insegnante
+      console.log(teacher)
+    if (UpdateFeedbackState(body.studenteId, body.ripetitionId) && updateRating(body.ripetitionId, teacher))
       return insertion.rowsAffected;
   } catch (error) {
     console.log(error);
@@ -250,7 +255,7 @@ const FetchAllFeedbackByTeacher = async (teacher) => {
     let insertion = await pool.request().input("teacher", sql.Int, teacher)
       .query(`SELECT Ripetizioni.Id, Rating, Note
               FROM (Feedbacks JOIN Ripetizioni ON Ripetizione = Ripetizioni.Id) JOIN Utenti ON Ripetizioni.Insegnante = Utenti.ID
-              WHERE Utenti.ID = 1`);
+              WHERE Utenti.ID = @teacher`);
 
     return insertion.recordsets;
   } catch (error) {
@@ -286,6 +291,29 @@ const FetchFeedbacksByRipetition = async (ripetition) => {
     return undefined;
   }
 };
+
+const updateRating = async (insegnante) => {
+  try {
+    console.log(insegnante)
+      let pool = await sql.connect(config);
+      let fetch = await pool.request().input("ripetizione", sql.Int, ripetizione).input("Insegnante", sql.Int, insegnante)
+      .query(`
+        UPDATE Utenti
+        SET RatingMedio = (
+          SELECT AVG(Rating)
+          FROM Feedbacks JOIN Ripetizioni on Ripetizione = Ripetizioni.Id
+          WHERE Insegnante = @Insegnante
+        )
+        WHERE Id = @Insegnante
+      `);
+      if(fetch.rowsAffected == 1)
+        return true
+      else
+        return false
+    } catch (error) {
+    return false
+  }
+}
 module.exports = {
   FetchAllRipetitions: FetchAllRipetitions,
   AddNewUser: AddNewUser,
