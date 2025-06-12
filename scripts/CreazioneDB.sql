@@ -13,7 +13,7 @@ CREATE TABLE Utenti(
 	Cognome VARCHAR(20) NOT NULL,
 	Tipo CHAR(1) DEFAULT('S'),
 	Mail VARCHAR(50) UNIQUE NOT NULL,
-	Password VARCHAR(64) NOT NULL,
+	Password CHAR(64) NOT NULL,
 	RatingMedio FLOAT DEFAULT(0),
 	DataDiNascita DATE NOT NULL,
 	DataIscrizione DATE NOT NULL,

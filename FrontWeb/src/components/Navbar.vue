@@ -30,6 +30,9 @@
                 <li class="nav-item" style="margin-right: 10px;">
                     <router-link class="nav-link" to="/sign-in">Loggati</router-link>
                 </li>
+                <li class="nav-item">
+                    <router-link class="nav-link unselectable" to="/chat">Parla con l'Ai</router-link>
+                </li>
             </ul>
         </div>
     </nav>

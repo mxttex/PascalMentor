@@ -5,6 +5,7 @@ import PersonalArea from '@/views/PersonalArea.vue'
 import CreaEvento from '@/views/CreaEvento.vue'
 import BookRipetition from '@/views/BookRipetition.vue'
 import SeeFollowedRipetitions from '@/views/SeeRipetitions.vue'
+import Chatbot from '@/views/Chatbot.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,11 @@ const router = createRouter({
       path: '/see-ripetitions',
       name: 'see-ripetitions',
       component: SeeFollowedRipetitions,
+    },
+    {
+      path: '/chat',
+      name: 'chat',
+      component: Chatbot,
     }
   ],
 })

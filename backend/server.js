@@ -211,6 +211,20 @@ router.route("/fetchFeedbacksByLesson:ripetition").get((req, res) => {
     }
   );
 });
+router.route("/askAi").post(async (req, res) => {
+    try {
+    const response = await fetch('http://localhost:5001/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: req.body.message })
+    })
+    const data = await response.json()
+    res.json({ reply: data.reply })
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Errore nella comunicazione con Python' });
+  }
+})
 
 //funzione per vedere se una persona puo' accedere ad una determinata risorsa
 async function verifyToken(token) {
