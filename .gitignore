@@ -2,3 +2,4 @@ node_modules
 backend/dbconfig.js
 globalVariables.js
 .env
+dbconfig.js

@@ -2,6 +2,7 @@
 import { inject, ref, onMounted } from 'vue';
 import globalVariables from '../../../globalVariables';
 import { formatItalianDate } from '@/common/commonMethods';
+
 const props = defineProps({
     ripetition: {
         type: Object,
@@ -14,7 +15,9 @@ const date = ref()
 
 onMounted(() => {
     date.value = formatItalianDate(props.ripetition.Data)
+    console.log(props.ripetition)
 })
+
 async function PrenotaRipetizione() {
     try {
         const response = await fetch(
@@ -29,9 +32,8 @@ async function PrenotaRipetizione() {
             }
         )
         if (response.ok) {
-            alert('Ripetizione Prenotate con Successo')
-        }
-        else {
+            alert('Ripetizione Prenotata con Successo')
+        } else {
             const errorMessage = await response.text()
             alert(errorMessage)
         }
@@ -49,7 +51,9 @@ async function PrenotaRipetizione() {
         <div class="card-body" style="justify-items: center;">
             <h5 class="card-title mainTitle">{{ ripetition.Materia }}</h5>
             <p class="card-text subTitle">
-                Insegnante: {{ ripetition.Nome + " " + ripetition.Cognome }} <br>
+                <router-link :to="`/teacherInfo:${ripetition.Insegnante}`">
+                    Insegnante: {{ ripetition.Nome }} {{ ripetition.Cognome }}
+                </router-link><br>
                 Data: {{ date }}<br>
                 Ora: {{ ripetition.OraInizio.split('T')[1].substring(0, 5) }} - {{
                     ripetition.OraFine.split('T')[1].substring(0, 5) }}<br>
@@ -73,33 +77,31 @@ async function PrenotaRipetizione() {
 }
 
 .defaultButton {
-  /* EF4765 FF9A5A */
-  background: linear-gradient(to bottom right, #ffc691, #ffa341);
-  border: 20px;
-  border-radius: 12px;
-  color: #FFFFFF;
-  cursor: pointer;
-  display: inline-block;
-  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 2.5;
-  outline: transparent;
-  padding: 0 1rem;
-  text-align: center;
-  text-decoration: none;
-  transition: box-shadow .2s ease-in-out;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  white-space: nowrap;
+    background: linear-gradient(to bottom right, #ffc691, #ffa341);
+    border: 20px;
+    border-radius: 12px;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 2.5;
+    outline: transparent;
+    padding: 0 1rem;
+    text-align: center;
+    text-decoration: none;
+    transition: box-shadow .2s ease-in-out;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
 }
 
-.defaultButton:not([disabled]):focus {
-  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
-}
-
+.defaultButton:not([disabled]):focus,
 .defaultButton:not([disabled]):hover {
-  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+    box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5),
+        -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5),
+        .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
 }
 </style>

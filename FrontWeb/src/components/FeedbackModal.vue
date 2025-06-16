@@ -58,8 +58,11 @@ onMounted( async () => {
     .then(console.log(feedbacks.value))
     .catch(err => alert(err))
 
-    materia.value = feedbacks.value[0].Materia
+    if(feedbacks.value.length > 0
+    ){
+        materia.value = feedbacks.value[0].Materia
     data.value = feedbacks.value[0].Data
+    }
 })
 </script>
 

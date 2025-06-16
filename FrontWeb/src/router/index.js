@@ -47,7 +47,7 @@ const router = createRouter({
       component: Chatbot,
     },
     {
-      path: '/teacherInfo',
+      path: '/teacherInfo:id',
       name: 'teacherInfo',
       component: TeacherInfo
     }

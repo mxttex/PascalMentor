@@ -18,7 +18,7 @@ onMounted(async () => {
             data.forEach(ripetition => {
                 new Date(ripetition.Data) <= Date.now() ? pastLessons.value.push(ripetition) : futureLessons.value.push(ripetition)
             });
-            console.log(pastLessons)
+            console.dir(pastLessons)
         })
         .catch(err => console.error('Error fetching subjects:', err));
 })

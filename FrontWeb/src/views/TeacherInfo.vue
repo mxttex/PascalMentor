@@ -5,17 +5,16 @@
     <div class="text mb-4">
       <p><strong>Email:</strong> {{ professor.Mail }}</p>
       <p><strong>Data di nascita:</strong> {{ formatItalianDate(professor.DataDiNascita) }}</p>
+      <p><strong>Data di iscrizione:</strong> {{ formatItalianDate(professor.DataIscrizione) }}</p>
     </div>
 
-
     <div class="text mb-4" v-if="feedback.length">
-      <p><strong>⭐ Valutazione media:</strong> {{ professor.RatingMedio }} / 5</p>
-
+      <p><strong>⭐ Valutazione media:</strong> {{ professor.Ratingmedio }} / 5</p>
       <p><strong>Ultimi feedback:</strong></p>
       <ul>
-        <ul v-for="(fb, index) in feedback.slice(0, 5)" :key="index">
-          "{{ fb.comment }}" – <em>{{ fb.date }}</em> ({{ fb.rating }}★)
-        </ul>
+        <p v-for="(fb, index) in feedback.slice(0, 5)" :key="index">
+          "{{ fb.Descrizione }}" – ({{ fb.Rating }}★)
+      </p>
       </ul>
     </div>
 
@@ -26,32 +25,39 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { formatItalianDate } from '@/common/commonMethods';
+import globalVariables from '../../../globalVariables';
+import { useRoute } from 'vue-router';
 
-// Dati professore
-const professor = ref({
-  Nome: 'Marco',
-  Cognome: 'Rossi',
-  Mail: 'marco.rossi@example.com',
-  DataDiNascita: '1980-03-12',
-  RatingMedio: 4.5
+const route = useRoute();
+const teacherId = route.params.id;
+
+const professor = ref({});
+const feedback = ref([]);
+
+onMounted(async () => {
+  try {
+    const response = await fetch(`${globalVariables.API_URL}fetchUserData:${teacherId}`);
+    if (response.ok) {
+
+      const data = await response.json();
+      console.log(data)
+      
+      professor.value = data.userData[0];
+      console.dir(professor.value)
+      if(data.lastFeedbacks.length>0)
+        feedback.value = data.lastFeedbacks;
+      else
+        alert("questo insegnante nom ha feedback")
+    } else {
+      const errorText = await response.text();
+      console.error('Errore:', errorText);
+    }
+  } catch (error) {
+    console.error('Errore di rete:', error);
+  }
 });
-
-// Simulazione feedback (di solito vengono da API)
-const feedback = ref([
-  { rating: 5, comment: 'Spiegazioni chiarissime!', date: '01/06/2025' },
-  { rating: 4, comment: 'Molto preparato e disponibile', date: '30/05/2025' },
-  { rating: 5, comment: 'Ottimo approccio didattico', date: '28/05/2025' },
-  { rating: 3, comment: 'Buona lezione, ma un po\' veloce', date: '25/05/2025' },
-  { rating: 5, comment: 'Il top dei prof!', date: '20/05/2025' },
-  { rating: 4, comment: 'Professionale e chiaro', date: '18/05/2025' },
-]);
-
-
-function prenota() {
-  alert('Funzione prenotazione non ancora implementata.');
-}
 </script>
 
 <style scoped>
@@ -131,7 +137,7 @@ h2 {
   background: linear-gradient(to bottom right, #ffc691, #ffa341);
   border: 20px;
   border-radius: 12px;
-  color: #FFFFFF;
+  color: #ffffff;
   cursor: pointer;
   display: inline-block;
   font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -154,10 +160,5 @@ h2 {
   box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5),
               -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5),
               .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
-}
-
-.star {
-  font-size: 1.5rem;
-  color: gold;
 }
 </style>

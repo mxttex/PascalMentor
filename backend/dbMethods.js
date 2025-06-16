@@ -89,7 +89,7 @@ const FetchAllRipetitions = async () => {
   try {
     let pool = await sql.connect(config);
     let insertion = await pool.request()
-      .query(`SELECT Utenti.Nome as Nome, Cognome, Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Note , Materie.Nome as Materia 
+      .query(`SELECT Utenti.Nome as Nome, Cognome, Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Note , Materie.Nome as Materia, Insegnante
                                                 FROM (Ripetizioni JOIN Utenti ON Insegnante = Utenti.Id) JOIN Materie on Materia = Materie.Id
                                                 WHERE NumeroIscritti < NumeroMassimoPartecipanti AND Data >= GETDATE()`);
     return insertion.recordsets;
@@ -150,7 +150,7 @@ const FetchRipetionsByUserId = async (body) => {
   try {
     let query =
       body.type === "S"
-        ? `SELECT Ripetizioni.Id, Data, OraInizio, OraFine, Utenti.Nome as NomeInsegnante, Utenti.Cognome as CognomeInsegnante, Materie.Nome as Materia, Note, Partecipazioni.FeedbackGiaLasciato as FeedbackGiaLasciato
+        ? `SELECT Ripetizioni.Id, Insegnante,Data, OraInizio, OraFine, Utenti.Nome as NomeInsegnante, Utenti.Cognome as CognomeInsegnante, Materie.Nome as Materia, Note, Partecipazioni.FeedbackGiaLasciato as FeedbackGiaLasciato
              FROM ((Ripetizioni JOIN Partecipazioni ON Ripetizione = Id) JOIN Utenti on Utenti.ID = Insegnante) JOIN Materie ON Materia = Materie.Id
              WHERE Partecipazioni.Studente = @id`
         : `SELECT Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, NumeroIscritti, Insegnante, Materie.Nome as Materia, Note
@@ -317,6 +317,35 @@ const updateRating = async (ripetitionId) => {
   }
 };
 
+const fetchTeacherData = async (teacherId) => {
+  try {
+    let obj = {userData: {}, lastFeedbacks: {}}
+    const pool = await sql.connect(config);
+    const teacherData = await pool.request()
+      .input("Insegnante", sql.Int, teacherId)
+      .query(`SELECT Nome, Cognome, Mail, Ratingmedio, DataDiNascita, DataIscrizione
+        FROM Utenti
+        Where Id = @Insegnante
+      `);
+    obj.userData = teacherData.recordsets[0]
+    const feedbacks = await pool.request()
+    .input("Insegnante", sql.Int, teacherId)
+      .query(`WITH ripetitionId AS (
+              SELECT Id
+              FROM Ripetizioni
+              WHERE Insegnante = @Insegnante
+              )
+              SELECT F.Rating, F.Descrizione
+              FROM Feedbacks F
+              WHERE F.Ripetizione IN (SELECT Id FROM ripetitionId);`);
+    obj.lastFeedbacks = feedbacks.recordsets[0]
+        console.log(obj)
+    return obj
+  } catch (error) {
+    console.log(error)
+    return undefined
+  }
+}
 module.exports = {
   FetchAllRipetitions: FetchAllRipetitions,
   AddNewUser: AddNewUser,
@@ -333,5 +362,5 @@ module.exports = {
   FetchAllFeedbackByTeacher: FetchAllFeedbackByTeacher,
   FetchPartecipantsToCertainRipetition: FetchPartecipantsToCertainRipetition,
   FetchFeedbacksByRipetition : FetchFeedbacksByRipetition,
-  updateRating: updateRating
-};
+  fetchTeacherData : fetchTeacherData,
+updateRating: updateRating};

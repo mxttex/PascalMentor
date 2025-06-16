@@ -40,7 +40,7 @@ router.route("/addFeedback").post((req, res) => {
   DB.AddFeedback(req.body).then((rit) => {
     try {
       if(DB.updateRating(req.body.ripetitionId))
-      res.status(200).send("Feedback aggiunto con successo");
+        res.status(200).send("Feedback aggiunto con successo");
     } catch (ex) {
       res.status(500).send("Errore Interno al Server: ", ex);
     }
@@ -222,6 +222,18 @@ router.route("/askAi").post(async (req, res) => {
     res.status(500).json({ error: 'Errore nella comunicazione con Python' });
   }
 })
+router
+  .route("/fetchUserData:teacherId").get((req, res) => {
+    DB.fetchTeacherData(req.params.teacherId.substring(2)).then(
+    (data) => {
+      try {
+        console.log(data)
+        res.json(data);
+      } catch (error) {
+        res.status(404).send('No feedbacks found')
+      }
+    }
+  );})
 
 //funzione per vedere se una persona puo' accedere ad una determinata risorsa
 async function verifyToken(token) {
