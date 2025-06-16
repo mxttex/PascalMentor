@@ -3,7 +3,7 @@
         <div class="card-body">
             <h5 class="card-title mainTitle">{{ lesson.Materia }}</h5>
             <h6 class="card-subtitle mb-2 text-muted sub">
-                Con: {{ lesson.NomeInsegnante }} {{ lesson.CognomeInsegnante }}
+                <router-link to="/teacherInfo">Con: {{ lesson.NomeInsegnante }} {{ lesson.CognomeInsegnante }}</router-link>
             </h6>
             <p class="card-text mb-2 sub"><i class="bi bi-calendar-event"></i> {{ formatItalianDate(lesson.Data) }}</p>
             <button v-if="new Date(lesson.Data) < Date.now() && lesson.FeedbackGiaLasciato == 0" @click="ShowLeaveFeedback(lesson.Id)" class="defaultButton">Lascia Feedback</button>

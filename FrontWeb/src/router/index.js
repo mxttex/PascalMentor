@@ -6,6 +6,7 @@ import CreaEvento from '@/views/CreaEvento.vue'
 import BookRipetition from '@/views/BookRipetition.vue'
 import SeeFollowedRipetitions from '@/views/SeeRipetitions.vue'
 import Chatbot from '@/views/Chatbot.vue'
+import TeacherInfo from '@/views/TeacherInfo.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,11 @@ const router = createRouter({
       path: '/chat',
       name: 'chat',
       component: Chatbot,
+    },
+    {
+      path: '/teacherInfo',
+      name: 'teacherInfo',
+      component: TeacherInfo
     }
   ],
 })
