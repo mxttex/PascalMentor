@@ -5,8 +5,12 @@
         <div class="text-center mb-4">
             <button class="defaultButton me-2" :class="{ active: !isTeacher }"
                 @click="isTeacher = false">Studente</button>
-            <button class="defaultButton" :class="{ active: isTeacher }"
-                @click="isTeacher = true">Insegnante</button>
+            <button class="defaultButton" :class="{ active: isTeacher }" @click="isTeacher = true">Insegnante</button>
+        </div>
+
+        <div v-if="alert.show" :class="['alert', `alert-${alert.type}`, 'mt-3']" role="alert">
+            {{ alert.message }}
+            <button type="button" class="btn-close" aria-label="Close" @click="alert.show = false"></button>
         </div>
 
         <form @submit.prevent="handleSubmit" class="mt-3">
@@ -50,7 +54,8 @@
             </div>
 
             <button type="submit" class="defaultButton w-100">Registrati</button>
-            <a @click="$emit('change-state', 'log')" class="text">Sei gia' registrato? Loggati!</a>
+            <a @click="$emit('change-state', 'log')" class="text d-block mt-3 text-center" style="cursor:pointer;">Sei
+                già registrato? Loggati!</a>
         </form>
     </div>
 </template>
@@ -70,9 +75,23 @@ const confermaPassword = ref('')
 const indirizzo = ref('Informatica')
 const dataNascita = ref('')
 
+const alert = ref({ show: false, type: '', message: '' })
+
+const resetForm = () => {
+    nome.value = ''
+    cognome.value = ''
+    email.value = ''
+    password.value = ''
+    confermaPassword.value = ''
+    indirizzo.value = 'Informatica'
+    dataNascita.value = ''
+}
+
 async function handleSubmit() {
+    alert.value.show = false
+
     if (password.value !== confermaPassword.value) {
-        alert('Le password non coincidono!')
+        alert.value = { show: true, type: 'danger', message: 'Le password non coincidono!' }
         return
     }
 
@@ -87,8 +106,7 @@ async function handleSubmit() {
     if (!isTeacher.value) {
         formData.indirizzo = indirizzo.value
         formData.type = 'S'
-    }
-    else {
+    } else {
         formData.type = 'I'
     }
 
@@ -102,13 +120,13 @@ async function handleSubmit() {
         })
 
         if (result.status === 200) {
-            alert('Registrazione avvenuta con successo!')
-            location.reload()
+            alert.value = { show: true, type: 'success', message: 'Registrazione avvenuta con successo!' }
+            resetForm()
         } else {
-            alert('Errore durante la registrazione.')
+            alert.value = { show: true, type: 'danger', message: 'Errore durante la registrazione.' }
         }
     } catch (err) {
-        alert('Errore nella richiesta al server.')
+        alert.value = { show: true, type: 'danger', message: 'Errore nella richiesta al server.' }
         console.error(err)
     }
 }
@@ -125,32 +143,28 @@ async function handleSubmit() {
 }
 
 .defaultButton {
-  /* EF4765 FF9A5A */
-  background: linear-gradient(to bottom right, #ffc691, #ffa341);
-  border: 20px;
-  border-radius: 12px;
-  color: #FFFFFF;
-  cursor: pointer;
-  display: inline-block;
-  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 2.5;
-  outline: transparent;
-  padding: 0 1rem;
-  text-align: center;
-  text-decoration: none;
-  transition: box-shadow .2s ease-in-out;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  white-space: nowrap;
+    background: linear-gradient(to bottom right, #ffc691, #ffa341);
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    cursor: pointer;
+    font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 2.5;
+    padding: 0 1rem;
+    text-align: center;
+    transition: box-shadow .2s ease-in-out;
+    user-select: none;
+    white-space: nowrap;
+    width: 100%;
 }
-.defaultButton:not([disabled]):focus {
-  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
-}
+
+.defaultButton:not([disabled]):focus,
 .defaultButton:not([disabled]):hover {
-  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+    box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5),
+        -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5),
+        .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
 }
 
 .text {

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, inject, onMounted } from 'vue';
+import { ref, inject } from 'vue';
 import globalVariables from '../../../globalVariables';
 import router from '@/router';
 
@@ -17,6 +17,21 @@ const form = ref({
 
 const subjects = inject('subjects');
 
+const alert = ref({
+  show: false,
+  message: '',
+  type: 'success' // success, danger, warning...
+});
+
+function showAlert(message, type = 'success', timeout = 3000) {
+  alert.value.message = message;
+  alert.value.type = type;
+  alert.value.show = true;
+  setTimeout(() => {
+    alert.value.show = false;
+  }, timeout);
+}
+
 async function submitForm() {
   const payload = {
     Materia: form.value.subject,
@@ -30,17 +45,22 @@ async function submitForm() {
 
   console.log('Payload:', payload);
 
-  const response = await fetch(`${globalVariables.API_URL}createEvent`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
+  try {
+    const response = await fetch(`${globalVariables.API_URL}createEvent`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
 
-  if (response.ok) {
-    alert('Ripetizione creata con successo');
-    router.push('/')
-  } else {
-    alert('Errore durante la creazione della ripetizione');
+    if (response.ok) {
+      showAlert('Ripetizione creata con successo', 'success');
+      setTimeout(() => router.push('/'), 1500); // aspetta 1.5 sec prima del redirect
+    } else {
+      showAlert('Errore durante la creazione della ripetizione', 'danger');
+    }
+  } catch (error) {
+    showAlert('Errore di rete durante la creazione della ripetizione', 'danger');
+    console.error(error);
   }
 }
 </script>
@@ -48,7 +68,14 @@ async function submitForm() {
 <template>
   <div class="container my-5 ss">
     <h2 class="mb-4 title">Crea una Nuova Ripetizione</h2>
+
+    <div v-if="alert.show" :class="`alert alert-${alert.type} alert-dismissible fade show`" role="alert">
+      {{ alert.message }}
+      <button type="button" class="btn-close" @click="alert.show = false" aria-label="Close"></button>
+    </div>
+
     <form @submit.prevent="submitForm">
+      <!-- ... il resto del form rimane uguale ... -->
       <div class="mb-3">
         <label for="subject" class="form-label text">Materia</label>
         <select v-model="form.subject" class="form-select" id="subject" required>
@@ -76,14 +103,12 @@ async function submitForm() {
 
       <div class="mb-3">
         <label for="maxPartecipants" class="form-label text">Numero massimo di partecipanti:</label>
-        <input v-model.number="form.nrMaxPartecipants" type="number" class="form-control" id="maxPartecipants"
-          required />
+        <input v-model.number="form.nrMaxPartecipants" type="number" class="form-control" id="maxPartecipants" required />
       </div>
 
       <div class="mb-3">
         <label for="notes" class="form-label text">Argomenti:</label>
-        <textarea v-model="form.notes" class="form-control" id="notes" rows="3" placeholder="Inserire gli argomenti"
-          required></textarea>
+        <textarea v-model="form.notes" class="form-control" id="notes" rows="3" placeholder="Inserire gli argomenti" required></textarea>
       </div>
 
       <button type="submit" class="btn btn-primary defaultButton">Crea Ripetizione</button>

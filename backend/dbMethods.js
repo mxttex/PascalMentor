@@ -1,4 +1,4 @@
-const config = require("./dbconfig")
+const config = require("./dbconfig");
 const sql = require("mssql");
 
 const AddNewUser = async (body) => {
@@ -88,10 +88,27 @@ const FetchSubjects = async () => {
 const FetchAllRipetitions = async () => {
   try {
     let pool = await sql.connect(config);
-    let insertion = await pool.request()
-      .query(`SELECT Utenti.Nome as Nome, Cognome, Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Note , Materie.Nome as Materia, Insegnante
-                                                FROM (Ripetizioni JOIN Utenti ON Insegnante = Utenti.Id) JOIN Materie on Materia = Materie.Id
-                                                WHERE NumeroIscritti < NumeroMassimoPartecipanti AND Data >= GETDATE()`);
+    let insertion = await pool.request().query(`SELECT 
+    U.Nome, 
+    U.Cognome, 
+    R.Id, 
+    R.Data, 
+    R.OraInizio, 
+    R.OraFine, 
+    R.NumeroMassimoPartecipanti, 
+    R.Note, 
+    M.Nome AS Materia, 
+    R.Insegnante
+FROM 
+    Ripetizioni R
+    JOIN Utenti U ON R.Insegnante = U.Id
+    JOIN Materie M ON R.Materia = M.Id
+WHERE 
+    R.NumeroIscritti < R.NumeroMassimoPartecipanti
+    AND R.Data >= CAST(GETDATE() AS DATE)
+    AND R.OraInizio > CONVERT(time, GETDATE())
+
+`);
     return insertion.recordsets;
   } catch (error) {
     console.error(error);
@@ -245,10 +262,12 @@ const FetchFeedbacks = async (ripetition) => {
 
 const FetchAllFeedbackByTeacher = async (ripetitionId) => {
   try {
-    
     let pool = await sql.connect(config);
-    let selection = await pool.request().input("Ripetizione", sql.Int, ripetitionId).query('SELECT Insegnante FROM Ripetizioni WHERE Id=@Ripetizione')
-    let teacher = selection.recordset.Insegnante
+    let selection = await pool
+      .request()
+      .input("Ripetizione", sql.Int, ripetitionId)
+      .query("SELECT Insegnante FROM Ripetizioni WHERE Id=@Ripetizione");
+    let teacher = selection.recordset.Insegnante;
     let insertion = await pool.request().input("teacher", sql.Int, teacher)
       .query(`SELECT Ripetizioni.Id, Rating, Note
               FROM (Feedbacks JOIN Ripetizioni ON Ripetizione = Ripetizioni.Id) JOIN Utenti ON Ripetizioni.Insegnante = Utenti.ID
@@ -282,7 +301,7 @@ const FetchFeedbacksByRipetition = async (ripetition) => {
       .query(`SELECT Feedbacks.Id as Id, Rating, Descrizione, Utenti.Nome as Nome, Cognome, Materie.Nome as Materia, Ripetizioni.Data
               FROM ((Feedbacks JOIN Utenti on Studente = Utenti.ID) JOIN Ripetizioni on Ripetizione = Ripetizioni.Id) JOIN Materie on Materia = Materie.Id
               WHERE Ripetizione = @ripetizione`);
-    return fetch.recordsets
+    return fetch.recordsets;
   } catch (error) {
     console.log(error);
     return undefined;
@@ -292,10 +311,12 @@ const FetchFeedbacksByRipetition = async (ripetition) => {
 const updateRating = async (ripetitionId) => {
   try {
     const pool = await sql.connect(config);
-    let selection = await pool.request().input("Ripetizione", sql.Int, ripetitionId).query('SELECT Insegnante FROM Ripetizioni WHERE Id=@Ripetizione')
-    let teacher = selection.recordset[0].Insegnante
-    const result = await pool.request()
-      .input("Insegnante", sql.Int, teacher)
+    let selection = await pool
+      .request()
+      .input("Ripetizione", sql.Int, ripetitionId)
+      .query("SELECT Insegnante FROM Ripetizioni WHERE Id=@Ripetizione");
+    let teacher = selection.recordset[0].Insegnante;
+    const result = await pool.request().input("Insegnante", sql.Int, teacher)
       .query(`
         UPDATE Utenti
         SET RatingMedio = (
@@ -307,10 +328,8 @@ const updateRating = async (ripetitionId) => {
         WHERE Id = @Insegnante
       `);
 
-    if(result.rowsAffected == 1)
-      return true
-    else
-      throw new Error(`Errore nell'aggiornamento della ripetizione`)
+    if (result.rowsAffected == 1) return true;
+    else throw new Error(`Errore nell'aggiornamento della ripetizione`);
   } catch (error) {
     console.error("Errore durante l'aggiornamento del rating:", error);
     return undefined;
@@ -319,18 +338,19 @@ const updateRating = async (ripetitionId) => {
 
 const fetchTeacherData = async (teacherId) => {
   try {
-    let obj = {userData: {}, lastFeedbacks: {}}
+    let obj = { userData: {}, lastFeedbacks: {} };
     const pool = await sql.connect(config);
-    const teacherData = await pool.request()
+    const teacherData = await pool
+      .request()
       .input("Insegnante", sql.Int, teacherId)
       .query(`SELECT Nome, Cognome, Mail, Ratingmedio, DataDiNascita, DataIscrizione
         FROM Utenti
         Where Id = @Insegnante
       `);
-    obj.userData = teacherData.recordsets[0]
-    const feedbacks = await pool.request()
-    .input("Insegnante", sql.Int, teacherId)
-      .query(`WITH ripetitionId AS (
+    obj.userData = teacherData.recordsets[0];
+    const feedbacks = await pool
+      .request()
+      .input("Insegnante", sql.Int, teacherId).query(`WITH ripetitionId AS (
               SELECT Id
               FROM Ripetizioni
               WHERE Insegnante = @Insegnante
@@ -338,14 +358,14 @@ const fetchTeacherData = async (teacherId) => {
               SELECT F.Rating, F.Descrizione
               FROM Feedbacks F
               WHERE F.Ripetizione IN (SELECT Id FROM ripetitionId);`);
-    obj.lastFeedbacks = feedbacks.recordsets[0]
-        console.log(obj)
-    return obj
+    obj.lastFeedbacks = feedbacks.recordsets[0];
+    console.log(obj);
+    return obj;
   } catch (error) {
-    console.log(error)
-    return undefined
+    console.log(error);
+    return undefined;
   }
-}
+};
 module.exports = {
   FetchAllRipetitions: FetchAllRipetitions,
   AddNewUser: AddNewUser,
@@ -361,6 +381,7 @@ module.exports = {
   FetchFeedbacks: FetchFeedbacks,
   FetchAllFeedbackByTeacher: FetchAllFeedbackByTeacher,
   FetchPartecipantsToCertainRipetition: FetchPartecipantsToCertainRipetition,
-  FetchFeedbacksByRipetition : FetchFeedbacksByRipetition,
-  fetchTeacherData : fetchTeacherData,
-updateRating: updateRating};
+  FetchFeedbacksByRipetition: FetchFeedbacksByRipetition,
+  fetchTeacherData: fetchTeacherData,
+  updateRating: updateRating,
+};

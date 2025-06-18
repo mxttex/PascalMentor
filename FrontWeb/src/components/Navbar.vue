@@ -31,7 +31,7 @@
                     <router-link class="nav-link" to="/sign-in"><i class="bi bi-door-open-fill" style="font-size: 2em;"></i></router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link unselectable" to="/chat">Parla con l'Ai</router-link>
+                    <router-link class="nav-link unselectable" to="/chat"><i class="bi bi-chat-left-dots" style="font-size: 2em;"></i></router-link>
                 </li>
             </ul>
         </div>

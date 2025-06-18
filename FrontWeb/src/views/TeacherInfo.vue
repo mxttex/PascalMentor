@@ -48,8 +48,6 @@ onMounted(async () => {
       console.dir(professor.value)
       if(data.lastFeedbacks.length>0)
         feedback.value = data.lastFeedbacks;
-      else
-        alert("questo insegnante nom ha feedback")
     } else {
       const errorText = await response.text();
       console.error('Errore:', errorText);
@@ -62,103 +60,92 @@ onMounted(async () => {
 
 <style scoped>
 .home-box {
-  background: linear-gradient(135deg, #ff9100, #ffd664);
-  padding: 2.5rem 2rem;
+  background: linear-gradient(135deg, #ff8c00, #ffb347);
+  padding: 3rem 2rem;
   margin: 3rem auto;
-  max-width: 800px;
-  border-radius: 20px;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  max-width: 750px;
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
   text-align: center;
-  animation: fadeIn 0.6s ease;
+  animation: fadeIn 0.5s ease-out;
+  color: #ffffff;
 }
 
-h2 {
-  font-size: 2rem;
+h2.title {
+  font-size: 2.2rem;
+  font-weight: 700;
   margin-bottom: 1rem;
-  color: #333;
+  color: #ffffff;
 }
 
-.subtitle {
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
-  color: #555;
+.text {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #ffffff;
+}
+
+.text p {
+  margin: 0.5rem 0;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0.5rem;
+}
+
+ul p {
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 4px solid #ffffff;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  margin: 0.4rem auto;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #ffffff;
+  text-align: left;
 }
 
 .button-group {
+  margin-top: 2rem;
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
   justify-content: center;
 }
 
-.primary {
-  background-color: #007bff;
-  color: white;
+.defaultButton {
+  background: linear-gradient(to bottom right, #ff6f00, #ff3d00);
+  border: none;
+  border-radius: 10px;
+  padding: 0.75rem 1.5rem;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
-.primary:hover {
-  background-color: #0056b3;
+.defaultButton.secondary {
+  background: transparent;
+  border: 2px solid #ffffff;
+  color: #ffffff;
 }
 
-.secondary {
-  background-color: white;
-  color: #007bff;
-  border: 2px solid #007bff;
-}
-
-.secondary:hover {
-  background-color: #007bff;
-  color: white;
+.defaultButton:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(12px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-.text {
-  color: white;
-  font-size: 1.04em;
-}
-
-.title {
-  color: white;
-  font-size: 2em;
-}
-
-.defaultButton {
-  background: linear-gradient(to bottom right, #ffc691, #ffa341);
-  border: 20px;
-  border-radius: 12px;
-  color: #ffffff;
-  cursor: pointer;
-  display: inline-block;
-  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 2.5;
-  outline: transparent;
-  padding: 0 1rem;
-  text-align: center;
-  text-decoration: none;
-  transition: box-shadow .2s ease-in-out;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  white-space: nowrap;
-}
-
-.defaultButton:not([disabled]):focus,
-.defaultButton:not([disabled]):hover {
-  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5),
-              -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5),
-              .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
-}
 </style>

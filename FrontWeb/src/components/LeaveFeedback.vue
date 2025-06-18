@@ -19,8 +19,8 @@
           </div>
 
           <div class="modal-buttons">
-            <button type="submit">Invia</button>
-            <button type="button" class="btn-close" @click="close"></button>
+            <button type="submit" class="defaultButton">Invia</button>
+            <button type="button" class="btn-close" @click="close">×</button>
           </div>
         </form>
 
@@ -58,8 +58,6 @@ const getStarClass = (starIndex) => {
 };
 
 const submitFeedback = async () => {
-  //console.log('Feedback inviato:', feedback.value);
-  console.log(props.ripetitionId)
   await fetch(`${globalVariables.API_URL}addFeedback`, {
     method: 'POST',
     headers: { 'Content-type': 'application/json' },
@@ -93,6 +91,7 @@ const close = () => {
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
+  
   display: flex;
   align-items: center;
   justify-content: center;
@@ -104,10 +103,11 @@ const close = () => {
   border-radius: 10px;
   width: 90%;
   max-width: 400px;
-  padding: 20px;
+  padding: 20px 30px;
   position: relative;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   text-align: center;
+  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   animation: fadeIn 0.3s ease;
 }
 
@@ -139,53 +139,91 @@ textarea {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 1rem;
 }
 
 .modal-buttons {
+  margin-top: 20px;
   display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
+  justify-content: center;
+  gap: 15px;
+  align-items: center;
 }
 
-button {
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
+.defaultButton {
+  background: linear-gradient(to bottom right, #ffc691, #ffa341);
   border: none;
-  border-radius: 4px;
+  border-radius: 12px;
+  color: #FFFFFF;
   cursor: pointer;
+  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.5;
+  padding: 0 1.5rem;
+  text-align: center;
+  user-select: none;
+  transition: box-shadow .2s ease-in-out;
+  white-space: nowrap;
+  min-width: 100px;
+}
+
+.defaultButton:not([disabled]):focus,
+.defaultButton:not([disabled]):hover {
+  box-shadow:
+    0 0 .25rem rgba(0, 0, 0, 0.5),
+    -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5),
+    .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
 }
 
 .btn-close {
-  background-color: #ccc;
+  background: #ccc;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1.5rem;
+  line-height: 40px;
+  text-align: center;
+  padding: 0;
+  color: #555;
+  user-select: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-button:hover {
-  opacity: 0.9;
+.btn-close:hover {
+  background: #bbb;
+  color: #333;
 }
 
 .stars {
   display: flex;
   justify-content: center;
-  gap: 5px;
+  gap: 8px;
   user-select: none;
 }
 
 .star-container {
   position: relative;
   cursor: pointer;
-  width: 24px;
+  width: 28px;
 }
 
 .star {
-  font-size: 24px;
+  font-size: 28px;
   color: #ccc;
-  transition: color 0.3s;
   pointer-events: none;
+  transition: color 0.3s ease;
+  user-select: none;
 }
 
 .star.full {
   color: #ffcc00;
+  filter: drop-shadow(0 0 3px #ffb900);
 }
 
 .star.half {
@@ -193,6 +231,7 @@ button:hover {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 2px #ffb900);
 }
 
 .star.empty {

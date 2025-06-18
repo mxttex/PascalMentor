@@ -11,7 +11,7 @@
         <section class="modal-body">
           <slot>
             <div v-for="partecipant in partecipants" :key="partecipant.Id">
-                <h5> {{ partecipant.Nome }} -  {{ partecipant.Cognome }}</h5>
+                <h5> {{ partecipant.Nome }} {{ partecipant.Cognome }}</h5>
                 <h6>Data di Nascita: {{ formatItalianDate(partecipant.DataDiNascita) }}</h6>
                 <h6>Indirizzo: {{ partecipant.Indirizzo }}</h6>
             </div>
@@ -55,11 +55,9 @@ onMounted(async () => {
 <style scoped>
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,25 +65,78 @@ onMounted(async () => {
 }
 
 .modal-content {
-  background-color: white;
-  border-radius: 12px;
-  padding: 20px;
+  background: #fff9f0;
+  border-radius: 1em;
+  padding: 2rem 2.5rem;
   width: 90%;
-  max-width: 500px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 520px;
+  box-shadow:
+    0 4px 12px rgba(255, 145, 0, 0.15),
+    0 12px 24px rgba(255, 145, 0, 0.3);
   animation: fadeIn 0.3s ease;
+  color: #5c3a00;
+  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-.modal-header,
-.modal-body,
-.modal-footer {
+.modal-header {
+  border-bottom: 2px solid #ffd664;
+  padding-bottom: 0.5rem;
   margin-bottom: 1rem;
+}
+
+.modal-header h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #b35e00;
+  margin: 0;
+  white-space: normal;
+}
+
+.modal-body {
+  max-height: 320px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+}
+
+.modal-body div {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: #fff7df;
+  border: 1.5px solid #ffd664;
+}
+
+.modal-body h5 {
+  margin: 0 0 0.3rem 0;
+  font-weight: 700;
+  color: #b35e00;
+}
+
+.modal-body h6 {
+  margin: 0;
+  font-weight: 500;
+  color: #5c3a00;
 }
 
 .modal-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+}
+
+.modal-footer button {
+  background: linear-gradient(45deg, #ff9100, #ffbf33);
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  color: white;
+  padding: 0.6rem 1.3rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.modal-footer button:hover {
+  box-shadow: 0 0 10px rgba(255, 145, 0, 0.7);
 }
 
 @keyframes fadeIn {
@@ -98,4 +149,5 @@ onMounted(async () => {
     transform: translateY(0);
   }
 }
+
 </style>

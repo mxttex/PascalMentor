@@ -12,6 +12,7 @@ const props = defineProps({
 
 const userId = inject('userId')
 const date = ref()
+const alert = ref({ show: false, type: '', message: '' })
 
 onMounted(() => {
     date.value = formatItalianDate(props.ripetition.Data)
@@ -19,6 +20,7 @@ onMounted(() => {
 })
 
 async function PrenotaRipetizione() {
+    alert.value.show = false
     try {
         const response = await fetch(
             `${globalVariables.API_URL}bookSpecificRipetition`,
@@ -32,13 +34,13 @@ async function PrenotaRipetizione() {
             }
         )
         if (response.ok) {
-            alert('Ripetizione Prenotata con Successo')
+            alert.value = { show: true, type: 'success', message: 'Ripetizione Prenotata con Successo' }
         } else {
             const errorMessage = await response.text()
-            alert(errorMessage)
+            alert.value = { show: true, type: 'danger', message: errorMessage }
         }
     } catch (error) {
-        alert(error)
+        alert.value = { show: true, type: 'danger', message: error.toString() }
     }
 }
 </script>
@@ -48,10 +50,15 @@ async function PrenotaRipetizione() {
         <div class="text-center mt-3">
             <i class="bi bi-mortarboard" style="font-size: 3rem; color: #ff9100"></i>
         </div>
+
+        <div v-if="alert.show" :class="['alert', `alert-${alert.type}`, 'm-3']" role="alert">
+            {{ alert.message }}
+        </div>
+
         <div class="card-body" style="justify-items: center;">
             <h5 class="card-title mainTitle">{{ ripetition.Materia }}</h5>
             <p class="card-text subTitle">
-                <router-link :to="`/teacherInfo:${ripetition.Insegnante}`">
+                <router-link class="normalText" :to="`/teacherInfo:${ripetition.Insegnante}`">
                     Insegnante: {{ ripetition.Nome }} {{ ripetition.Cognome }}
                 </router-link><br>
                 Data: {{ date }}<br>
@@ -65,12 +72,23 @@ async function PrenotaRipetizione() {
 </template>
 
 <style scoped>
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centra orizzontalmente */
+  gap: 1rem; /* spazio tra titolo, testo e bottone */
+}
+
 .mainTitle {
     text-align: center;
     font-size: 2em;
     font-weight: bold;
 }
 
+.normalText{
+    text-decoration: none;
+    color: black;
+}
 .subTitle {
     text-align: center;
     font-size: 1em;
@@ -105,3 +123,4 @@ async function PrenotaRipetizione() {
         .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
 }
 </style>
+
