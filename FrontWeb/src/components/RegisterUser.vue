@@ -2,11 +2,15 @@
     <div class="container mt-5">
         <h1 class="text-center title">{{ isTeacher ? 'Insegnante' : 'Studente' }}</h1>
 
-        <div class="text-center mb-4">
-            <button class="defaultButton me-2" :class="{ active: !isTeacher }"
-                @click="isTeacher = false">Studente</button>
-            <button class="defaultButton" :class="{ active: isTeacher }" @click="isTeacher = true">Insegnante</button>
+        <div class="button-toggle-container">
+            <button class="defaultButton" :class="{ active: !isTeacher }" @click="isTeacher = false">
+                Studente
+            </button>
+            <button class="defaultButton" :class="{ active: isTeacher }" @click="isTeacher = true">
+                Insegnante
+            </button>
         </div>
+
 
         <div v-if="alert.show" :class="['alert', `alert-${alert.type}`, 'mt-3']" role="alert">
             {{ alert.message }}
@@ -122,6 +126,7 @@ async function handleSubmit() {
         if (result.status === 200) {
             alert.value = { show: true, type: 'success', message: 'Registrazione avvenuta con successo!' }
             resetForm()
+            $emit('change-state', 'log')
         } else {
             alert.value = { show: true, type: 'danger', message: 'Errore durante la registrazione.' }
         }
@@ -142,30 +147,46 @@ async function handleSubmit() {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.button-toggle-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
 .defaultButton {
-    background: linear-gradient(to bottom right, #ffc691, #ffa341);
-    border: none;
-    border-radius: 12px;
-    color: #fff;
-    cursor: pointer;
-    font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 2.5;
-    padding: 0 1rem;
-    text-align: center;
-    transition: box-shadow .2s ease-in-out;
-    user-select: none;
-    white-space: nowrap;
-    width: 100%;
+  background: linear-gradient(to bottom right, #ffc691, #ffa341);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  cursor: pointer;
+  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.5;
+  padding: 0 1rem;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+  user-select: none;
+  white-space: nowrap;
+  width: auto; /* meglio auto per bottoni affiancati */
+  min-width: 120px;
 }
 
 .defaultButton:not([disabled]):focus,
 .defaultButton:not([disabled]):hover {
-    box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5),
-        -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5),
-        .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5),
+              -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5),
+              .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
 }
+
+.defaultButton.active {
+  background: linear-gradient(to bottom right, #ff9933, #ff6600);
+  box-shadow: 0 0 .4rem rgba(0, 0, 0, 0.6),
+              0 0 1rem rgba(255, 255, 255, 0.4);
+  transform: scale(1.05);
+}
+
 
 .text {
     color: white;
