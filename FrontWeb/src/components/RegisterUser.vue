@@ -80,7 +80,7 @@ const indirizzo = ref('Informatica')
 const dataNascita = ref('')
 
 const alert = ref({ show: false, type: '', message: '' })
-
+const emit = defineEmits(['change-state'])
 const resetForm = () => {
     nome.value = ''
     cognome.value = ''
@@ -126,7 +126,7 @@ async function handleSubmit() {
         if (result.status === 200) {
             alert.value = { show: true, type: 'success', message: 'Registrazione avvenuta con successo!' }
             resetForm()
-            $emit('change-state', 'log')
+            emit('change-state', 'log')
         } else {
             alert.value = { show: true, type: 'danger', message: 'Errore durante la registrazione.' }
         }

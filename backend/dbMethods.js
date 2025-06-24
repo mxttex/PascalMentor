@@ -88,26 +88,9 @@ const FetchSubjects = async () => {
 const FetchAllRipetitions = async () => {
   try {
     let pool = await sql.connect(config);
-    let insertion = await pool.request().query(`SELECT 
-    U.Nome, 
-    U.Cognome, 
-    R.Id, 
-    R.Data, 
-    R.OraInizio, 
-    R.OraFine, 
-    R.NumeroMassimoPartecipanti, 
-    R.Note, 
-    M.Nome AS Materia, 
-    R.Insegnante
-FROM 
-    Ripetizioni R
-    JOIN Utenti U ON R.Insegnante = U.Id
-    JOIN Materie M ON R.Materia = M.Id
-WHERE 
-    R.NumeroIscritti < R.NumeroMassimoPartecipanti
-    AND R.Data >= CAST(GETDATE() AS DATE)
-    AND R.OraInizio > CONVERT(time, GETDATE())
-
+    let insertion = await pool.request().query(`SELECT Utenti.Nome as Nome, Cognome, Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, Note , Materie.Nome as Materia, Insegnante 
+                                                FROM (Ripetizioni JOIN Utenti ON Insegnante = Utenti.Id) JOIN Materie on Materia = Materie.Id
+                                                WHERE NumeroIscritti < NumeroMassimoPartecipanti AND Data >= GETDATE()
 `);
     return insertion.recordsets;
   } catch (error) {
@@ -168,8 +151,8 @@ const FetchRipetionsByUserId = async (body) => {
     let query =
       body.type === "S"
         ? `SELECT Ripetizioni.Id, Insegnante,Data, OraInizio, OraFine, Utenti.Nome as NomeInsegnante, Utenti.Cognome as CognomeInsegnante, Materie.Nome as Materia, Note, Partecipazioni.FeedbackGiaLasciato as FeedbackGiaLasciato
-             FROM ((Ripetizioni JOIN Partecipazioni ON Ripetizione = Id) JOIN Utenti on Utenti.ID = Insegnante) JOIN Materie ON Materia = Materie.Id
-             WHERE Partecipazioni.Studente = @id`
+            FROM ((Ripetizioni JOIN Partecipazioni ON Ripetizione = Id) JOIN Utenti on Utenti.ID = Insegnante) JOIN Materie ON Materia = Materie.Id
+            WHERE Partecipazioni.Studente = @id`
         : `SELECT Ripetizioni.Id, Data, OraInizio, OraFine, NumeroMassimoPartecipanti, NumeroIscritti, Insegnante, Materie.Nome as Materia, Note
              FROM Ripetizioni JOIN Materie on Materia = Materie.Id
              WHERE Insegnante = @id`;

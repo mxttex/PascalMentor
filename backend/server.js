@@ -30,8 +30,8 @@ router.route("/register").post((req, res) => {
   DB.AddNewUser(req.body).then((data) => {
     try {
       res.json(data[0]);
-    } catch {
-      res.status(400).send();
+    } catch(error) {
+      res.status(400).send(error);
     }
   });
 });

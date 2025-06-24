@@ -17,4 +17,6 @@ INSERT INTO Materie (Nome) VALUES
 ('Informatica'),
 ('Elettronica'),
 ('Telecomunicazioni'),
-('Sistemi e Reti'); 
+('Sistemi e Reti'),
+('Biologia'),
+('GPOI'); 
