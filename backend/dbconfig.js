@@ -1,7 +1,9 @@
+//cambia questo file con i dati per connetterti al tuo db
+
 const config = {
-    user:"sa",
-    password:"ForzaNapoli",
-    server: `PORTATILEMATTE\\SQLEXPRESS`,
+    user:"",
+    password:"",
+    server: ``,
     database:"PascalMentor",
     options:{
         trustConnection: true,
