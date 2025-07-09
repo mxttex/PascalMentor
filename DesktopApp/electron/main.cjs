@@ -1,18 +1,17 @@
-const { app, BrowserWindow } = require('electron');
 const path = require('path');
+const { app, BrowserWindow } = require('electron');
 
 function createWindow() {
   const win = new BrowserWindow({
     width: 1920,
     height: 1080,
+    icon: path.join(__dirname, '../public/icon.ico'),  // usa il file giusto
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
-    },
-    icon: '../public/logo_white.svg'
+    }
   });
 
-  // In modalità sviluppo: carica il server Vite
   win.loadURL('http://localhost:5173');
 }
 

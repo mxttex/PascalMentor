@@ -3,11 +3,6 @@ import { provide, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Navbar from './components/Navbar.vue'
 
-type UserType = 'studente' | 'insegnante' | ''
-interface Subject {
-  id: number
-  nome: string
-}
 
 const userType = ref<UserType>('')  
 const userId = ref<string>('')  
